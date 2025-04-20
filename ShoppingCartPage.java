@@ -6,15 +6,19 @@ public class ShoppingCartPage extends JPanel {
     private Font customFont;
     private JLabel titleLabel, emptyLabel;
     private JScrollPane scrollPane;
-    private JPanel orderPanel, titlePanel;
+    private JPanel orderPanel, titlePanel, buttonPanel;
+    private JButton addButton, removeButton, confirmButton;
+    private Runnable onAddToCartRedirect;
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
     private Color white = Color.WHITE;
     private Color black = Color.BLACK;
     private Color borderGray = new Color(169, 169, 169);
 
-    public ShoppingCartPage() {
+    public ShoppingCartPage(Runnable onAddToCartRedirect) {
         setLayout(new BorderLayout());
+
+        this.onAddToCartRedirect = onAddToCartRedirect;
 
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(40f);
@@ -70,9 +74,19 @@ public class ShoppingCartPage extends JPanel {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+
+        addButton = new JButton("Add to Cart");
+        addButton.setBackground(lightBlue);
+        addButton.setForeground(black);
+        addButton.addActionListener(e -> addToCart());
+
         titlePanel.add(titleLabel);
+        buttonPanel.add(addButton);
         add(titlePanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     private JPanel createCartItemPanel(MainContents.CartItem item) {
@@ -107,7 +121,7 @@ public class ShoppingCartPage extends JPanel {
         JLabel detailsTitle = new JLabel("Details");
         detailsTitle.setFont(customFont.deriveFont(20f));
         detailsTitle.setForeground(darkBlue);
-        detailsTitle.setBorder(BorderFactory.createEmptyBorder(0, 100, 40, 0));
+        detailsTitle.setBorder(BorderFactory.createEmptyBorder(0, 100, 50, 0));
 
         JLabel nameLabel = new JLabel(item.name);
         nameLabel.setFont(customFont.deriveFont(20f));
@@ -129,7 +143,7 @@ public class ShoppingCartPage extends JPanel {
         JLabel priceTitle = new JLabel("Price");
         priceTitle.setFont(customFont.deriveFont(20f));
         priceTitle.setForeground(darkBlue);
-        priceTitle.setBorder(BorderFactory.createEmptyBorder(0, 70, 80, 0));
+        priceTitle.setBorder(BorderFactory.createEmptyBorder(0, 70, 85, 0));
 
         JLabel priceLabel = new JLabel(item.price);
         priceLabel.setFont(customFont.deriveFont(20f));
@@ -143,7 +157,7 @@ public class ShoppingCartPage extends JPanel {
         JLabel quantityTitle = new JLabel("Qty");
         quantityTitle.setFont(customFont.deriveFont(20f));
         quantityTitle.setForeground(darkBlue);
-        quantityTitle.setBorder(BorderFactory.createEmptyBorder(0, 45, 80, 0));
+        quantityTitle.setBorder(BorderFactory.createEmptyBorder(0, 45, 85, 0));
 
         JLabel quantityLabel = new JLabel(String.valueOf(item.quantity));
         quantityLabel.setFont(customFont.deriveFont(20f));
@@ -161,7 +175,7 @@ public class ShoppingCartPage extends JPanel {
         JLabel subtotalTitle = new JLabel("Subtotal");
         subtotalTitle.setFont(customFont.deriveFont(20f));
         subtotalTitle.setForeground(darkBlue);
-        subtotalTitle.setBorder(BorderFactory.createEmptyBorder(0, 70, 80, 0));
+        subtotalTitle.setBorder(BorderFactory.createEmptyBorder(0, 70, 85, 0));
 
         JLabel subtotalLabel = new JLabel("$" + String.format("%,.2f", subtotal));
         subtotalLabel.setFont(customFont.deriveFont(20f));
@@ -189,5 +203,11 @@ public class ShoppingCartPage extends JPanel {
         itemPanel.add(subtotalPanel);
 
         return itemPanel;
+    }
+
+    private void addToCart() {
+        if(onAddToCartRedirect != null) {
+            onAddToCartRedirect.run();
+        }
     }
 }

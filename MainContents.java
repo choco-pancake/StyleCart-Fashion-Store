@@ -52,6 +52,11 @@ public class MainContents extends JPanel {
         return cartItems;
     }
 
+    private Runnable onBrandViewCLick;
+    public void setonBrandViewClick(Runnable onClick) {
+        this.onBrandViewCLick = onClick;
+    }
+
     public MainContents() {
         try {
             titleFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(40f);
@@ -517,6 +522,10 @@ public class MainContents extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
                 brandView.setForeground(darkerBlue);
+
+                if(onBrandViewCLick != null) {
+                    onBrandViewCLick.run();
+                }
             }
         });
 

@@ -209,6 +209,11 @@ public class HomePage extends JFrame {
     private void showHomePage() {
         contentPanel.removeAll();
         MainContents homeContent = new MainContents();
+
+        homeContent.setonBrandViewClick(() -> {
+            showAvailableBrands();
+        });
+
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(homeContent, BorderLayout.CENTER);
         contentPanel.revalidate();
@@ -217,7 +222,10 @@ public class HomePage extends JFrame {
 
     private void showShoppingCartPage() {
         contentPanel.removeAll();
-        ShoppingCartPage cartPage = new ShoppingCartPage();
+        ShoppingCartPage cartPage = new ShoppingCartPage(() -> {
+            showAvailableBrands();
+        });
+
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(cartPage, BorderLayout.CENTER);
         contentPanel.revalidate();
@@ -284,6 +292,15 @@ public class HomePage extends JFrame {
 
         sidePanel.revalidate();
         sidePanel.repaint();
+    }
+
+    private void showAvailableBrands() {
+        contentPanel.removeAll();
+        AvailableBrands brandsPanel = new AvailableBrands();
+        contentPanel.setLayout(new BorderLayout());
+        contentPanel.add(brandsPanel, BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }
 
     public static void main(String[] args) {
