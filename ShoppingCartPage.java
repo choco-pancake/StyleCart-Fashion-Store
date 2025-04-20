@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 
 public class ShoppingCartPage extends JPanel {
@@ -91,116 +93,62 @@ public class ShoppingCartPage extends JPanel {
 
     private JPanel createCartItemPanel(MainContents.CartItem item) {
         JPanel itemPanel = new JPanel();
-        itemPanel.setLayout(new FlowLayout());
-        itemPanel.setBackground(lightBlue);
-        itemPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(borderGray, 1),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        itemPanel.setLayout(new BorderLayout());
+        itemPanel.setOpaque(false);
+        itemPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         itemPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
         itemPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JPanel productPanel = new JPanel();
-        productPanel.setLayout(new BorderLayout());
-        productPanel.setOpaque(false);
-
-        JLabel productTitle = new JLabel("Product");
-        productTitle.setFont(customFont.deriveFont(20f));
-        productTitle.setForeground(darkBlue);
-        productTitle.setBorder(BorderFactory.createEmptyBorder(0, 10, 20, 0));
+    
+        String[] columnNames = {"           Product", "Details", "Price", "Quantity", "Subtotal"};
+        Object[][] data = new Object[1][5];
 
         ImageIcon itemIcon = new ImageIcon(item.iconPath);
         Image scaledImage = itemIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
-        iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
+        data[0][0] = new ImageIcon(scaledImage);
 
-        JPanel detailsPanel = new JPanel();
-        detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
-        detailsPanel.setOpaque(false);
-        detailsPanel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));
+        String details = String.format("<html>%s<br>Color: %s<br>Size: %s</html>", item.name, item.color, item.size);
+        data[0][1] = details;
 
-        JLabel detailsTitle = new JLabel("Details");
-        detailsTitle.setFont(customFont.deriveFont(20f));
-        detailsTitle.setForeground(darkBlue);
-        detailsTitle.setBorder(BorderFactory.createEmptyBorder(0, 100, 50, 0));
-
-        JLabel nameLabel = new JLabel(item.name);
-        nameLabel.setFont(customFont.deriveFont(20f));
-        nameLabel.setForeground(black);
-
-        JLabel colorLabel = new JLabel("Color: " + item.color);
-        colorLabel.setFont(customFont.deriveFont(15f));
-        colorLabel.setForeground(black);
-
-        JLabel sizeLabel = new JLabel("Size: " + item.size);
-        sizeLabel.setFont(customFont.deriveFont(15f));
-        sizeLabel.setForeground(black);
-        sizeLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-        JPanel pricePanel = new JPanel();
-        pricePanel.setLayout(new BorderLayout());
-        pricePanel.setOpaque(false);
-
-        JLabel priceTitle = new JLabel("Price");
-        priceTitle.setFont(customFont.deriveFont(20f));
-        priceTitle.setForeground(darkBlue);
-        priceTitle.setBorder(BorderFactory.createEmptyBorder(0, 70, 85, 0));
-
-        JLabel priceLabel = new JLabel(item.price);
-        priceLabel.setFont(customFont.deriveFont(20f));
-        priceLabel.setForeground(black);
-        priceLabel.setBorder(BorderFactory.createEmptyBorder(0, 60, 0, 0));
-
-        JPanel quantityPanel = new JPanel();
-        quantityPanel.setLayout(new BorderLayout());
-        quantityPanel.setOpaque(false);
-
-        JLabel quantityTitle = new JLabel("Qty");
-        quantityTitle.setFont(customFont.deriveFont(20f));
-        quantityTitle.setForeground(darkBlue);
-        quantityTitle.setBorder(BorderFactory.createEmptyBorder(0, 45, 85, 0));
-
-        JLabel quantityLabel = new JLabel(String.valueOf(item.quantity));
-        quantityLabel.setFont(customFont.deriveFont(20f));
-        quantityLabel.setForeground(black);
-        quantityLabel.setBorder(BorderFactory.createEmptyBorder(0, 60, 0, 0));
+        data[0][2] = item.price;
+        data[0][3] = String.valueOf(item.quantity);
 
         String numericPrice = item.price.replace("$", "").replace(",", "");
         double priceValue = Double.parseDouble(numericPrice);
         double subtotal = priceValue * item.quantity;
+        data[0][4] = "$" + String.format("%,.2f", subtotal);
 
-        JPanel subtotalPanel = new JPanel();
-        subtotalPanel.setLayout(new BorderLayout());
-        subtotalPanel.setOpaque(false);
+        JTable table = new JTable(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
 
-        JLabel subtotalTitle = new JLabel("Subtotal");
-        subtotalTitle.setFont(customFont.deriveFont(20f));
-        subtotalTitle.setForeground(darkBlue);
-        subtotalTitle.setBorder(BorderFactory.createEmptyBorder(0, 70, 85, 0));
+            @Override
+            public Class<?> getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
 
-        JLabel subtotalLabel = new JLabel("$" + String.format("%,.2f", subtotal));
-        subtotalLabel.setFont(customFont.deriveFont(20f));
-        subtotalLabel.setForeground(black);
-        subtotalLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        subtotalLabel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 20));
+        table.setRowHeight(120);
+        table.setFont(customFont.deriveFont(15f));
+        table.setForeground(black);
+        table.setAlignmentX(Component.CENTER_ALIGNMENT);
+        table.setFocusable(false);
 
-        productPanel.add(productTitle, BorderLayout.NORTH);
-        productPanel.add(iconLabel, BorderLayout.CENTER);
-        detailsPanel.add(detailsTitle, BorderLayout.NORTH);
-        detailsPanel.add(detailsTitle);
-        detailsPanel.add(nameLabel);
-        detailsPanel.add(colorLabel);
-        detailsPanel.add(sizeLabel);
-        pricePanel.add(priceTitle, BorderLayout.NORTH);
-        pricePanel.add(priceLabel, BorderLayout.CENTER);
-        quantityPanel.add(quantityTitle, BorderLayout.NORTH);
-        quantityPanel.add(quantityLabel, BorderLayout.CENTER);
-        subtotalPanel.add(subtotalTitle, BorderLayout.NORTH);
-        subtotalPanel.add(subtotalLabel, BorderLayout.CENTER);
-        itemPanel.add(productPanel);
-        itemPanel.add(detailsPanel);
-        itemPanel.add(pricePanel);
-        itemPanel.add(quantityPanel);
-        itemPanel.add(subtotalPanel);
+        table.getTableHeader().setFont(customFont.deriveFont(20f));
+        table.getTableHeader().setForeground(darkBlue);
+        table.getTableHeader().setOpaque(false);
+        table.setShowGrid(false);
+
+        table.getColumnModel().getColumn(0).setPreferredWidth(120);
+        table.getColumnModel().getColumn(1).setPreferredWidth(300);        
+        table.getColumnModel().getColumn(2).setPreferredWidth(100);        
+        table.getColumnModel().getColumn(3).setPreferredWidth(80);        
+        table.getColumnModel().getColumn(4).setPreferredWidth(100);  
+
+        JScrollPane tablePane = new JScrollPane(table);
+        tablePane.setBorder(BorderFactory.createEmptyBorder());
+        itemPanel.add(tablePane, BorderLayout.CENTER);
 
         return itemPanel;
     }

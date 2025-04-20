@@ -280,7 +280,7 @@ public class MainContents extends JPanel {
 
         String[] items = {"Own the Run Running T-Shirt", "Aeroimpact Luxe Training Light-Support Bra", "Essentials 3-Stripes Hoodie",
                 "Slim-Fit Wool Pants", "Belted Wool Midi Dress"};
-        String[] itemsPrice = {"$1,620.00", "$2,080.00", "$55.00", "$125.00", "$180.00"};
+        String[] itemsPrice = {"$40.00", "$50.00", "$39.00", "$165.00", "$135.00"};
         String[] itemsTag = {"Top rated", "Top rated", "Top rated", "Best offer", "Best style"};
         String[] itemsIcon = {"images/featuredAdidas1.png", "images/featuredAdidas2.png", "images/featuredAdidas3.png", "images/featuredCOS1.png", "images/featuredCOS2.png"};
 
@@ -501,6 +501,7 @@ public class MainContents extends JPanel {
         brandView = new JLabel("View All >");
         brandView.setFont(new Font(null, Font.PLAIN, 17));
         brandView.setForeground(white);
+        brandView.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
         brandView.addMouseListener(new MouseAdapter() {
             @Override

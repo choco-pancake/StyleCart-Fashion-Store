@@ -19,6 +19,7 @@ public class HomePage extends JFrame {
     private JLabel logoLabel2;
     private JLabel logoImageLabel;
     private JPanel menuItemPanel;
+    private CardLayout cardLayout;
     private JPanel contentPanel;
     private Map<String, JPanel> menuItemMap = new HashMap<>();
     private Map<String, ImageIcon[]> iconMap = new HashMap<>();
@@ -81,17 +82,17 @@ public class HomePage extends JFrame {
 
         makeComponentClickable(logoPanel, () -> {
             menuItemWhite("Home");
-            showHomePage();
+            cardLayout.show(contentPanel, "MainView");
         });
 
         makeComponentClickable(logoLabel, () -> {
             menuItemWhite("Home");
-            showHomePage();
+            cardLayout.show(contentPanel, "MainView");
         });
 
         makeComponentClickable(logoImageLabel, () -> {
             menuItemWhite("Home");
-            showHomePage();
+            cardLayout.show(contentPanel, "MainView");
         });
 
         logoPanel.add(logoImageLabel);
@@ -125,16 +126,43 @@ public class HomePage extends JFrame {
             sidePanel.add(Box.createRigidArea(new Dimension(0, 50)));
         }
 
-        contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        cardLayout = new CardLayout();
+        contentPanel = new JPanel(cardLayout);
         contentPanel.setBackground(new Color(245, 245, 245));
+
+        // Add views to the cardLayout
+        MainContents homeContent = new MainContents();
+        homeContent.setonBrandViewClick(() -> {
+            cardLayout.show(contentPanel, "BrandsView");
+        });
+        contentPanel.add(homeContent, "MainView");
+
+        AvailableBrands brandsPanel = new AvailableBrands(cardLayout, contentPanel);
+        contentPanel.add(brandsPanel, "BrandsView");
+
+        JPanel cartPage = new ShoppingCartPage(() -> {
+            cardLayout.show(contentPanel, "BrandsView");
+        });
+        contentPanel.add(cartPage, "CartView");
+
+        JPanel orderSummaryPage = new JPanel();
+        orderSummaryPage.add(new JLabel("Order Summary"));
+        contentPanel.add(orderSummaryPage, "OrderSummaryView");
+
+        JPanel ratingsPage = new JPanel();
+        ratingsPage.add(new JLabel("Ratings"));
+        contentPanel.add(ratingsPage, "RatingsView");
+
+        JPanel helpPage = new JPanel();
+        helpPage.add(new JLabel("Help and Support"));
+        contentPanel.add(helpPage, "HelpView");
 
         sidePanel.add(Box.createVerticalGlue());
         add(sidePanel, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
 
         menuItemWhite("Home");
-        showHomePage();
+        cardLayout.show(contentPanel, "MainView");
 
         setVisible(true);
     }
@@ -167,19 +195,19 @@ public class HomePage extends JFrame {
             menuItemWhite(text);
             switch (text) {
                 case "Home":
-                    showHomePage();
+                    cardLayout.show(contentPanel, "MainView");
                     break;
                 case "Shopping Cart":
-                    showShoppingCartPage();
+                    cardLayout.show(contentPanel, "CartView");
                     break;
                 case "Order Summary":
-                    showOrderSummaryPage();
+                    cardLayout.show(contentPanel, "OrderSummaryView");
                     break;
                 case "Ratings":
-                    showRatingsPage();
+                    cardLayout.show(contentPanel, "RatingsView");
                     break;
                 case "Help":
-                    showHelpPage();
+                    cardLayout.show(contentPanel, "HelpView");
                     break;
             }
         };
@@ -204,53 +232,6 @@ public class HomePage extends JFrame {
                 component.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
         });
-    }
-
-    private void showHomePage() {
-        contentPanel.removeAll();
-        MainContents homeContent = new MainContents();
-
-        homeContent.setonBrandViewClick(() -> {
-            showAvailableBrands();
-        });
-
-        contentPanel.setLayout(new BorderLayout());
-        contentPanel.add(homeContent, BorderLayout.CENTER);
-        contentPanel.revalidate();
-        contentPanel.repaint();
-    }
-
-    private void showShoppingCartPage() {
-        contentPanel.removeAll();
-        ShoppingCartPage cartPage = new ShoppingCartPage(() -> {
-            showAvailableBrands();
-        });
-
-        contentPanel.setLayout(new BorderLayout());
-        contentPanel.add(cartPage, BorderLayout.CENTER);
-        contentPanel.revalidate();
-        contentPanel.repaint();
-    }
-
-    private void showOrderSummaryPage() {
-        contentPanel.removeAll();
-        contentPanel.add(new JLabel("Order Summary"));
-        contentPanel.revalidate();
-        contentPanel.repaint();
-    }
-
-    private void showRatingsPage() {
-        contentPanel.removeAll();
-        contentPanel.add(new JLabel("Ratings"));
-        contentPanel.revalidate();
-        contentPanel.repaint();
-    }
-
-    private void showHelpPage() {
-        contentPanel.removeAll();
-        contentPanel.add(new JLabel("Help and Support"));
-        contentPanel.revalidate();
-        contentPanel.repaint();
     }
 
     private ImageIcon getScaledIcon(String path, int width, int height) {
@@ -292,15 +273,6 @@ public class HomePage extends JFrame {
 
         sidePanel.revalidate();
         sidePanel.repaint();
-    }
-
-    private void showAvailableBrands() {
-        contentPanel.removeAll();
-        AvailableBrands brandsPanel = new AvailableBrands();
-        contentPanel.setLayout(new BorderLayout());
-        contentPanel.add(brandsPanel, BorderLayout.CENTER);
-        contentPanel.revalidate();
-        contentPanel.repaint();
     }
 
     public static void main(String[] args) {
