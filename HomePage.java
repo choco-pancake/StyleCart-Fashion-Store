@@ -11,24 +11,20 @@ import java.util.Map;
 
 public class HomePage extends JFrame {
     private BufferedImage logo;
-    private Font customFont;
-    private Font customFont2;
-    private JPanel sidePanel;
-    private JPanel logoPanel;
-    private JLabel logoLabel;
-    private JLabel logoLabel2;
-    private JLabel logoImageLabel;
-    private JPanel menuItemPanel;
+    private Font customFont, customFont2;
+    private JPanel sidePanel, logoPanel, menuItemPanel, contentPanel, moneyPanel;
+    private JLabel logoLabel, logoLabel2, logoImageLabel, numberLabel, moneyLabel;
     private CardLayout cardLayout;
-    private JPanel contentPanel;
     private Map<String, JPanel> menuItemMap = new HashMap<>();
     private Map<String, ImageIcon[]> iconMap = new HashMap<>();
-    private ShoppingCartPage cartPage;
     private OrderSummaryPage orderSummaryPage;
+    private ShoppingCartPage cartPage;
 
     private Color white = Color.WHITE;
     private Color gray = new Color(56, 56, 56);
     private Color brown = new Color(138, 109, 70);
+    private Color lightBrown = new Color(198, 169, 130);
+    private Color black = Color.BLACK;
 
     public HomePage() {
         setTitle("Home");
@@ -102,7 +98,7 @@ public class HomePage extends JFrame {
         logoPanel.add(logoLabel);
         logoPanel.add(Box.createVerticalStrut(2));
         logoPanel.add(logoLabel2);
-        logoPanel.add(Box.createVerticalStrut(100));
+        logoPanel.add(Box.createVerticalStrut(60));
         sidePanel.add(logoPanel);
 
         String[][] menuItems = {
@@ -126,22 +122,43 @@ public class HomePage extends JFrame {
             menuItemPanel = createMenuItemPanel(name);
             sidePanel.add(menuItemPanel);
             sidePanel.add(Box.createRigidArea(new Dimension(0, 50)));
+        
+            if(name.equals("Help")) {
+                moneyPanel = new RoundedPanel(lightBrown, 30);
+                moneyPanel.setLayout(new BoxLayout(moneyPanel, BoxLayout.Y_AXIS));
+                moneyPanel.setBorder(new EmptyBorder(20, 10, 10, 10));
+                moneyPanel.setMaximumSize(new Dimension(210, 100));
+                moneyPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                moneyLabel = new JLabel("Current balance:");
+                moneyLabel.setFont(customFont.deriveFont(18f));
+                moneyLabel.setForeground(black);
+                moneyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                numberLabel = new JLabel("$5,000.00");
+                numberLabel.setFont(customFont.deriveFont(25f));
+                numberLabel.setForeground(black);
+                numberLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                moneyPanel.add(moneyLabel);
+                moneyPanel.add(Box.createVerticalStrut(10));
+                moneyPanel.add(numberLabel);
+                sidePanel.add(moneyPanel);
+                sidePanel.add(Box.createRigidArea(new Dimension(0, 20)));
+            }
         }
 
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
         contentPanel.setBackground(new Color(245, 245, 245));
 
-        // Initialize OrderSummaryPage
-        orderSummaryPage = new OrderSummaryPage();
+        orderSummaryPage = new OrderSummaryPage(); // Initialize before cartPage
 
-        // Initialize ShoppingCartPage with orderSummaryPage
-        cartPage = new ShoppingCartPage(() -> {
+        cartPage = new ShoppingCartPage(this, () -> {
             menuItemWhite("Home");
             cardLayout.show(contentPanel, "BrandsView");
-        }, orderSummaryPage);
+        }, orderSummaryPage); // Updated to match the new constructor
 
-        // Add views to the cardLayout
         MainContents homeContent = new MainContents();
         homeContent.setOnBrandViewClick(() -> {
             cardLayout.show(contentPanel, "BrandsView");
@@ -175,6 +192,33 @@ public class HomePage extends JFrame {
         cardLayout.show(contentPanel, "MainView");
 
         setVisible(true);
+    }
+
+    class RoundedPanel extends JPanel {
+        private Color backgroundColor;
+        private int cornerRadius = 15;
+
+        public RoundedPanel(Color bgColor, int radius) {
+            this.backgroundColor = bgColor;
+            this.cornerRadius = radius;
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Dimension arcs = new Dimension(cornerRadius, cornerRadius);
+            Graphics2D graphics2d = (Graphics2D) g;
+            graphics2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics2d.setColor(backgroundColor);
+            graphics2d.fillRoundRect(0, 0, getWidth(), getHeight(), arcs.width, arcs.height);
+        }
+    }
+
+    public void updateBalance(double newBalance) {
+        if (numberLabel != null) {
+            numberLabel.setText(String.format("$%,.2f", newBalance));
+        }
     }
 
     private JPanel createMenuItemPanel(String text) {

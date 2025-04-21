@@ -47,6 +47,7 @@ public class OrderSummaryPage extends JPanel {
             }
         };
 
+        orderPanel.setLayout(new BoxLayout(orderPanel, BoxLayout.Y_AXIS));
         orderPanel.setOpaque(false);
         orderPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -64,7 +65,7 @@ public class OrderSummaryPage extends JPanel {
         receiptPanel = new JPanel();
         receiptPanel.setLayout(new FlowLayout());
         receiptPanel.setBackground(lightBlue);
-        receiptPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        receiptPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
         receiptPanel.setOpaque(true);
 
         receiptButton = new JButton("Generate Receipt");
@@ -75,7 +76,7 @@ public class OrderSummaryPage extends JPanel {
         receiptButton.setContentAreaFilled(false);
         receiptButton.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(lightGray, 1),
-            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+            BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         receiptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         receiptButton.setOpaque(true);
 
@@ -106,6 +107,8 @@ public class OrderSummaryPage extends JPanel {
         add(titlePanel, BorderLayout.NORTH);
         add(orderPanel, BorderLayout.CENTER);
         add(receiptPanel, BorderLayout.SOUTH);
+
+        displayOrderSummary(null, null, null);
     }
 
     public void displayOrderSummary(Object[][] selectedData, String[] columnNames, Font tableFont) {
@@ -115,15 +118,14 @@ public class OrderSummaryPage extends JPanel {
             }
         }
 
-        orderPanel.removeAll();
-        orderPanel.setLayout(new BorderLayout());
-
         if (allOrders.isEmpty()) {
-            emptyLabel = new JLabel("No items in order summary.");
+            emptyLabel = new JLabel("No orders placed yet.");
             emptyLabel.setFont(new Font(null, Font.BOLD, 20));
             emptyLabel.setForeground(white);
-            emptyLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            orderPanel.add(emptyLabel, BorderLayout.CENTER);
+            emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            emptyLabel.add(Box.createVerticalGlue());
+            orderPanel.add(emptyLabel);
+            orderPanel.add(Box.createVerticalGlue());
         } else {
             Object[][] allOrdersArray = new Object[allOrders.size()][];
             for (int i = 0; i < allOrders.size(); i++) {

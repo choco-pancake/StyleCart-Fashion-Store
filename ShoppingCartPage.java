@@ -12,6 +12,8 @@ public class ShoppingCartPage extends JPanel {
     private JPanel orderPanel, titlePanel, buttonPanel;
     private JButton addButton, removeButton, placeButton;
     private JTable cartTable;
+    private double currentBalance = 5000.00;
+    private HomePage homePage;
     private Runnable onAddToCartRedirect;
     private OrderSummaryPage orderSummaryPage;
     private Color darkBlue = new Color(75, 75, 150);
@@ -20,12 +22,13 @@ public class ShoppingCartPage extends JPanel {
     private Color lightGray = new Color(211, 211, 211);
     private Color mediumBlue = new Color(124, 145, 190);
 
-    public ShoppingCartPage(Runnable onAddToCartRedirect, OrderSummaryPage orderSummaryPage) {
+    public ShoppingCartPage(HomePage homePage, Runnable onAddToCartRedirect, OrderSummaryPage orderSummaryPage) {
         setLayout(new BorderLayout());
 
+        this.homePage = homePage;
         this.onAddToCartRedirect = onAddToCartRedirect;
         this.orderSummaryPage = orderSummaryPage;
-
+        
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(40f);
             GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -304,30 +307,55 @@ public class ShoppingCartPage extends JPanel {
             return;
         }
 
-        int choice = JOptionPane.showConfirmDialog(this, "Confirm placing this order?", "Confirm Order", JOptionPane.OK_CANCEL_OPTION);
+        double subtotal = 0.00;
+        for (int row : selectedRows) {
+            String subtotalString = cartTable.getValueAt(row, 4).toString().replace("$", "").replace(",", "");
+            subtotal += Double.parseDouble(subtotalString);
+        }
+
+        double remainingBalance = currentBalance - subtotal;
+        if(remainingBalance < 0) {
+            JOptionPane.showMessageDialog(this, "Not enough balance!", "Insufficient Funds", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String infoMessage = String.format("""
+                             Current Balance: $%,.2f
+                             Item Subtotal: $%,.2f
+                             After Purchase: $%,.2f
+
+                             Do you want to place this order?
+                             """, currentBalance, subtotal, remainingBalance);
+
+        int choice = JOptionPane.showConfirmDialog(this, infoMessage, "Order Details", JOptionPane.OK_CANCEL_OPTION);
 
         if(choice == JOptionPane.OK_OPTION) {
             String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
-        Object[][] selectedData = new Object[selectedRows.length][5];
+            Object[][] selectedData = new Object[selectedRows.length][5];
 
-        java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
-        java.util.List<MainContents.CartItem> toRemove = new java.util.ArrayList<>();
+            java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
+            java.util.List<MainContents.CartItem> toRemove = new java.util.ArrayList<>();
 
-        for (int i = 0; i < selectedRows.length; i++) {
-            int row = selectedRows[i];
-            for (int j = 0; j < 5; j++) {
-                selectedData[i][j] = cartTable.getValueAt(row, j);
+            for (int i = 0; i < selectedRows.length; i++) {
+                int row = selectedRows[i];
+                for (int j = 0; j < 5; j++) {
+                    selectedData[i][j] = cartTable.getValueAt(row, j);
+                }
+
+                if (row >= 0 && row < cartItems.size()) {
+                    toRemove.add(cartItems.get(row));
+                }
             }
 
-            if (row >= 0 && row < cartItems.size()) {
-                toRemove.add(cartItems.get(row));
+            currentBalance = remainingBalance;
+            if (homePage != null) {
+                homePage.updateBalance(remainingBalance); // Update balance after purchase
             }
-        }
 
-        orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
-        cartItems.removeAll(toRemove);
-        refreshCartItems();
-        JOptionPane.showMessageDialog(this, "Order placed!", "Order Placed", JOptionPane.INFORMATION_MESSAGE);
+            orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
+            cartItems.removeAll(toRemove);
+            refreshCartItems();
+            JOptionPane.showMessageDialog(this, "Order placed!", "Order Placed", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
