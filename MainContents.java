@@ -27,8 +27,13 @@ public class MainContents extends JPanel {
     private CardLayout cardLayout;
     private JPanel contentPanel;
     private static List<CartItem> cartItems = new ArrayList<>();
+    private Runnable onBrandViewClick;
+    private Runnable onViewCartClick;
 
-    // Inner class to represent a cart item
+    public static List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
     public static class CartItem {
         String name;
         String price;
@@ -47,14 +52,12 @@ public class MainContents extends JPanel {
         }
     }
 
-    // Getter for cart items
-    public static List<CartItem> getCartItems() {
-        return cartItems;
+    public void setOnBrandViewClick(Runnable onClick) {
+        this.onBrandViewClick = onClick;
     }
 
-    private Runnable onBrandViewCLick;
-    public void setonBrandViewClick(Runnable onClick) {
-        this.onBrandViewCLick = onClick;
+    public void setOnViewCartClick(Runnable onClick) {
+        this.onViewCartClick = onClick;
     }
 
     public MainContents() {
@@ -134,13 +137,13 @@ public class MainContents extends JPanel {
         topPanel.setOpaque(false);
         topPanel.setBorder(BorderFactory.createCompoundBorder(
                            BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray),
-                           BorderFactory.createEmptyBorder(20, 20, 20, 0)));
+                           BorderFactory.createEmptyBorder(20, 20, 20, 20)));
         topPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
 
         greetLabel = new JLabel(" Welcome to StyleCart!");
         greetLabel.setFont(titleFont);
         greetLabel.setForeground(white);
-       
+
         topPanel.add(greetLabel, BorderLayout.WEST);
         mainPanel.add(topPanel);
     }
@@ -265,7 +268,7 @@ public class MainContents extends JPanel {
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
+              public void mousePressed(MouseEvent e) {
                 featuredView.setForeground(darkerBlue.darker());
             }
 
@@ -523,9 +526,8 @@ public class MainContents extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
                 brandView.setForeground(darkerBlue);
-
-                if(onBrandViewCLick != null) {
-                    onBrandViewCLick.run();
+                if (onBrandViewClick != null) {
+                    onBrandViewClick.run();
                 }
             }
         });

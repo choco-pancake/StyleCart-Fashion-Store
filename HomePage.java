@@ -23,6 +23,8 @@ public class HomePage extends JFrame {
     private JPanel contentPanel;
     private Map<String, JPanel> menuItemMap = new HashMap<>();
     private Map<String, ImageIcon[]> iconMap = new HashMap<>();
+    private ShoppingCartPage cartPage;
+    private OrderSummaryPage orderSummaryPage;
 
     private Color white = Color.WHITE;
     private Color gray = new Color(56, 56, 56);
@@ -130,23 +132,31 @@ public class HomePage extends JFrame {
         contentPanel = new JPanel(cardLayout);
         contentPanel.setBackground(new Color(245, 245, 245));
 
+        // Initialize OrderSummaryPage
+        orderSummaryPage = new OrderSummaryPage();
+
+        // Initialize ShoppingCartPage with orderSummaryPage
+        cartPage = new ShoppingCartPage(() -> {
+            menuItemWhite("Home");
+            cardLayout.show(contentPanel, "BrandsView");
+        }, orderSummaryPage);
+
         // Add views to the cardLayout
         MainContents homeContent = new MainContents();
-        homeContent.setonBrandViewClick(() -> {
+        homeContent.setOnBrandViewClick(() -> {
             cardLayout.show(contentPanel, "BrandsView");
+        });
+        homeContent.setOnViewCartClick(() -> {
+            cartPage.showCart();
+            menuItemWhite("Shopping Cart");
+            cardLayout.show(contentPanel, "CartView");
         });
         contentPanel.add(homeContent, "MainView");
 
         AvailableBrands brandsPanel = new AvailableBrands(cardLayout, contentPanel);
         contentPanel.add(brandsPanel, "BrandsView");
 
-        JPanel cartPage = new ShoppingCartPage(() -> {
-            cardLayout.show(contentPanel, "BrandsView");
-        });
         contentPanel.add(cartPage, "CartView");
-
-        JPanel orderSummaryPage = new JPanel();
-        orderSummaryPage.add(new JLabel("Order Summary"));
         contentPanel.add(orderSummaryPage, "OrderSummaryView");
 
         JPanel ratingsPage = new JPanel();
@@ -171,26 +181,26 @@ public class HomePage extends JFrame {
         JPanel menuItemPanel = new JPanel();
         menuItemPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
         menuItemPanel.setOpaque(false);
-    
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 0, 0, 0);
-    
+
         ImageIcon[] icons = iconMap.get(text);
         ImageIcon blackIcon = icons[0];
-    
+
         JLabel sideLabel = new JLabel(text, blackIcon, JLabel.LEFT);
         sideLabel.setFont(customFont);
         sideLabel.setFont(new Font(null, Font.PLAIN, 17));
         sideLabel.setForeground(white);
         sideLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
-    
+
         menuItemPanel.add(sideLabel, gbc);
         menuItemPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, sideLabel.getPreferredSize().height));
         menuItemPanel.setPreferredSize(sideLabel.getPreferredSize());
-    
+
         Runnable action = () -> {
             menuItemWhite(text);
             switch (text) {
@@ -198,6 +208,7 @@ public class HomePage extends JFrame {
                     cardLayout.show(contentPanel, "MainView");
                     break;
                 case "Shopping Cart":
+                    cartPage.showCart();
                     cardLayout.show(contentPanel, "CartView");
                     break;
                 case "Order Summary":
@@ -211,10 +222,10 @@ public class HomePage extends JFrame {
                     break;
             }
         };
-    
+
         makeComponentClickable(menuItemPanel, action);
         makeComponentClickable(sideLabel, action);
-    
+
         menuItemMap.put(text, menuItemPanel);
         return menuItemPanel;
     }

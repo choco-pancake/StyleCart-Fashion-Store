@@ -13,9 +13,9 @@ public class ActiveWearPanel extends JPanel {
     private JPanel contentPanel;
     private Color lightBlue, white, peach, black, lightGray, darkGray, darkBlue;
     private Font itemFont, customFont, titleFont;
-    private JPanel topPanel, backPanel, titlePanel, mainPanel, menPanel, womenPanel, titleContentPanel, sectionContainer, menContainer, womenContainer;
+    private JPanel topPanel, backPanel, mainPanel, menPanel, womenPanel, titleContentPanel, sectionContainer, menContainer, womenContainer;
     private JButton backButton;
-    private JLabel titleLabel, imageLabel, menLabel, womenLabel;
+    private JLabel titleLabel, menLabel, womenLabel;
     private JScrollPane scrollPane;
 
     public ActiveWearPanel(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white,
@@ -66,7 +66,7 @@ public class ActiveWearPanel extends JPanel {
 
     private void initTopPanel() {
         topPanel = new JPanel();
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 10));
         topPanel.setBackground(darkBlue);
         topPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray));
     
@@ -83,29 +83,19 @@ public class ActiveWearPanel extends JPanel {
             icon = new ImageIcon(image);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    
-        imageLabel = new JLabel(icon);
-        imageLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10)); 
+        } 
     
         titleLabel = new JLabel("Active Wear");
-        titleLabel.setFont(titleFont);
+        titleLabel.setFont(titleFont.deriveFont(40f));
         titleLabel.setForeground(white);
     
         titleContentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titleContentPanel.setOpaque(false);
-        titleContentPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
+        titleContentPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
     
-        titlePanel = new JPanel();
-        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
-        titlePanel.setOpaque(false);
-        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
-        titlePanel.add(titleContentPanel);
-    
-        titleContentPanel.add(imageLabel);
         titleContentPanel.add(titleLabel);
         topPanel.add(backPanel);
-        topPanel.add(titlePanel);
+        topPanel.add(titleContentPanel);
     }
 
     private JButton createBackButton() {

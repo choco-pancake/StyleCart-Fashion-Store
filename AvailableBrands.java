@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Ellipse2D;
 import java.io.*;
 
 public class AvailableBrands extends JPanel {
@@ -20,10 +19,10 @@ public class AvailableBrands extends JPanel {
     private JButton backButton;
 
     public AvailableBrands(CardLayout cardLayout, JPanel contentPanel) {
+        setLayout(new BorderLayout());
+
         this.cardLayout = cardLayout;
         this.contentPanel = contentPanel;
-
-        setLayout(new BorderLayout());
 
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(40f);
@@ -62,13 +61,12 @@ public class AvailableBrands extends JPanel {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                // Set the background color of the oval based on the button state
                 if (getModel().isPressed()) {
                     g2.setColor(darkGray.darker());
                 } else if (getModel().isRollover()) {
                     g2.setColor(darkGray);
                 } else {
-                    g2.setColor(getBackground()); // Default to lightGray
+                    g2.setColor(getBackground());
                 }
                 g2.fillOval(0, 0, getWidth(), getHeight());
 
@@ -82,11 +80,12 @@ public class AvailableBrands extends JPanel {
                 return Math.pow(x - radius, 2) + Math.pow(y - radius, 2) <= radius * radius;
             }
         };
+
         backButton.setPreferredSize(new Dimension(40, 40));
         backButton.setContentAreaFilled(false);
         backButton.setFocusPainted(false);
         backButton.setBorderPainted(false);
-        backButton.setForeground(black); // Default text color
+        backButton.setForeground(black);
         backButton.setFont(customFont.deriveFont(30f));
         backButton.setBackground(lightGray);
         backButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -94,22 +93,19 @@ public class AvailableBrands extends JPanel {
         backButton.setPreferredSize(new Dimension(35, 35));
         backButton.setOpaque(false);
 
-        // Add MouseListener to handle text color changes on hover and exit
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                backButton.setForeground(white); // Text to black on hover
+                backButton.setForeground(white); 
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                backButton.setForeground(black); // Text to white on exit
+                backButton.setForeground(black); 
             }
         });
 
-        // Back button action
         backButton.addActionListener(e -> {
-            System.out.println("Back button clicked - Navigating to MainView");
             cardLayout.show(contentPanel, "MainView");
         });
 
