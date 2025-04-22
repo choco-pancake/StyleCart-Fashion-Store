@@ -16,18 +16,20 @@ public class ShoppingCartPage extends JPanel {
     private HomePage homePage;
     private Runnable onAddToCartRedirect;
     private OrderSummaryPage orderSummaryPage;
+    private RatingsPage ratingsPage;
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
     private Color white = Color.WHITE;
     private Color lightGray = new Color(211, 211, 211);
     private Color mediumBlue = new Color(124, 145, 190);
 
-    public ShoppingCartPage(HomePage homePage, Runnable onAddToCartRedirect, OrderSummaryPage orderSummaryPage) {
+    public ShoppingCartPage(HomePage homePage, Runnable onAddToCartRedirect, OrderSummaryPage orderSummaryPage, RatingsPage ratingsPage, Font font) {
         setLayout(new BorderLayout());
 
         this.homePage = homePage;
         this.onAddToCartRedirect = onAddToCartRedirect;
         this.orderSummaryPage = orderSummaryPage;
+        this.ratingsPage = ratingsPage;
         
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(40f);
@@ -37,6 +39,8 @@ public class ShoppingCartPage extends JPanel {
             e.printStackTrace();
             customFont = new Font("Serif", Font.ITALIC, 40);
         }
+        
+        this.customFont = (font != null) ? font : customFont;
 
         titlePanel = new JPanel();
         titlePanel.setBackground(darkBlue);
@@ -301,7 +305,6 @@ public class ShoppingCartPage extends JPanel {
             cartItems.removeAll(toRemove);
             refreshCartItems();
 
-            // Check if the cart is now empty after removal
             if (cartItems.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Cart is now empty.", "Cart Cleared", JOptionPane.INFORMATION_MESSAGE);
             } else {
@@ -311,7 +314,6 @@ public class ShoppingCartPage extends JPanel {
     }
 
     private void confirmOrder() {
-        // Refresh cart data and validate current selection
         java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
         
         if (cartItems.isEmpty()) {
@@ -371,10 +373,10 @@ public class ShoppingCartPage extends JPanel {
             }
     
             orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
+            ratingsPage.displayOrderSummary(selectedData, columnNames, customFont);
             cartItems.removeAll(toRemove);
             refreshCartItems();
             JOptionPane.showMessageDialog(this, "Order placed!", "Order Placed", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
 }

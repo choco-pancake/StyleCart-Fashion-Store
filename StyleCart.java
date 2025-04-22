@@ -33,7 +33,6 @@ class StartPage extends JFrame {
     private Font customFont2;
     private boolean useCurvedText = true;
 
-    //private Color gray = new Color(56, 56, 56);
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
     private Color gold = new Color(255, 233, 0);

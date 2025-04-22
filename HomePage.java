@@ -19,6 +19,7 @@ public class HomePage extends JFrame {
     private Map<String, ImageIcon[]> iconMap = new HashMap<>();
     private OrderSummaryPage orderSummaryPage;
     private ShoppingCartPage cartPage;
+    private RatingsPage ratingsPage; // Add RatingsPage instance
 
     private Color white = Color.WHITE;
     private Color gray = new Color(56, 56, 56);
@@ -152,12 +153,13 @@ public class HomePage extends JFrame {
         contentPanel = new JPanel(cardLayout);
         contentPanel.setBackground(new Color(245, 245, 245));
 
-        orderSummaryPage = new OrderSummaryPage(); // Initialize before cartPage
+        orderSummaryPage = new OrderSummaryPage(); // Initialize OrderSummaryPage
+        ratingsPage = new RatingsPage(); // Initialize RatingsPage
 
         cartPage = new ShoppingCartPage(this, () -> {
             menuItemWhite("Home");
             cardLayout.show(contentPanel, "BrandsView");
-        }, orderSummaryPage); // Updated to match the new constructor
+        }, orderSummaryPage, ratingsPage, customFont); // Pass RatingsPage and customFont
 
         MainContents homeContent = new MainContents();
         homeContent.setOnBrandViewClick(() -> {
@@ -175,9 +177,6 @@ public class HomePage extends JFrame {
 
         contentPanel.add(cartPage, "CartView");
         contentPanel.add(orderSummaryPage, "OrderSummaryView");
-
-        JPanel ratingsPage = new JPanel();
-        ratingsPage.add(new JLabel("Ratings"));
         contentPanel.add(ratingsPage, "RatingsView");
 
         JPanel helpPage = new JPanel();
