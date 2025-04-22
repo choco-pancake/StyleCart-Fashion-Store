@@ -78,6 +78,7 @@ public class OrderSummaryPage extends JPanel {
             BorderFactory.createLineBorder(lightGray, 1),
             BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         receiptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        receiptButton.addActionListener(e -> generateReceipt());
         receiptButton.setOpaque(true);
 
         receiptButton.addMouseListener(new MouseAdapter() {
@@ -108,7 +109,11 @@ public class OrderSummaryPage extends JPanel {
         add(orderPanel, BorderLayout.CENTER);
         add(receiptPanel, BorderLayout.SOUTH);
 
-        displayOrderSummary(null, null, null);
+        // Define column names for the table
+        String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
+
+        // Initialize with no orders
+        displayOrderSummary(null, columnNames, customFont);
     }
 
     public void displayOrderSummary(Object[][] selectedData, String[] columnNames, Font tableFont) {
@@ -117,6 +122,9 @@ public class OrderSummaryPage extends JPanel {
                 allOrders.add(row);
             }
         }
+
+        // Clear the orderPanel to avoid duplicate components
+        orderPanel.removeAll();
 
         if (allOrders.isEmpty()) {
             emptyLabel = new JLabel("No orders placed yet.");
@@ -173,5 +181,65 @@ public class OrderSummaryPage extends JPanel {
 
         revalidate();
         repaint();
+    }
+
+    public void generateReceipt() {
+        if (allOrders.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No orders to generate receipt for.", "No orders", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            String timestamp = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String fileName = "StyleCart_Receipt_" + timestamp + ".html";
+
+            FileWriter writer = new FileWriter(fileName);
+            double total = 0.0;
+
+            writer.write("<html><head><style>");
+            writer.write("body { font-family: Arial, sans-serif; margin: 10px; font-size: 12px; width: 300px; text-align: center; }");
+            writer.write("h1 { color: #336699; }");
+            writer.write("p { margin: 2px 0; }");
+            writer.write("table { width: 100%; border-collapse: collapse; }");
+            writer.write("th, td { border: 1px solid #ccc; padding: 5px; text-align: left; white-space: normal; }");
+            writer.write("th { background-color: #f2f2f2; }");
+            writer.write("hr { border: none; border-top: 1px dashed #000; margin: 5px 0; }");
+            writer.write("</style></head><body>");
+
+            writer.write("<h1>StyleCart Fashion Store Receipt</h1>");
+            writer.write("<hr>");
+            writer.write("<p>Date: " + java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("MMMM dd, yyyy - hh:mm a")) + "</p>");
+            writer.write("<table>");
+            writer.write("<tr><th>Product</th><th>Price</th><th>Quantity</th></tr>");
+
+            for (Object[] row : allOrders) {
+                String details = row[1].toString().replaceAll("<[^>]*>", " ").trim();
+                String price = row[2].toString();
+                String qty = row[3].toString();
+                String subtotal = row[4].toString();
+
+                total += Double.parseDouble(subtotal.replace("$", "").replace(",", ""));
+
+                writer.write("<tr>");
+                writer.write("<td>" + details + "</td>"); // Only the product name
+                writer.write("<td>" + price + "</td>");
+                writer.write("<td>" + qty + "</td>");
+                writer.write("</tr>");
+            }
+
+            writer.write("</table>");
+            writer.write("<hr>");
+            writer.write("<h3>Total Amount: $" + String.format("%,.2f", total) + "</h3>");
+            writer.write("<hr>");
+            writer.write("<p>Thank you for shopping at <strong>StyleCart Fashion Store!</strong></p>");
+            writer.write("</body></html>");
+            writer.close();
+
+            JOptionPane.showMessageDialog(this, "You will be redirected to your receipt.", "Generate Receipt", JOptionPane.INFORMATION_MESSAGE);
+            java.awt.Desktop.getDesktop().browse(new File(fileName).toURI());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error generating receipt!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

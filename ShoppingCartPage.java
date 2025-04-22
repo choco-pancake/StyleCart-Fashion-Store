@@ -272,6 +272,11 @@ public class ShoppingCartPage extends JPanel {
     }
 
     private void removeFromCart() {
+        if(cartTable == null || cartTable.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No items to remove.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
         int[] selectedRows = cartTable.getSelectedRows();
 
         if (selectedRows.length == 0) {
@@ -295,67 +300,81 @@ public class ShoppingCartPage extends JPanel {
 
             cartItems.removeAll(toRemove);
             refreshCartItems();
-            JOptionPane.showMessageDialog(this, builder.toString() + " removed from cart.", "Items Removed", JOptionPane.INFORMATION_MESSAGE);
+
+            // Check if the cart is now empty after removal
+            if (cartItems.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Cart is now empty.", "Cart Cleared", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, builder.toString() + " removed from cart.", "Items Removed", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 
     private void confirmOrder() {
+        // Refresh cart data and validate current selection
+        java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
+        
+        if (cartItems.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Your cart is empty.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+    
         int[] selectedRows = cartTable.getSelectedRows();
-
         if (selectedRows.length == 0) {
             JOptionPane.showMessageDialog(this, "Please select at least one item to place.", "No Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
+    
         double subtotal = 0.00;
-        for (int row : selectedRows) {
-            String subtotalString = cartTable.getValueAt(row, 4).toString().replace("$", "").replace(",", "");
-            subtotal += Double.parseDouble(subtotalString);
+        java.util.List<MainContents.CartItem> toRemove = new java.util.ArrayList<>();
+        Object[][] selectedData = new Object[selectedRows.length][5];
+        String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
+    
+        for (int i = 0; i < selectedRows.length; i++) {
+            int row = selectedRows[i];
+            if (row >= 0 && row < cartItems.size()) {
+                MainContents.CartItem item = cartItems.get(row);
+                double itemPrice = Double.parseDouble(item.price.replace("$", "").replace(",", ""));
+                double itemSubtotal = itemPrice * item.quantity;
+                subtotal += itemSubtotal;
+    
+                selectedData[i][0] = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                selectedData[i][1] = String.format("<html>%s<br>Color: %s<br>Size: %s</html>", item.name, item.color, item.size);
+                selectedData[i][2] = item.price;
+                selectedData[i][3] = item.quantity;
+                selectedData[i][4] = "$" + String.format("%,.2f", itemSubtotal);
+    
+                toRemove.add(item);
+            }
         }
-
+    
         double remainingBalance = currentBalance - subtotal;
-        if(remainingBalance < 0) {
+        if (remainingBalance < 0) {
             JOptionPane.showMessageDialog(this, "Not enough balance!", "Insufficient Funds", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+    
         String infoMessage = String.format("""
-                             Current Balance: $%,.2f
-                             Item Subtotal: $%,.2f
-                             After Purchase: $%,.2f
-
-                             Do you want to place this order?
-                             """, currentBalance, subtotal, remainingBalance);
-
+            Current Balance: $%,.2f
+            Item Subtotal: $%,.2f
+            After Purchase: $%,.2f
+    
+            Do you want to place this order?
+            """, currentBalance, subtotal, remainingBalance);
+    
         int choice = JOptionPane.showConfirmDialog(this, infoMessage, "Order Details", JOptionPane.OK_CANCEL_OPTION);
-
-        if(choice == JOptionPane.OK_OPTION) {
-            String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
-            Object[][] selectedData = new Object[selectedRows.length][5];
-
-            java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
-            java.util.List<MainContents.CartItem> toRemove = new java.util.ArrayList<>();
-
-            for (int i = 0; i < selectedRows.length; i++) {
-                int row = selectedRows[i];
-                for (int j = 0; j < 5; j++) {
-                    selectedData[i][j] = cartTable.getValueAt(row, j);
-                }
-
-                if (row >= 0 && row < cartItems.size()) {
-                    toRemove.add(cartItems.get(row));
-                }
-            }
-
+    
+        if (choice == JOptionPane.OK_OPTION) {
             currentBalance = remainingBalance;
             if (homePage != null) {
-                homePage.updateBalance(remainingBalance); // Update balance after purchase
+                homePage.updateBalance(remainingBalance);
             }
-
+    
             orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
             cartItems.removeAll(toRemove);
             refreshCartItems();
             JOptionPane.showMessageDialog(this, "Order placed!", "Order Placed", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+    
 }
