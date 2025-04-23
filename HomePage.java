@@ -20,6 +20,7 @@ public class HomePage extends JFrame {
     private OrderSummaryPage orderSummaryPage;
     private ShoppingCartPage cartPage;
     private RatingsPage ratingsPage;
+    private HelpPage helpPage;
 
     private Color white = Color.WHITE;
     private Color gray = new Color(56, 56, 56);
@@ -153,13 +154,14 @@ public class HomePage extends JFrame {
         contentPanel = new JPanel(cardLayout);
         contentPanel.setBackground(new Color(245, 245, 245));
 
-        orderSummaryPage = new OrderSummaryPage(); // Initialize OrderSummaryPage
-        ratingsPage = new RatingsPage(); // Initialize RatingsPage
+        orderSummaryPage = new OrderSummaryPage(); 
+        ratingsPage = new RatingsPage(); 
+        helpPage = new HelpPage();
 
         cartPage = new ShoppingCartPage(this, () -> {
             menuItemWhite("Home");
             cardLayout.show(contentPanel, "BrandsView");
-        }, orderSummaryPage, ratingsPage, customFont); // Pass RatingsPage and customFont
+        }, orderSummaryPage, ratingsPage, customFont); 
 
         MainContents homeContent = new MainContents();
         homeContent.setOnBrandViewClick(() -> {
@@ -178,9 +180,6 @@ public class HomePage extends JFrame {
         contentPanel.add(cartPage, "CartView");
         contentPanel.add(orderSummaryPage, "OrderSummaryView");
         contentPanel.add(ratingsPage, "RatingsView");
-
-        JPanel helpPage = new JPanel();
-        helpPage.add(new JLabel("Help and Support"));
         contentPanel.add(helpPage, "HelpView");
 
         sidePanel.add(Box.createVerticalGlue());
@@ -305,7 +304,7 @@ public class HomePage extends JFrame {
         }
     }
 
-    private void menuItemWhite(String selectedItem) {
+    public void menuItemWhite(String selectedItem) {
         for (Map.Entry<String, JPanel> entry : menuItemMap.entrySet()) {
             JPanel entryPanel = entry.getValue();
             JLabel entryLabel = (JLabel) entryPanel.getComponent(0);
@@ -327,6 +326,10 @@ public class HomePage extends JFrame {
 
         sidePanel.revalidate();
         sidePanel.repaint();
+    }
+
+    public void showPanel(String name) {
+        cardLayout.show(contentPanel, name);
     }
 
     public static void main(String[] args) {

@@ -22,7 +22,7 @@ public class RatingsPage extends JPanel {
     private Color lightGray = new Color(211, 211, 211);
     private Color white = Color.WHITE;
     private Color mediumBlue = new Color(125, 125, 200);
-    private Color gold = new Color(255, 233, 0);
+    private Color gold = new Color(220, 200, 0);
     private Color black = Color.BLACK;
 
     public RatingsPage() {
@@ -67,7 +67,7 @@ public class RatingsPage extends JPanel {
         buttonPanel.setBackground(lightBlue);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
-        rateButton = new JButton("Rate");
+        rateButton = new JButton("Rate Product");
         rateButton.setBackground(mediumBlue);
         rateButton.setForeground(white);
         rateButton.setFont(customFont.deriveFont(15f));
@@ -221,9 +221,11 @@ public class RatingsPage extends JPanel {
         String productName = productDetails.split("<br>")[0].replace("<html>", "").trim();
 
         JLabel productNameLabel = new JLabel(productName);
-        productNameLabel.setFont(customFont.deriveFont(16f));
-        productNameLabel.setForeground(black);
-        productNameLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        productNameLabel.setFont(customFont.deriveFont(Font.BOLD, 16f));
+        productNameLabel.setForeground(darkBlue);
+        productNameLabel.setBorder(BorderFactory.createCompoundBorder(
+                                   BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray),
+                                   BorderFactory.createEmptyBorder(0, 0, 10, 0)));
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BorderLayout());
@@ -232,9 +234,10 @@ public class RatingsPage extends JPanel {
         JLabel starLabel = new JLabel("Product Rating:");
         starLabel.setFont(customFont.deriveFont(15f));
         starLabel.setForeground(black);
-        starLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+        starLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 5, 0));
 
         JPanel starPanel = new JPanel();
+        starPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray));
         JButton[] stars = new JButton[5];
         final int[] rating = {0};
     
@@ -269,10 +272,10 @@ public class RatingsPage extends JPanel {
         JLabel reviewLabel = new JLabel("Write down your review:");
         reviewLabel.setFont(customFont.deriveFont(15f));
         reviewLabel.setForeground(black);
-        reviewLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+        reviewLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 5, 0));
 
         HintTextField reviewField = new HintTextField("Write your review here...");
-        reviewField.setFont(customFont.deriveFont(15f));
+        reviewField.setFont(new Font(null, Font.PLAIN, 15));
         reviewField.setPreferredSize(new Dimension(300, 30));
             
         rateProductPanel.add(topPanel, BorderLayout.NORTH);
@@ -295,16 +298,21 @@ public class RatingsPage extends JPanel {
 
             for(int i = 0; i < 5; i++) {
                 JLabel star = new JLabel(i < rating[0] ? "★" : "☆");
-                star.setFont(new Font("SansSerif", Font.PLAIN, 15));
+                star.setFont(new Font("SansSerif", Font.PLAIN, 20));
                 star.setForeground(gold);
                 ratingPanel.add(star);
             }
             
             confirmPanel.add(ratingPanel);
 
+            JPanel reviewDisplayPanel = new JPanel();
+            reviewDisplayPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+            reviewDisplayPanel.setOpaque(false);
+
             JLabel reviewDisplayLabel = new JLabel("Review: " + (reviewText.isEmpty() ? "None" : reviewText));
             reviewDisplayLabel.setFont(customFont.deriveFont(15f));
-            confirmPanel.add(reviewDisplayLabel);
+            reviewDisplayPanel.add(reviewDisplayLabel);
+            confirmPanel.add(reviewDisplayPanel);
 
             JOptionPane.showMessageDialog(this, confirmPanel, "Product Rated", JOptionPane.INFORMATION_MESSAGE);
         }

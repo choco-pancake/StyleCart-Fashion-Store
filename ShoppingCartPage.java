@@ -181,7 +181,7 @@ public class ShoppingCartPage extends JPanel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                placeButton.setBackground(mediumBlue);
+                addButton.setBackground(mediumBlue);
             }
         });
 
@@ -377,6 +377,11 @@ public class ShoppingCartPage extends JPanel {
             cartItems.removeAll(toRemove);
             refreshCartItems();
             JOptionPane.showMessageDialog(this, "Order placed!", "Order Placed", JOptionPane.INFORMATION_MESSAGE);
+            
+            if (homePage != null) {
+                homePage.showPanel("OrderSummaryView");
+                homePage.menuItemWhite("Order Summary");
+            }
         }
     }
 }
