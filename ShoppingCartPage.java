@@ -21,7 +21,7 @@ public class ShoppingCartPage extends JPanel {
     private Color lightBlue = new Color(173, 216, 230);
     private Color white = Color.WHITE;
     private Color lightGray = new Color(211, 211, 211);
-    private Color mediumBlue = new Color(124, 145, 190);
+    private Color mediumBlue = new Color(125, 125, 200);
 
     public ShoppingCartPage(HomePage homePage, Runnable onAddToCartRedirect, OrderSummaryPage orderSummaryPage, RatingsPage ratingsPage, Font font) {
         setLayout(new BorderLayout());
@@ -50,7 +50,7 @@ public class ShoppingCartPage extends JPanel {
                              BorderFactory.createEmptyBorder(20, 20, 20, 0)));
 
         titleLabel = new JLabel(" Shopping Cart");
-        titleLabel.setFont(customFont);
+        titleLabel.setFont(customFont.deriveFont(40f));
         titleLabel.setForeground(white);
         titleLabel.setOpaque(false);
 
@@ -277,7 +277,7 @@ public class ShoppingCartPage extends JPanel {
 
     private void removeFromCart() {
         if(cartTable == null || cartTable.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "No items to remove.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "There are no items to remove.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -306,7 +306,7 @@ public class ShoppingCartPage extends JPanel {
             refreshCartItems();
 
             if (cartItems.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Cart is now empty.", "Cart Cleared", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Your cart is now empty.", "Cart Cleared", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, builder.toString() + " removed from cart.", "Items Removed", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -317,7 +317,7 @@ public class ShoppingCartPage extends JPanel {
         java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
         
         if (cartItems.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Your cart is empty.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "There are no items to be placed.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
     

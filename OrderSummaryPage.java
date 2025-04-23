@@ -20,7 +20,7 @@ public class OrderSummaryPage extends JPanel {
     private Color lightBlue = new Color(173, 216, 230);
     private Color white = Color.WHITE;
     private Color lightGray = new Color(211, 211, 211);
-    private Color mediumBlue = new Color(124, 145, 190);
+    private Color mediumBlue = new Color(125, 125, 200);
 
     public OrderSummaryPage() {
         setLayout(new BorderLayout());
@@ -109,10 +109,8 @@ public class OrderSummaryPage extends JPanel {
         add(orderPanel, BorderLayout.CENTER);
         add(receiptPanel, BorderLayout.SOUTH);
 
-        // Define column names for the table
         String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
 
-        // Initialize with no orders
         displayOrderSummary(null, columnNames, customFont);
     }
 
@@ -123,7 +121,6 @@ public class OrderSummaryPage extends JPanel {
             }
         }
 
-        // Clear the orderPanel to avoid duplicate components
         orderPanel.removeAll();
 
         if (allOrders.isEmpty()) {
@@ -167,11 +164,11 @@ public class OrderSummaryPage extends JPanel {
             leftRenderer.setHorizontalAlignment(JLabel.LEFT);
             summaryTable.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
 
-            summaryTable.getColumnModel().getColumn(0).setPreferredWidth(120); // Product
-            summaryTable.getColumnModel().getColumn(1).setPreferredWidth(300); // Details
-            summaryTable.getColumnModel().getColumn(2).setPreferredWidth(100); // Price
-            summaryTable.getColumnModel().getColumn(3).setPreferredWidth(80);  // Quantity
-            summaryTable.getColumnModel().getColumn(4).setPreferredWidth(100); // Subtotal
+            summaryTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+            summaryTable.getColumnModel().getColumn(1).setPreferredWidth(300);
+            summaryTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+            summaryTable.getColumnModel().getColumn(3).setPreferredWidth(80); 
+            summaryTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
             scrollPane = new JScrollPane(summaryTable);
             scrollPane.getViewport().setBackground(lightGray);
@@ -185,7 +182,7 @@ public class OrderSummaryPage extends JPanel {
 
     public void generateReceipt() {
         if (allOrders.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No orders to generate receipt for.", "No orders", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "There are no orders to generate receipt for.", "Cart Empty", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -221,7 +218,7 @@ public class OrderSummaryPage extends JPanel {
                 total += Double.parseDouble(subtotal.replace("$", "").replace(",", ""));
 
                 writer.write("<tr>");
-                writer.write("<td>" + details + "</td>"); // Only the product name
+                writer.write("<td>" + details + "</td>");
                 writer.write("<td>" + price + "</td>");
                 writer.write("<td>" + qty + "</td>");
                 writer.write("</tr>");
@@ -237,6 +234,8 @@ public class OrderSummaryPage extends JPanel {
 
             JOptionPane.showMessageDialog(this, "You will be redirected to your receipt.", "Generate Receipt", JOptionPane.INFORMATION_MESSAGE);
             java.awt.Desktop.getDesktop().browse(new File(fileName).toURI());
+            allOrders.clear();
+            displayOrderSummary(null, new String[] {"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
         } catch (IOException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error generating receipt!", "Error", JOptionPane.ERROR_MESSAGE);

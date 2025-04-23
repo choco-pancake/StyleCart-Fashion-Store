@@ -19,7 +19,7 @@ public class HomePage extends JFrame {
     private Map<String, ImageIcon[]> iconMap = new HashMap<>();
     private OrderSummaryPage orderSummaryPage;
     private ShoppingCartPage cartPage;
-    private RatingsPage ratingsPage; // Add RatingsPage instance
+    private RatingsPage ratingsPage;
 
     private Color white = Color.WHITE;
     private Color gray = new Color(56, 56, 56);
