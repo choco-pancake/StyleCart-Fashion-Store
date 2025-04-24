@@ -1,10 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.io.*;
 
 public class HelpPage extends JPanel {
     private Font customFont;
-    private JPanel helpPanel, faqPanel, questionPanel, q1Panel, q2Panel, q3Panel, q4Panel, q5Panel, q6Panel, tutPanel, guidePanel, contactPanel, teamPanel;
+    private JPanel helpPanel, faqPanel, questionPanel, q1Panel, q2Panel, q3Panel, q4Panel, q5Panel, q6Panel, tutPanel, guidePanel, contactPanel, teamPanel,
+                   photoPanel;
     private JLabel titleLabel, faqLabel, q1question, q1answer, q2question, q2answer, q3question, q3answer, q4question, q4answer, q5question, q5answer, q6question, q6answer,
                    tutLabel, step1, step2, step3, step4, step5, step6, step6_1, step6_2, step7, step8, contactLabel;
     private JTabbedPane tabbedPane;
@@ -15,6 +17,9 @@ public class HelpPage extends JPanel {
     private Color veryLightBlue = new Color(220, 240, 255);
     private Color white = Color.WHITE;
     private Color lightGray = new Color(211, 211, 211);
+    private Color black = Color.black;
+    private Color softBlue = new Color(190, 220, 245);
+    private Color mediumBlue = new Color(175, 205, 230);
 
     public HelpPage() {
         setLayout(new BorderLayout());
@@ -58,6 +63,7 @@ public class HelpPage extends JPanel {
         tabbedPane.setFont(new Font(null, Font.BOLD, 15));
         tabbedPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         tabbedPane.setFocusable(false);
+        tabbedPane.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         UIManager.put("TabbedPane.contentAreaColor", lightBlue);
         UIManager.put("TabbedPane.selected", lightBlue);
@@ -281,11 +287,81 @@ public class HelpPage extends JPanel {
         teamPanel = new JPanel();
         teamPanel.setLayout(new BoxLayout(teamPanel, BoxLayout.Y_AXIS));
         teamPanel.setOpaque(false);
-        teamPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        teamPanel.setBorder(BorderFactory.createEmptyBorder(90, 0, 0, 0));
+
+        String[] name = {"Noerly", "Rhyna", "Eunice", "Marisol", "Janila"};
+        String[] photo = {"images/noerly.png", "images/rhyna.png", "images/eunice.png", "images/marisol.png", "images/janila.png"};
+
+        photoPanel = new JPanel();
+        photoPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        photoPanel.setOpaque(false);
+
+        for(int i = 0; i < name.length; i++) {
+            photoPanel.add(createContactCards(name[i], photo[i]));
+        }
 
         contactPanel.add(contactLabel, BorderLayout.NORTH);
+        teamPanel.add(photoPanel);
         contactPanel.add(teamPanel, BorderLayout.CENTER);
-
         return contactPanel;
+    }
+
+    private JPanel createContactCards(String teamName, String teamIcon) {
+        JPanel productPanel = new JPanel();
+        productPanel.setLayout(new BorderLayout(0, 20));
+        productPanel.setPreferredSize(new Dimension(227, 300));
+        productPanel.setBackground(softBlue);
+        productPanel.setBorder(BorderFactory.createCompoundBorder(
+                               BorderFactory.createLineBorder(lightBlue),
+                               BorderFactory.createEmptyBorder(20, 20, 20,20)));
+
+        JPanel logoPanel = new JPanel();
+        logoPanel.setLayout(new GridBagLayout());
+        logoPanel.setPreferredSize(new Dimension(200, 180));
+        logoPanel.setMaximumSize(new Dimension(200, 180));
+        logoPanel.setOpaque(false);
+
+        ImageIcon icon = new ImageIcon(teamIcon);
+        Image scaledImage = icon.getImage().getScaledInstance(160, 180, Image.SCALE_SMOOTH);
+        JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.CENTER;
+        logoPanel.add(iconLabel, constraints);
+
+        JLabel nameLabel = new JLabel(teamName);
+        nameLabel.setFont(customFont.deriveFont(15f));
+        nameLabel.setForeground(black);
+        nameLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        productPanel.add(logoPanel, BorderLayout.CENTER);
+        productPanel.add(nameLabel, BorderLayout.SOUTH);
+        productPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        productPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                productPanel.setBackground(mediumBlue);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                productPanel.setBackground(mediumBlue.darker());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                productPanel.setBackground(mediumBlue);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                productPanel.setBackground(softBlue);
+            }
+        });
+
+        return productPanel;
     }
 }

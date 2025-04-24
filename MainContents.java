@@ -10,7 +10,9 @@ public class MainContents extends JPanel {
     private Font titleFont, itemFont;
     private JPanel mainPanel, topPanel, categoryPanel, featuredPanel, brandPanel;
     private JPanel categoryTitle, featuredTitle, brandTitle, featuredItemsPanel;
-    private JLabel greetLabel, categoryLabel, featuredLabel, featuredView, brandLabel, brandView;
+    private JLabel greetLabel, pfpLabel, categoryLabel, featuredLabel, featuredView, brandLabel, brandView;
+    private ImageIcon icon;
+    private Image scaledImage;
     private JScrollPane scrollPane;
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
@@ -144,7 +146,75 @@ public class MainContents extends JPanel {
         greetLabel.setFont(titleFont);
         greetLabel.setForeground(white);
 
+        icon = new ImageIcon("images/pfp.png");
+        scaledImage = icon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+        pfpLabel = new JLabel(new ImageIcon(scaledImage));
+        pfpLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        pfpLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JPanel profilePanel = new JPanel();
+                profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
+                profilePanel.setOpaque(false);
+
+                ImageIcon profileIcon = new ImageIcon("images/pfp.png");
+                Image fullProfileIcon = profileIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
+                JLabel imageLabel = new JLabel(new ImageIcon(fullProfileIcon));
+                imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                JLabel nameLabel = new JLabel("anonymous_shopper101");
+                nameLabel.setFont(titleFont.deriveFont(25f));
+                nameLabel.setForeground(black);
+                nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                JLabel emailLabel = new JLabel("@anonymousshopper@gmail.com");
+                emailLabel.setFont(itemFont);
+                emailLabel.setForeground(gray);
+                emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                JPanel phonePanel = new JPanel();
+                phonePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+                phonePanel.setOpaque(false);
+
+                ImageIcon phoneIcon = new ImageIcon("images/phone.png");
+                Image fullPhoneIcon = phoneIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+                JLabel imageLabel2 = new JLabel(new ImageIcon(fullPhoneIcon));
+                JLabel phoneLabel = new JLabel("(123) 456-7890");
+                phoneLabel.setFont(itemFont.deriveFont(15f));
+
+                JPanel homePanel = new JPanel();
+                homePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+                homePanel.setOpaque(false);
+
+                ImageIcon homeIcon = new ImageIcon("images/address.png");
+                Image fullHomeIcon = homeIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+                JLabel imageLabel3 = new JLabel(new ImageIcon(fullHomeIcon));
+                JLabel homeLabel = new JLabel("Boston, Massachusetts");
+                homeLabel.setFont(itemFont.deriveFont(15f));
+
+                profilePanel.add(imageLabel);
+                profilePanel.add(Box.createVerticalStrut(8));
+                profilePanel.add(nameLabel);
+                profilePanel.add(Box.createVerticalStrut(8));
+                profilePanel.add(emailLabel);
+                profilePanel.add(Box.createVerticalStrut(8));
+                phonePanel.add(imageLabel2);
+                phonePanel.add(phoneLabel);
+                profilePanel.add(phonePanel);
+                profilePanel.add(Box.createVerticalStrut(8));
+                homePanel.add(imageLabel3);
+                homePanel.add(homeLabel);
+                profilePanel.add(homePanel);
+                profilePanel.add(Box.createVerticalStrut(8));
+
+                JOptionPane.showMessageDialog(null, profilePanel, "Profile", JOptionPane.PLAIN_MESSAGE);
+            }
+        });
+
         topPanel.add(greetLabel, BorderLayout.WEST);
+        topPanel.add(pfpLabel, BorderLayout.EAST);
         mainPanel.add(topPanel);
     }
 
