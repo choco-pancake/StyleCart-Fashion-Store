@@ -315,6 +315,8 @@ public class RatingsPage extends JPanel {
             confirmPanel.add(reviewDisplayPanel);
 
             JOptionPane.showMessageDialog(this, confirmPanel, "Product Rated", JOptionPane.INFORMATION_MESSAGE);
+            orderData.remove(selectedRow);
+            displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
         }
     }
 }    

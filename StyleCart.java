@@ -24,13 +24,11 @@ public class StyleCart {
 }
 
 class StartPage extends JFrame {
-    private JPanel logoPanel;
-    private JPanel gradientPanel; 
+    private JPanel logoPanel, gradientPanel; 
     private JLabel titleLabel;    
     private JButton nextButton;
     private BufferedImage logo;
-    private Font customFont;
-    private Font customFont2;
+    private Font customFont, customFont2;
     private boolean useCurvedText = true;
 
     private Color darkBlue = new Color(75, 75, 150);

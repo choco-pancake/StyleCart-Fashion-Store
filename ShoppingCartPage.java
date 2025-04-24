@@ -181,7 +181,7 @@ public class ShoppingCartPage extends JPanel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                addButton.setBackground(mediumBlue);
+                placeButton.setBackground(mediumBlue);
             }
         });
 
@@ -248,11 +248,11 @@ public class ShoppingCartPage extends JPanel {
             leftRenderer.setHorizontalAlignment(JLabel.LEFT);
             cartTable.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
 
-            cartTable.getColumnModel().getColumn(0).setPreferredWidth(120); // Product
-            cartTable.getColumnModel().getColumn(1).setPreferredWidth(300); // Details
-            cartTable.getColumnModel().getColumn(2).setPreferredWidth(100); // Price
-            cartTable.getColumnModel().getColumn(3).setPreferredWidth(80);  // Quantity
-            cartTable.getColumnModel().getColumn(4).setPreferredWidth(100); // Subtotal
+            cartTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+            cartTable.getColumnModel().getColumn(1).setPreferredWidth(300);
+            cartTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+            cartTable.getColumnModel().getColumn(3).setPreferredWidth(80); 
+            cartTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
             tablePane = new JScrollPane(cartTable);
             tablePane.getViewport().setBackground(new Color(211, 211, 211));
