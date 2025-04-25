@@ -20,6 +20,7 @@ public class HelpPage extends JPanel {
     private Color black = Color.black;
     private Color softBlue = new Color(190, 220, 245);
     private Color mediumBlue = new Color(175, 205, 230);
+    private Color gray = Color.GRAY;
 
     public HelpPage() {
         setLayout(new BorderLayout());
@@ -322,7 +323,7 @@ public class HelpPage extends JPanel {
         logoPanel.setOpaque(false);
 
         ImageIcon icon = new ImageIcon(teamIcon);
-        Image scaledImage = icon.getImage().getScaledInstance(160, 180, Image.SCALE_SMOOTH);
+        Image scaledImage = icon.getImage().getScaledInstance(180, 180, Image.SCALE_SMOOTH);
         JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
 
         GridBagConstraints constraints = new GridBagConstraints();
@@ -345,17 +346,299 @@ public class HelpPage extends JPanel {
             public void mouseEntered(MouseEvent e) {
                 productPanel.setBackground(mediumBlue);
             }
-
+        
             @Override
             public void mousePressed(MouseEvent e) {
                 productPanel.setBackground(mediumBlue.darker());
             }
-
+        
             @Override
             public void mouseReleased(MouseEvent e) {
                 productPanel.setBackground(mediumBlue);
-            }
+        
+                ImageIcon phoneIcon = new ImageIcon("images/phone.png");
+                Image fullPhoneIcon = phoneIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+                JLabel imageLabel1 = new JLabel(new ImageIcon(fullPhoneIcon));
+                ImageIcon igIcon = new ImageIcon("images/instagram.png");
+                Image fullIgIcon = igIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+                JLabel imageLabel2 = new JLabel(new ImageIcon(fullIgIcon));
+                ImageIcon ghIcon = new ImageIcon("images/github.png");
+                Image fullGhIcon = ghIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+                JLabel imageLabel3 = new JLabel(new ImageIcon(fullGhIcon));
 
+                if (teamName.equals("Noerly")) {
+                    JPanel noerlyPanel = new JPanel();
+                    noerlyPanel.setLayout(new BoxLayout(noerlyPanel, BoxLayout.Y_AXIS));
+                    noerlyPanel.setOpaque(false);
+        
+                    ImageIcon noerlyIcon = new ImageIcon("images/noerlywhite.png");
+                    Image fullNoerlyIcon = noerlyIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                    JLabel noerlyLabel = new JLabel(new ImageIcon(fullNoerlyIcon));
+                    noerlyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+                    JLabel noerlyName = new JLabel("Noerly Yvonne G. Idos");
+                    noerlyName.setFont(customFont.deriveFont(25f));
+                    noerlyName.setForeground(black);
+                    noerlyName.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+                    JLabel noerlyEmail = new JLabel("noerlyyvonnemaeaya@gmail.com"); 
+                    noerlyEmail.setFont(customFont.deriveFont(15f));
+                    noerlyEmail.setForeground(gray);
+                    noerlyEmail.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+                    JPanel phonePanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    phonePanel1.setOpaque(false);
+                    JLabel phoneLabel1 = new JLabel("0976 353 9923");
+                    phoneLabel1.setFont(customFont.deriveFont(15f));
+                    phonePanel1.add(imageLabel1);
+                    phonePanel1.add(phoneLabel1);
+        
+                    JPanel igPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    igPanel1.setOpaque(false);
+                    JLabel igLabel1 = new JLabel("@noerly_cal");
+                    igLabel1.setFont(customFont.deriveFont(15f));
+                    igPanel1.add(imageLabel2);
+                    igPanel1.add(igLabel1);
+        
+                    JPanel ghPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    ghPanel1.setOpaque(false);
+                    JLabel ghLabel1 = new JLabel("@noerly_vis");
+                    ghLabel1.setFont(customFont.deriveFont(15f));
+                    ghPanel1.add(imageLabel3);
+                    ghPanel1.add(ghLabel1);        
+        
+                    noerlyPanel.add(noerlyLabel);
+                    noerlyPanel.add(Box.createVerticalStrut(8));
+                    noerlyPanel.add(noerlyName);
+                    noerlyPanel.add(Box.createVerticalStrut(8));
+                    noerlyPanel.add(noerlyEmail);
+                    noerlyPanel.add(Box.createVerticalStrut(20));
+                    noerlyPanel.add(phonePanel1);
+                    noerlyPanel.add(Box.createVerticalStrut(8));
+                    noerlyPanel.add(igPanel1);
+                    noerlyPanel.add(Box.createVerticalStrut(8));
+                    noerlyPanel.add(ghPanel1);
+        
+                    JOptionPane.showMessageDialog(null, noerlyPanel, "Profile", JOptionPane.PLAIN_MESSAGE);
+                } else if (teamName.equals("Rhyna")) {
+                    JPanel rhynaPanel = new JPanel();
+                    rhynaPanel.setLayout(new BoxLayout(rhynaPanel, BoxLayout.Y_AXIS));
+                    rhynaPanel.setOpaque(false);
+        
+                    ImageIcon rhynaIcon = new ImageIcon("images/rhynawhite.png");
+                    Image fullRhynaIcon = rhynaIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                    JLabel rhynaLabel = new JLabel(new ImageIcon(fullRhynaIcon));
+                    rhynaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+                    JLabel rhynaName = new JLabel("Rhyna Jean D. Bacani");
+                    rhynaName.setFont(customFont.deriveFont(25f));
+                    rhynaName.setForeground(black);
+                    rhynaName.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+                    JLabel rhynaEmail = new JLabel("rhynajeanbacani18@gmail.com"); 
+                    rhynaEmail.setFont(customFont.deriveFont(15f));
+                    rhynaEmail.setForeground(gray);
+                    rhynaEmail.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+                    JPanel phonePanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    phonePanel1.setOpaque(false);
+                    JLabel phoneLabel1 = new JLabel("0991 417 0068");
+                    phoneLabel1.setFont(customFont.deriveFont(15f));
+                    phonePanel1.add(imageLabel1);
+                    phonePanel1.add(phoneLabel1);
+        
+                    JPanel igPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    igPanel1.setOpaque(false);
+                    JLabel igLabel1 = new JLabel("@ajenixb2");
+                    igLabel1.setFont(customFont.deriveFont(15f));
+                    igPanel1.add(imageLabel2);
+                    igPanel1.add(igLabel1);
+        
+                    JPanel ghPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    ghPanel1.setOpaque(false);
+                    JLabel ghLabel1 = new JLabel("@hhitsgurl");
+                    ghLabel1.setFont(customFont.deriveFont(15f));
+                    ghPanel1.add(imageLabel3);
+                    ghPanel1.add(ghLabel1);        
+        
+                    rhynaPanel.add(rhynaLabel);
+                    rhynaPanel.add(Box.createVerticalStrut(8));
+                    rhynaPanel.add(rhynaName);
+                    rhynaPanel.add(Box.createVerticalStrut(8));
+                    rhynaPanel.add(rhynaEmail);
+                    rhynaPanel.add(Box.createVerticalStrut(20));
+                    rhynaPanel.add(phonePanel1);
+                    rhynaPanel.add(Box.createVerticalStrut(8));
+                    rhynaPanel.add(igPanel1);
+                    rhynaPanel.add(Box.createVerticalStrut(8));
+                    rhynaPanel.add(ghPanel1);
+        
+                    JOptionPane.showMessageDialog(null, rhynaPanel, "Profile", JOptionPane.PLAIN_MESSAGE);
+               } else if (teamName.equals("Eunice")) {
+                    JPanel eunicePanel = new JPanel();
+                    eunicePanel.setLayout(new BoxLayout(eunicePanel, BoxLayout.Y_AXIS));
+                    eunicePanel.setOpaque(false);
+    
+                    ImageIcon euniceIcon = new ImageIcon("images/eunicewhite.png");
+                    Image fullEuniceIcon = euniceIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                    JLabel euniceLabel = new JLabel(new ImageIcon(fullEuniceIcon));
+                    euniceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+                    JLabel euniceName = new JLabel("Eunice O. Redonga");
+                    euniceName.setFont(customFont.deriveFont(25f));
+                    euniceName.setForeground(black);
+                    euniceName.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+                    JLabel euniceEmail = new JLabel("szereese@gmail.com"); 
+                    euniceEmail.setFont(customFont.deriveFont(15f));
+                    euniceEmail.setForeground(gray);
+                    euniceEmail.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+                    JPanel phonePanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    phonePanel1.setOpaque(false);
+                    JLabel phoneLabel1 = new JLabel("0945 528 4879");
+                    phoneLabel1.setFont(customFont.deriveFont(15f));
+                    phonePanel1.add(imageLabel1);
+                    phonePanel1.add(phoneLabel1);
+    
+                    JPanel igPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    igPanel1.setOpaque(false);
+                    JLabel igLabel1 = new JLabel("@szerysz");
+                    igLabel1.setFont(customFont.deriveFont(15f));
+                    igPanel1.add(imageLabel2);
+                    igPanel1.add(igLabel1);
+    
+                    JPanel ghPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    ghPanel1.setOpaque(false);
+                    JLabel ghLabel1 = new JLabel("@er_shez");
+                    ghLabel1.setFont(customFont.deriveFont(15f));
+                    ghPanel1.add(imageLabel3);
+                    ghPanel1.add(ghLabel1);        
+    
+                    eunicePanel.add(euniceLabel);
+                    eunicePanel.add(Box.createVerticalStrut(8));
+                    eunicePanel.add(euniceName);
+                    eunicePanel.add(Box.createVerticalStrut(8));
+                    eunicePanel.add(euniceEmail);
+                    eunicePanel.add(Box.createVerticalStrut(20));
+                    eunicePanel.add(phonePanel1);
+                    eunicePanel.add(Box.createVerticalStrut(8));
+                    eunicePanel.add(igPanel1);
+                    eunicePanel.add(Box.createVerticalStrut(8));
+                    eunicePanel.add(ghPanel1);
+    
+                    JOptionPane.showMessageDialog(null, eunicePanel, "Profile", JOptionPane.PLAIN_MESSAGE);
+                } else if (teamName.equals("Marisol")) {
+                    JPanel marisolPanel = new JPanel();
+                    marisolPanel.setLayout(new BoxLayout(marisolPanel, BoxLayout.Y_AXIS));
+                    marisolPanel.setOpaque(false);
+    
+                    ImageIcon marisolIcon = new ImageIcon("images/marisolwhite.png");
+                    Image fullMarisolIcon = marisolIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                    JLabel marisolLabel = new JLabel(new ImageIcon(fullMarisolIcon));
+                    marisolLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+                    JLabel marisolName = new JLabel("Marisol E. Soriano");
+                    marisolName.setFont(customFont.deriveFont(25f));
+                    marisolName.setForeground(black);
+                    marisolName.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+                    JLabel marisolEmail = new JLabel("marisolsoriano095@gmail.com"); 
+                    marisolEmail.setFont(customFont.deriveFont(15f));
+                    marisolEmail.setForeground(gray);
+                    marisolEmail.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+                    JPanel phonePanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    phonePanel1.setOpaque(false);
+                    JLabel phoneLabel1 = new JLabel("0963 515 2770");
+                    phoneLabel1.setFont(customFont.deriveFont(15f));
+                    phonePanel1.add(imageLabel1);
+                    phonePanel1.add(phoneLabel1);
+    
+                    JPanel igPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    igPanel1.setOpaque(false);
+                    JLabel igLabel1 = new JLabel("@meiszyy5");
+                    igLabel1.setFont(customFont.deriveFont(15f));
+                    igPanel1.add(imageLabel2);
+                    igPanel1.add(igLabel1);
+    
+                    JPanel ghPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    ghPanel1.setOpaque(false);
+                    JLabel ghLabel1 = new JLabel("@jile_cius");
+                    ghLabel1.setFont(customFont.deriveFont(15f));
+                    ghPanel1.add(imageLabel3);
+                    ghPanel1.add(ghLabel1);        
+    
+                    marisolPanel.add(marisolLabel);
+                    marisolPanel.add(Box.createVerticalStrut(8));
+                    marisolPanel.add(marisolName);
+                    marisolPanel.add(Box.createVerticalStrut(8));
+                    marisolPanel.add(marisolEmail);
+                    marisolPanel.add(Box.createVerticalStrut(20));
+                    marisolPanel.add(phonePanel1);
+                    marisolPanel.add(Box.createVerticalStrut(8));
+                    marisolPanel.add(igPanel1);
+                    marisolPanel.add(Box.createVerticalStrut(8));
+                    marisolPanel.add(ghPanel1);
+    
+                    JOptionPane.showMessageDialog(null, marisolPanel, "Profile", JOptionPane.PLAIN_MESSAGE);
+                } else if (teamName.equals("Janila")) {
+                    JPanel janilaPanel = new JPanel();
+                    janilaPanel.setLayout(new BoxLayout(janilaPanel, BoxLayout.Y_AXIS));
+                    janilaPanel.setOpaque(false);
+    
+                    ImageIcon janilaIcon = new ImageIcon("images/janilawhite.png");
+                    Image fullJanilaIcon = janilaIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                    JLabel janilaLabel = new JLabel(new ImageIcon(fullJanilaIcon));
+                    janilaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+                    JLabel janilaName = new JLabel("Janila May T. Torio");
+                    janilaName.setFont(customFont.deriveFont(25f));
+                    janilaName.setForeground(black);
+                    janilaName.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+                    JLabel janilaEmail = new JLabel("janilatorio82@gmail.com"); 
+                    janilaEmail.setFont(customFont.deriveFont(15f));
+                    janilaEmail.setForeground(gray);
+                    janilaEmail.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+                    JPanel phonePanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    phonePanel1.setOpaque(false);
+                    JLabel phoneLabel1 = new JLabel("0966 266 8995");
+                    phoneLabel1.setFont(customFont.deriveFont(15f));
+                    phonePanel1.add(imageLabel1);
+                    phonePanel1.add(phoneLabel1);
+    
+                    JPanel igPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    igPanel1.setOpaque(false);
+                    JLabel igLabel1 = new JLabel("@ain't_dous");
+                    igLabel1.setFont(customFont.deriveFont(15f));
+                    igPanel1.add(imageLabel2);
+                    igPanel1.add(igLabel1);
+    
+                    JPanel ghPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                    ghPanel1.setOpaque(false);
+                    JLabel ghLabel1 = new JLabel("@sec_retsidee");
+                    ghLabel1.setFont(customFont.deriveFont(15f));
+                    ghPanel1.add(imageLabel3);
+                    ghPanel1.add(ghLabel1);        
+    
+                    janilaPanel.add(janilaLabel);
+                    janilaPanel.add(Box.createVerticalStrut(8));
+                    janilaPanel.add(janilaName);
+                    janilaPanel.add(Box.createVerticalStrut(8));
+                    janilaPanel.add(janilaEmail);
+                    janilaPanel.add(Box.createVerticalStrut(20));
+                    janilaPanel.add(phonePanel1);
+                    janilaPanel.add(Box.createVerticalStrut(8));
+                    janilaPanel.add(igPanel1);
+                    janilaPanel.add(Box.createVerticalStrut(8));
+                    janilaPanel.add(ghPanel1);
+    
+                    JOptionPane.showMessageDialog(null, janilaPanel, "Profile", JOptionPane.PLAIN_MESSAGE);
+                }
+            };
+        
             @Override
             public void mouseExited(MouseEvent e) {
                 productPanel.setBackground(softBlue);
