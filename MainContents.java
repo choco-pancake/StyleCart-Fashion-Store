@@ -289,17 +289,18 @@ public class MainContents extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("Clicked on category: " + itemName.trim());
-                if (itemName.trim().equals("Active Wear")) {
-                    System.out.println("Creating ActiveWearPanel...");
+                if(itemName.trim().equals("Tops")) {
+                    JPanel topsPanel = new TopsPanel(cardLayout, contentPanel, lightBlue, white, darkerBlue, peach, black, lightGray, darkGray, itemFont);
+                    contentPanel.add(topsPanel, "TopsView");
+                    cardLayout.show(contentPanel, "TopsView");
+                    contentPanel.revalidate();
+                    contentPanel.repaint();
+                } else if (itemName.trim().equals("Active Wear")) {
                     JPanel activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkerBlue, peach, black, lightGray, darkGray, itemFont);
                     contentPanel.add(activeWearPanel, "ActiveWearView");
-                    System.out.println("Switching to ActiveWearView...");
                     cardLayout.show(contentPanel, "ActiveWearView");
                     contentPanel.revalidate();
                     contentPanel.repaint();
-                } else {
-                    JOptionPane.showMessageDialog(null, itemName + " category selected!");
                 }
             }
         });
@@ -378,7 +379,7 @@ public class MainContents extends JPanel {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
         if (!tag.isEmpty()) {
-            JPanel tagPanel = new JPanel();
+            JPanel tagPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
             tagPanel.setBackground(peach);
             tagPanel.setOpaque(true);
             tagPanel.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -386,7 +387,10 @@ public class MainContents extends JPanel {
             JLabel tagLabel = new JLabel(tag);
             tagLabel.setFont(itemFont);
             tagLabel.setForeground(black);
-            tagLabel.setPreferredSize(new Dimension(80, 20));
+            tagPanel.add(tagLabel);
+            // Set tagPanel size based on the label's preferred size
+            Dimension labelSize = tagLabel.getPreferredSize();
+            tagPanel.setPreferredSize(new Dimension(labelSize.width + 10, labelSize.height + 6));
 
             JPanel tagContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
             tagContainer.setOpaque(false);
@@ -537,7 +541,6 @@ public class MainContents extends JPanel {
             buttonWrapper.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
             buttonWrapper.setOpaque(false);
 
-            tagPanel.add(tagLabel);
             tagContainer.add(tagPanel);
             pricePanel.add(priceLabel, BorderLayout.WEST);
             buttonWrapper.add(addButton);

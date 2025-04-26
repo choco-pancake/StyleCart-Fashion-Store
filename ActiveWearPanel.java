@@ -51,6 +51,7 @@ public class ActiveWearPanel extends JPanel {
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(null);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
         setLayout(new BorderLayout());
         setOpaque(false);
@@ -91,7 +92,7 @@ public class ActiveWearPanel extends JPanel {
     
         titleContentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titleContentPanel.setOpaque(false);
-        titleContentPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        titleContentPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
     
         titleContentPanel.add(titleLabel);
         topPanel.add(backPanel);
@@ -187,27 +188,23 @@ public class ActiveWearPanel extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         String[] items = {
-            "Adizero Essentials Running Shorts", "Own the Run Running T-Shirt",
-            "Adizero Running Singlet", "Power 3-Stripes Racerback Running Bra Tank Top",
-            "Run Pocket Medium Support Bra", "All Me Light Support Bra",
-            "Aeroimpact Luxe Training Light-Support Bra", "Believe This Medium-Support Sports Bra",
-            "Powerimpact Training Bra"
+            "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts",
+            "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts"
         };
 
         String[] prices = {
-            "$1,440.00", "$1,620.00", "$3,040.00", "$1,980.00", "$2,970.00",
-            "$1,760.00", "$2,080.00", "$40.00", "$48.00"
+            "₱379", "₱379", "₱379", "₱379", "₱379",
+            "₱379", "₱379", "₱379", "₱379", "₱379"
         };
 
         String[] tags = {
-            "Adidas", "Adidas", "Adidas", "Adidas", "Adidas",
-            "Adidas", "Adidas", "Adidas", "Adidas"
+            "BNY", "BNY", "Bench", "Bench", "Lee",
+            "Lee", "Lee", "Mossimo", "Mossimo", "Mossimo"
         };
 
         String[] icons = {
-            "images/activewear1.png", "images/activewear2.png", "images/activewear3.png",
-            "images/activewear4.png", "images/activewear5.png", "images/activewear6.png",
-            "images/activewear7.png", "images/activewear8.png", "images/activewear9.png"
+            "images/activewear1.png", "images/activewear1.png", "images/activewear1.png", "images/activewear1.png", "images/activewear1.png",
+            "images/activewear1.png", "images/activewear1.png", "images/activewear1.png", "images/activewear1.png", "images/activewear1.png"
         };
 
         for(int i = 0; i < 3; i++) {
@@ -241,7 +238,7 @@ public class ActiveWearPanel extends JPanel {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
         if (!tag.isEmpty()) {
-            JPanel tagPanel = new JPanel();
+            JPanel tagPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
             tagPanel.setBackground(peach);
             tagPanel.setOpaque(true);
             tagPanel.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -249,7 +246,11 @@ public class ActiveWearPanel extends JPanel {
             JLabel tagLabel = new JLabel(tag);
             tagLabel.setFont(itemFont);
             tagLabel.setForeground(black);
-            tagLabel.setPreferredSize(new Dimension(60, 20));
+            // Let the label size naturally based on content
+            tagPanel.add(tagLabel);
+            // Set tagPanel size based on the label's preferred size
+            Dimension labelSize = tagLabel.getPreferredSize();
+            tagPanel.setPreferredSize(new Dimension(labelSize.width + 10, labelSize.height + 6));
 
             JPanel tagContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
             tagContainer.setOpaque(false);
@@ -350,7 +351,6 @@ public class ActiveWearPanel extends JPanel {
             JPanel buttonWrapper = new JPanel();
             buttonWrapper.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 
-            tagPanel.add(tagLabel);
             tagContainer.add(tagPanel);
             pricePanel.add(priceLabel, BorderLayout.WEST);
             buttonWrapper.add(addButton);
