@@ -188,23 +188,27 @@ public class ActiveWearPanel extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         String[] items = {
-            "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts",
-            "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts", "Adizero Essentials Running Shorts"
+            "Adizero Essentials Running Shorts", "Own the Run Running T-Shirt",
+             "Adizero Running Singlet", "Power 3-Stripes Racerback Running Bra Tank Top",
+             "Run Pocket Medium Support Bra", "All Me Light Support Bra",
+             "Aeroimpact Luxe Training Light-Support Bra", "Believe This Medium-Support Sports Bra",
+             "Powerimpact Training Bra"
         };
 
         String[] prices = {
-            "₱379", "₱379", "₱379", "₱379", "₱379",
-            "₱379", "₱379", "₱379", "₱379", "₱379"
+            "$30.00", "$40.00", "$70.00", "$45.00", "$22.00",
+             "$45.00", "$50.00", "$24.00", "$17.00"
         };
 
         String[] tags = {
-            "BNY", "BNY", "Bench", "Bench", "Lee",
-            "Lee", "Lee", "Mossimo", "Mossimo", "Mossimo"
+            "Adidas", "Adidas", "Adidas", "Adidas", "Adidas",
+             "Adidas", "Adidas", "Adidas", "Adidas"
         };
 
         String[] icons = {
-            "images/activewear1.png", "images/activewear1.png", "images/activewear1.png", "images/activewear1.png", "images/activewear1.png",
-            "images/activewear1.png", "images/activewear1.png", "images/activewear1.png", "images/activewear1.png", "images/activewear1.png"
+            "images/activewear1.png", "images/activewear2.png", "images/activewear3.png",
+             "images/activewear4.png", "images/activewear5.png", "images/activewear6.png",
+             "images/activewear7.png", "images/activewear8.png", "images/activewear9.png"
         };
 
         for(int i = 0; i < 3; i++) {
@@ -246,9 +250,7 @@ public class ActiveWearPanel extends JPanel {
             JLabel tagLabel = new JLabel(tag);
             tagLabel.setFont(itemFont);
             tagLabel.setForeground(black);
-            // Let the label size naturally based on content
             tagPanel.add(tagLabel);
-            // Set tagPanel size based on the label's preferred size
             Dimension labelSize = tagLabel.getPreferredSize();
             tagPanel.setPreferredSize(new Dimension(labelSize.width + 10, labelSize.height + 6));
 
@@ -315,7 +317,56 @@ public class ActiveWearPanel extends JPanel {
             addButton.setMaximumSize(new Dimension(40, 30));
 
             addButton.addActionListener(e -> {
-                JOptionPane.showMessageDialog(null, item + " added to cart!");
+                String[] color = {"Red", "Green", "Blue", "Black", "White"};
+                String[] size = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
+
+                JPanel detailsPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+                detailsPanel.setPreferredSize(new Dimension(400, 200));
+                detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+                detailsPanel.setFocusable(false);
+
+                JLabel colorLabel = new JLabel("Select Color:");
+                colorLabel.setFont(itemFont);
+                colorLabel.setFocusable(false);
+
+                JComboBox<String> colorBox = new JComboBox<>(color);
+                Font dropdownFont = itemFont.deriveFont(16f);
+                colorBox.setFont(dropdownFont);
+                colorBox.setFocusable(false);
+
+                JLabel sizeLabel = new JLabel("Select size:");
+                sizeLabel.setFont(itemFont);
+                sizeLabel.setFocusable(false);
+
+                JComboBox<String> sizeBox = new JComboBox<>(size);
+                sizeBox.setFont(dropdownFont);
+                sizeBox.setFocusable(false);
+
+                JLabel quantityLabel = new JLabel("Quantity:");
+                quantityLabel.setFont(itemFont);
+                quantityLabel.setFocusable(false);
+
+                SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
+                JSpinner quantitySpinner = new JSpinner(spinnerModel);
+                quantitySpinner.setFont(dropdownFont);
+                quantitySpinner.setFocusable(false);
+
+                detailsPanel.add(colorLabel);
+                detailsPanel.add(colorBox);
+                detailsPanel.add(sizeLabel);
+                detailsPanel.add(sizeBox);
+                detailsPanel.add(quantityLabel);
+                detailsPanel.add(quantitySpinner);
+
+                int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    String selectedColor = (String) colorBox.getSelectedItem();
+                    String selectedSize = (String) sizeBox.getSelectedItem();
+                    int selectedQuantity = (Integer) quantitySpinner.getValue();
+                    MainContents.getCartItems().add(new MainContents.CartItem(item, price, selectedColor, selectedSize, icon, selectedQuantity));
+                    JOptionPane.showMessageDialog(null, item + " added to cart! \nColor: " + selectedColor + "\nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+                }
             });
 
             addButton.addMouseListener(new MouseAdapter() {
@@ -350,6 +401,7 @@ public class ActiveWearPanel extends JPanel {
 
             JPanel buttonWrapper = new JPanel();
             buttonWrapper.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+            buttonWrapper.setOpaque(false);
 
             tagContainer.add(tagPanel);
             pricePanel.add(priceLabel, BorderLayout.WEST);

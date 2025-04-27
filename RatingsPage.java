@@ -203,8 +203,8 @@ public class RatingsPage extends JPanel {
     }
 
     public void rateProduct() {
-        if (orderTable == null || orderTable.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "There are no items to be rated.", "Cart Empty", JOptionPane.WARNING_MESSAGE);
+        if (orderData.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "There are no items to rate.", "No Items", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -319,4 +319,4 @@ public class RatingsPage extends JPanel {
             displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
         }
     }
-}    
+}

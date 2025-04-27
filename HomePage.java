@@ -160,7 +160,7 @@ public class HomePage extends JFrame {
 
         cartPage = new ShoppingCartPage(this, () -> {
             menuItemWhite("Home");
-            cardLayout.show(contentPanel, "BrandsView");
+            cardLayout.show(contentPanel, "MainView");
         }, orderSummaryPage, ratingsPage, customFont); 
 
         MainContents homeContent = new MainContents();

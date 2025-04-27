@@ -289,13 +289,13 @@ public class MainContents extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(itemName.trim().equals("Tops")) {
+                if/*(itemName.trim().equals("Tops")) {
                     JPanel topsPanel = new TopsPanel(cardLayout, contentPanel, lightBlue, white, darkerBlue, peach, black, lightGray, darkGray, itemFont);
                     contentPanel.add(topsPanel, "TopsView");
                     cardLayout.show(contentPanel, "TopsView");
                     contentPanel.revalidate();
                     contentPanel.repaint();
-                } else if (itemName.trim().equals("Active Wear")) {
+                } else if */(itemName.trim().equals("Active Wear")) {
                     JPanel activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkerBlue, peach, black, lightGray, darkGray, itemFont);
                     contentPanel.add(activeWearPanel, "ActiveWearView");
                     cardLayout.show(contentPanel, "ActiveWearView");
@@ -573,7 +573,7 @@ public class MainContents extends JPanel {
         brandLabel.setFont(new Font(null, Font.BOLD, 20));
         brandLabel.setForeground(white);
         brandLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-
+/*
         brandView = new JLabel("View All >");
         brandView.setFont(new Font(null, Font.PLAIN, 17));
         brandView.setForeground(white);
@@ -604,7 +604,7 @@ public class MainContents extends JPanel {
                 }
             }
         });
-
+*/
         String[] brand = {"Adidas", "COS", "Everlane", "Mango", "Aritzia", "Nike"};
         String[] brandIcon = {"images/adidas.png", "images/cos.png", "images/everlane.png", "images/mango.png", "images/aritzia.png", "images/nike.png"};
         int[][] brandSize = {{130, 90}, {150, 140}, {185, 40}, {150, 100}, {180, 90}, {140, 100}};
@@ -618,7 +618,7 @@ public class MainContents extends JPanel {
         }
 
         brandTitle.add(brandLabel, BorderLayout.WEST);
-        brandTitle.add(brandView, BorderLayout.EAST);
+        //brandTitle.add(brandView, BorderLayout.EAST);
         brandPanel.add(brandTitle, BorderLayout.NORTH);
         brandPanel.add(brandItemsPanel, BorderLayout.CENTER);
         mainPanel.add(brandPanel);
@@ -677,7 +677,6 @@ public class MainContents extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(null, brandName + " selected!");
             }
         });
 

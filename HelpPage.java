@@ -113,10 +113,10 @@ public class HelpPage extends JPanel {
         q2Panel.setLayout(new BoxLayout(q2Panel, BoxLayout.Y_AXIS));
         q2Panel.setOpaque(false);
 
-        q2question = new JLabel("2. Are there only 10 available brands with clothes to choose from?");
+        q2question = new JLabel("2. Are there only 6 available brands with clothes to choose from?");
         q2question.setFont(customFont.deriveFont(Font.BOLD, 15f));
         
-        q2answer = new JLabel("Yes, there are only 10 available brands in our store. We considered these brands carefully as they are in the list of the most affordable online shops.");
+        q2answer = new JLabel("Yes, there are only 6 available brands in our store. We considered these brands carefully as the clothing collections are in trend.");
         q2answer.setFont(customFont.deriveFont(15f));
 
         q3Panel = new JPanel();
@@ -156,7 +156,7 @@ public class HelpPage extends JPanel {
         q6question = new JLabel("6. Can I contact the developers personally?");
         q6question.setFont(customFont.deriveFont(Font.BOLD, 15f));
         
-        q6answer = new JLabel("<html>Yes, you can contact the developers personally. However, we will only be responding to messages related to the application's possible issues, improvements, or suggestions.</html>");
+        q6answer = new JLabel("<html>Yes, you can contact the developers personally. However, we will only be responding to messages related to the application.</html>");
         q6answer.setFont(customFont.deriveFont(15f));
         
         questionPane = new JScrollPane(questionPanel);
@@ -291,14 +291,14 @@ public class HelpPage extends JPanel {
         teamPanel.setBorder(BorderFactory.createEmptyBorder(90, 0, 0, 0));
 
         String[] name = {"Noerly", "Rhyna", "Eunice", "Marisol", "Janila"};
-        String[] photo = {"images/noerly.png", "images/rhyna.png", "images/eunice.png", "images/marisol.png", "images/janila.png"};
+        //String[] photo = {"images/noerly.png", "images/rhyna.png", "images/eunice.png", "images/marisol.png", "images/janila.png"};
 
         photoPanel = new JPanel();
         photoPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         photoPanel.setOpaque(false);
 
         for(int i = 0; i < name.length; i++) {
-            photoPanel.add(createContactCards(name[i], photo[i]));
+            photoPanel.add(createContactCards(name[i]/*, photo[i]*/));
         }
 
         contactPanel.add(contactLabel, BorderLayout.NORTH);
@@ -307,10 +307,10 @@ public class HelpPage extends JPanel {
         return contactPanel;
     }
 
-    private JPanel createContactCards(String teamName, String teamIcon) {
+    private JPanel createContactCards(String teamName/*, String teamIcon*/) {
         JPanel productPanel = new JPanel();
         productPanel.setLayout(new BorderLayout(0, 20));
-        productPanel.setPreferredSize(new Dimension(227, 300));
+        productPanel.setPreferredSize(new Dimension(227, 60));
         productPanel.setBackground(softBlue);
         productPanel.setBorder(BorderFactory.createCompoundBorder(
                                BorderFactory.createLineBorder(lightBlue),
@@ -318,19 +318,19 @@ public class HelpPage extends JPanel {
 
         JPanel logoPanel = new JPanel();
         logoPanel.setLayout(new GridBagLayout());
-        logoPanel.setPreferredSize(new Dimension(200, 180));
-        logoPanel.setMaximumSize(new Dimension(200, 180));
+        logoPanel.setPreferredSize(new Dimension(200, 50));
+        logoPanel.setMaximumSize(new Dimension(200, 50));
         logoPanel.setOpaque(false);
-
+/*
         ImageIcon icon = new ImageIcon(teamIcon);
         Image scaledImage = icon.getImage().getScaledInstance(180, 180, Image.SCALE_SMOOTH);
         JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
-
+*/
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.CENTER;
-        logoPanel.add(iconLabel, constraints);
+        //logoPanel.add(iconLabel, constraints);
 
         JLabel nameLabel = new JLabel(teamName);
         nameLabel.setFont(customFont.deriveFont(15f));
@@ -370,12 +370,12 @@ public class HelpPage extends JPanel {
                     JPanel noerlyPanel = new JPanel();
                     noerlyPanel.setLayout(new BoxLayout(noerlyPanel, BoxLayout.Y_AXIS));
                     noerlyPanel.setOpaque(false);
-        
+        /*
                     ImageIcon noerlyIcon = new ImageIcon("images/noerlywhite.png");
                     Image fullNoerlyIcon = noerlyIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
                     JLabel noerlyLabel = new JLabel(new ImageIcon(fullNoerlyIcon));
                     noerlyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+        */
                     JLabel noerlyName = new JLabel("Noerly Yvonne G. Idos");
                     noerlyName.setFont(customFont.deriveFont(25f));
                     noerlyName.setForeground(black);
@@ -407,7 +407,7 @@ public class HelpPage extends JPanel {
                     ghPanel1.add(imageLabel3);
                     ghPanel1.add(ghLabel1);        
         
-                    noerlyPanel.add(noerlyLabel);
+                    //noerlyPanel.add(noerlyLabel);
                     noerlyPanel.add(Box.createVerticalStrut(8));
                     noerlyPanel.add(noerlyName);
                     noerlyPanel.add(Box.createVerticalStrut(8));
@@ -424,12 +424,12 @@ public class HelpPage extends JPanel {
                     JPanel rhynaPanel = new JPanel();
                     rhynaPanel.setLayout(new BoxLayout(rhynaPanel, BoxLayout.Y_AXIS));
                     rhynaPanel.setOpaque(false);
-        
+        /*
                     ImageIcon rhynaIcon = new ImageIcon("images/rhynawhite.png");
                     Image fullRhynaIcon = rhynaIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
                     JLabel rhynaLabel = new JLabel(new ImageIcon(fullRhynaIcon));
                     rhynaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+        */
                     JLabel rhynaName = new JLabel("Rhyna Jean D. Bacani");
                     rhynaName.setFont(customFont.deriveFont(25f));
                     rhynaName.setForeground(black);
@@ -461,7 +461,7 @@ public class HelpPage extends JPanel {
                     ghPanel1.add(imageLabel3);
                     ghPanel1.add(ghLabel1);        
         
-                    rhynaPanel.add(rhynaLabel);
+                    //rhynaPanel.add(rhynaLabel);
                     rhynaPanel.add(Box.createVerticalStrut(8));
                     rhynaPanel.add(rhynaName);
                     rhynaPanel.add(Box.createVerticalStrut(8));
@@ -478,12 +478,12 @@ public class HelpPage extends JPanel {
                     JPanel eunicePanel = new JPanel();
                     eunicePanel.setLayout(new BoxLayout(eunicePanel, BoxLayout.Y_AXIS));
                     eunicePanel.setOpaque(false);
-    
+    /*
                     ImageIcon euniceIcon = new ImageIcon("images/eunicewhite.png");
                     Image fullEuniceIcon = euniceIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
                     JLabel euniceLabel = new JLabel(new ImageIcon(fullEuniceIcon));
                     euniceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-    
+    */
                     JLabel euniceName = new JLabel("Eunice O. Redonga");
                     euniceName.setFont(customFont.deriveFont(25f));
                     euniceName.setForeground(black);
@@ -515,7 +515,7 @@ public class HelpPage extends JPanel {
                     ghPanel1.add(imageLabel3);
                     ghPanel1.add(ghLabel1);        
     
-                    eunicePanel.add(euniceLabel);
+                    //eunicePanel.add(euniceLabel);
                     eunicePanel.add(Box.createVerticalStrut(8));
                     eunicePanel.add(euniceName);
                     eunicePanel.add(Box.createVerticalStrut(8));
@@ -532,12 +532,12 @@ public class HelpPage extends JPanel {
                     JPanel marisolPanel = new JPanel();
                     marisolPanel.setLayout(new BoxLayout(marisolPanel, BoxLayout.Y_AXIS));
                     marisolPanel.setOpaque(false);
-    
+    /*
                     ImageIcon marisolIcon = new ImageIcon("images/marisolwhite.png");
                     Image fullMarisolIcon = marisolIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
                     JLabel marisolLabel = new JLabel(new ImageIcon(fullMarisolIcon));
                     marisolLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-    
+    */
                     JLabel marisolName = new JLabel("Marisol E. Soriano");
                     marisolName.setFont(customFont.deriveFont(25f));
                     marisolName.setForeground(black);
@@ -569,7 +569,7 @@ public class HelpPage extends JPanel {
                     ghPanel1.add(imageLabel3);
                     ghPanel1.add(ghLabel1);        
     
-                    marisolPanel.add(marisolLabel);
+                    //marisolPanel.add(marisolLabel);
                     marisolPanel.add(Box.createVerticalStrut(8));
                     marisolPanel.add(marisolName);
                     marisolPanel.add(Box.createVerticalStrut(8));
@@ -586,12 +586,12 @@ public class HelpPage extends JPanel {
                     JPanel janilaPanel = new JPanel();
                     janilaPanel.setLayout(new BoxLayout(janilaPanel, BoxLayout.Y_AXIS));
                     janilaPanel.setOpaque(false);
-    
+    /*
                     ImageIcon janilaIcon = new ImageIcon("images/janilawhite.png");
                     Image fullJanilaIcon = janilaIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
                     JLabel janilaLabel = new JLabel(new ImageIcon(fullJanilaIcon));
                     janilaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-    
+    */
                     JLabel janilaName = new JLabel("Janila May T. Torio");
                     janilaName.setFont(customFont.deriveFont(25f));
                     janilaName.setForeground(black);
@@ -623,7 +623,7 @@ public class HelpPage extends JPanel {
                     ghPanel1.add(imageLabel3);
                     ghPanel1.add(ghLabel1);        
     
-                    janilaPanel.add(janilaLabel);
+                    //janilaPanel.add(janilaLabel);
                     janilaPanel.add(Box.createVerticalStrut(8));
                     janilaPanel.add(janilaName);
                     janilaPanel.add(Box.createVerticalStrut(8));
