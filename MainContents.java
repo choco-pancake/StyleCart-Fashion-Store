@@ -10,7 +10,7 @@ public class MainContents extends JPanel {
     private Font titleFont, itemFont;
     private JPanel mainPanel, topPanel, categoryPanel, featuredPanel, brandPanel;
     private JPanel categoryTitle, featuredTitle, brandTitle, featuredItemsPanel;
-    private JLabel greetLabel, pfpLabel, categoryLabel, featuredLabel, featuredView, brandLabel, brandView;
+    private JLabel greetLabel, pfpLabel, categoryLabel, featuredLabel, featuredView, brandLabel/*, brandView*/;
     private ImageIcon icon;
     private Image scaledImage;
     private JScrollPane scrollPane;
@@ -573,38 +573,7 @@ public class MainContents extends JPanel {
         brandLabel.setFont(new Font(null, Font.BOLD, 20));
         brandLabel.setForeground(white);
         brandLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-/*
-        brandView = new JLabel("View All >");
-        brandView.setFont(new Font(null, Font.PLAIN, 17));
-        brandView.setForeground(white);
-        brandView.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
-        brandView.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                brandView.setForeground(darkerBlue);
-                brandView.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                brandView.setForeground(white);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                brandView.setForeground(darkerBlue.darker());
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                brandView.setForeground(darkerBlue);
-                if (onBrandViewClick != null) {
-                    onBrandViewClick.run();
-                }
-            }
-        });
-*/
         String[] brand = {"Adidas", "COS", "Everlane", "Mango", "Aritzia", "Nike"};
         String[] brandIcon = {"images/adidas.png", "images/cos.png", "images/everlane.png", "images/mango.png", "images/aritzia.png", "images/nike.png"};
         int[][] brandSize = {{130, 90}, {150, 140}, {185, 40}, {150, 100}, {180, 90}, {140, 100}};
@@ -618,7 +587,6 @@ public class MainContents extends JPanel {
         }
 
         brandTitle.add(brandLabel, BorderLayout.WEST);
-        //brandTitle.add(brandView, BorderLayout.EAST);
         brandPanel.add(brandTitle, BorderLayout.NORTH);
         brandPanel.add(brandItemsPanel, BorderLayout.CENTER);
         mainPanel.add(brandPanel);

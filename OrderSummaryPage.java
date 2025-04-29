@@ -3,17 +3,18 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderSummaryPage extends JPanel {
     private Font customFont;
-    private JPanel orderPanel, titlePanel, receiptPanel;
+    private JPanel orderPanel, titlePanel, buttonPanel;
     private JLabel titleLabel, emptyLabel;
     private DefaultTableCellRenderer headerRenderer, leftRenderer;
     private JScrollPane scrollPane;
-    private JButton receiptButton;
+    private JButton receiptButton, trackButton;
     private List<Object[]> allOrders;
 
     private Color darkBlue = new Color(75, 75, 150);
@@ -62,11 +63,11 @@ public class OrderSummaryPage extends JPanel {
         titleLabel.setOpaque(false);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 0));
 
-        receiptPanel = new JPanel();
-        receiptPanel.setLayout(new FlowLayout());
-        receiptPanel.setBackground(lightBlue);
-        receiptPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
-        receiptPanel.setOpaque(true);
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        buttonPanel.setBackground(lightBlue);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        buttonPanel.setOpaque(true);
 
         receiptButton = new JButton("Generate Receipt");
         receiptButton.setBackground(mediumBlue);
@@ -103,11 +104,47 @@ public class OrderSummaryPage extends JPanel {
             }
         });
 
-        receiptPanel.add(receiptButton);
+        trackButton = new JButton("Track Order");
+        trackButton.setBackground(mediumBlue);
+        trackButton.setForeground(white);
+        trackButton.setFont(customFont.deriveFont(15f));
+        trackButton.setFocusable(false);
+        trackButton.setContentAreaFilled(false);
+        trackButton.setBorder(BorderFactory.createCompoundBorder(
+                              BorderFactory.createLineBorder(lightGray, 1),
+                              BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+        trackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        trackButton.addActionListener(e -> trackOrder());
+        trackButton.setOpaque(true);
+
+        trackButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                trackButton.setBackground(darkBlue);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                trackButton.setBackground(darkBlue.darker());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                trackButton.setBackground(darkBlue);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                trackButton.setBackground(mediumBlue);
+            }
+        });
+
+        buttonPanel.add(receiptButton);
+        buttonPanel.add(trackButton);
         titlePanel.add(titleLabel);
         add(titlePanel, BorderLayout.NORTH);
         add(orderPanel, BorderLayout.CENTER);
-        add(receiptPanel, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.SOUTH);
 
         String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
 
@@ -240,5 +277,9 @@ public class OrderSummaryPage extends JPanel {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error generating receipt!", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public void trackOrder() {
+
     }
 }

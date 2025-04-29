@@ -306,7 +306,7 @@ public class ShoppingCartPage extends JPanel {
             refreshCartItems();
 
             if (cartItems.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Your cart is now empty.", "Cart Cleared", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "There are no items to remove.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, builder.toString() + " removed from cart.", "Items Removed", JOptionPane.INFORMATION_MESSAGE);
             }
