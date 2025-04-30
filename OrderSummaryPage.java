@@ -1,32 +1,106 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.awt.geom.Ellipse2D;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderSummaryPage extends JPanel {
     private Font customFont;
-    private JPanel orderPanel, titlePanel, buttonPanel;
-    private JLabel titleLabel, emptyLabel;
+    private JPanel orderPanel, titlePanel, buttonPanel, trackPanel, backPanel;
+    private JLabel titleLabel, emptyLabel, trackLabel;
     private DefaultTableCellRenderer headerRenderer, leftRenderer;
     private JScrollPane scrollPane;
-    private JButton receiptButton, trackButton;
+    private JButton receiptButton, trackButton, backButton;
     private List<Object[]> allOrders;
+    private LocalDateTime orderPlacedTime;
+
+    // AnimatedCircle components
+    private int circleY = 600;
+    private final int circleX = 10;
+    private final int circleSize = 20;
+    private final int speed = 1;
+    private final int targetY = 63;
+    private TrackingAreaPanel trackingAreaPanel;
+    private TrackingPanel placePanel, sortPanel, courierPanel, collectPanel, shipPanel, deliverPanel, receivePanel;
+    private JLabel placeLabel, placeSublabel, sortLabel, sortSublabel, courierLabel, courierSublabel;
+    private JLabel collectLabel, collectSublabel, shipLabel, shipSublabel, deliverLabel, deliverSublabel;
+    private JLabel receiveLabel, receiveSublabel;
+    private Timer timer;
 
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
     private Color white = Color.WHITE;
     private Color lightGray = new Color(211, 211, 211);
     private Color mediumBlue = new Color(125, 125, 200);
+    private Color none = new Color(0, 0, 0, 0);
+    private Color darkGray = new Color(180, 180, 180);
+    private Color black = Color.BLACK;
+    private Color darkerGray = Color.GRAY;
+
+    // Custom panel class to draw a green circle on the left side after a delay
+    private class TrackingPanel extends JPanel {
+        private boolean showCircle = false;
+        private boolean timerStarted = false; // Flag to prevent multiple timers
+
+        public TrackingPanel() {
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setOpaque(false);
+            setBorder(BorderFactory.createEmptyBorder(20, 40, 0, 0)); // Increased left padding to make space for the circle
+            setAlignmentX(Component.LEFT_ALIGNMENT);
+        }
+
+        public void setShowCircle(boolean show) {
+            this.showCircle = show;
+            repaint();
+        }
+
+        public boolean isTimerStarted() {
+            return timerStarted;
+        }
+
+        public void setTimerStarted(boolean started) {
+            this.timerStarted = started;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (showCircle) {
+                g.setColor(Color.GREEN);
+                int circleYPos = (getHeight() - circleSize) / 2; // Center the circle vertically within the panel
+                g.fillOval(10, circleYPos, circleSize, circleSize); // Draw circle on the left side
+            }
+        }
+    }
+
+    // Custom panel to handle both the moving circle and the tracking panels
+    private class TrackingAreaPanel extends JPanel {
+        public TrackingAreaPanel() {
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setBackground(lightGray);
+            setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+            setPreferredSize(new Dimension(800, 650));
+            setMaximumSize(new Dimension(800, 650));
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            // Draw the moving circle on top of everything else
+            g.setColor(Color.GREEN);
+            g.fillOval(circleX, circleY, circleSize, circleSize);
+        }
+    }
 
     public OrderSummaryPage() {
         setLayout(new BorderLayout());
 
-        allOrders = new ArrayList<>(); 
+        allOrders = new ArrayList<>();
 
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(40f);
@@ -76,8 +150,8 @@ public class OrderSummaryPage extends JPanel {
         receiptButton.setFocusable(false);
         receiptButton.setContentAreaFilled(false);
         receiptButton.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(lightGray, 1),
-            BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+                BorderFactory.createLineBorder(lightGray, 1),
+                BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         receiptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         receiptButton.addActionListener(e -> generateReceipt());
         receiptButton.setOpaque(true);
@@ -111,8 +185,8 @@ public class OrderSummaryPage extends JPanel {
         trackButton.setFocusable(false);
         trackButton.setContentAreaFilled(false);
         trackButton.setBorder(BorderFactory.createCompoundBorder(
-                              BorderFactory.createLineBorder(lightGray, 1),
-                              BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+                BorderFactory.createLineBorder(lightGray, 1),
+                BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         trackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         trackButton.addActionListener(e -> trackOrder());
         trackButton.setOpaque(true);
@@ -147,12 +221,14 @@ public class OrderSummaryPage extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
 
         String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
-
         displayOrderSummary(null, columnNames, customFont);
     }
 
     public void displayOrderSummary(Object[][] selectedData, String[] columnNames, Font tableFont) {
         if (selectedData != null && selectedData.length > 0) {
+            if (allOrders.isEmpty()) {
+                orderPlacedTime = LocalDateTime.now();
+            }
             for (Object[] row : selectedData) {
                 allOrders.add(row);
             }
@@ -189,9 +265,10 @@ public class OrderSummaryPage extends JPanel {
             summaryTable.setRowHeight(120);
             summaryTable.setFont(tableFont.deriveFont(15f));
             summaryTable.getTableHeader().setFont(tableFont.deriveFont(20f));
+            summaryTable.setRowSelectionAllowed(false);
+            summaryTable.setCellSelectionEnabled(false);
 
-            headerRenderer = (DefaultTableCellRenderer)
-            summaryTable.getTableHeader().getDefaultRenderer();
+            headerRenderer = (DefaultTableCellRenderer) summaryTable.getTableHeader().getDefaultRenderer();
             headerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
             summaryTable.setBackground(lightGray);
@@ -204,7 +281,7 @@ public class OrderSummaryPage extends JPanel {
             summaryTable.getColumnModel().getColumn(0).setPreferredWidth(120);
             summaryTable.getColumnModel().getColumn(1).setPreferredWidth(300);
             summaryTable.getColumnModel().getColumn(2).setPreferredWidth(100);
-            summaryTable.getColumnModel().getColumn(3).setPreferredWidth(80); 
+            summaryTable.getColumnModel().getColumn(3).setPreferredWidth(80);
             summaryTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
             scrollPane = new JScrollPane(summaryTable);
@@ -272,6 +349,7 @@ public class OrderSummaryPage extends JPanel {
             JOptionPane.showMessageDialog(this, "You will be redirected to your receipt.", "Generate Receipt", JOptionPane.INFORMATION_MESSAGE);
             java.awt.Desktop.getDesktop().browse(new File(fileName).toURI());
             allOrders.clear();
+            orderPlacedTime = null;
             displayOrderSummary(null, new String[] {"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -280,6 +358,207 @@ public class OrderSummaryPage extends JPanel {
     }
 
     public void trackOrder() {
+        if (scrollPane != null) {
+            orderPanel.remove(scrollPane);
+        }
 
+        trackPanel = new JPanel();
+        trackPanel.setBackground(lightGray);
+        trackPanel.setLayout(new BoxLayout(trackPanel, BoxLayout.X_AXIS));
+
+        trackingAreaPanel = new TrackingAreaPanel();
+
+        if (orderPlacedTime == null) {
+            orderPlacedTime = LocalDateTime.now();
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm a");
+
+        placePanel = createTrackingPanel("Order placed", orderPlacedTime.format(formatter));
+        sortPanel = createTrackingPanel("At the sorting hub", orderPlacedTime.plusHours(1).format(formatter));
+        courierPanel = createTrackingPanel("On its way to the courier", orderPlacedTime.plusHours(2).format(formatter));
+        collectPanel = createTrackingPanel("Collected by the courier", orderPlacedTime.plusHours(3).format(formatter));
+        shipPanel = createTrackingPanel("Order shipped", orderPlacedTime.plusHours(4).format(formatter));
+        deliverPanel = createTrackingPanel("Delivery will be attempted", orderPlacedTime.plusHours(5).format(formatter));
+        receivePanel = createTrackingPanel("Order received", orderPlacedTime.plusHours(6).format(formatter));
+
+        trackingAreaPanel.add(receivePanel);
+        trackingAreaPanel.add(Box.createVerticalStrut(0));
+        trackingAreaPanel.add(deliverPanel);
+        trackingAreaPanel.add(Box.createVerticalStrut(0));
+        trackingAreaPanel.add(shipPanel);
+        trackingAreaPanel.add(Box.createVerticalStrut(0));
+        trackingAreaPanel.add(collectPanel);
+        trackingAreaPanel.add(Box.createVerticalStrut(0));
+        trackingAreaPanel.add(courierPanel);
+        trackingAreaPanel.add(Box.createVerticalStrut(0));
+        trackingAreaPanel.add(sortPanel);
+        trackingAreaPanel.add(Box.createVerticalStrut(0));
+        trackingAreaPanel.add(placePanel);
+        trackingAreaPanel.add(Box.createVerticalGlue());
+
+        backButton = createBackButton();
+        backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        backPanel.setOpaque(false);
+        backPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+        backPanel.setPreferredSize(new Dimension(200, 650)); // Increased width to accommodate the label
+
+        trackLabel = new JLabel("Order Tracking");
+        trackLabel.setFont(customFont.deriveFont(30f));
+        trackLabel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
+        trackLabel.setForeground(black);
+
+        backPanel.add(backButton);
+        backPanel.add(trackLabel); // Add the label to the right of the backButton
+        trackPanel.add(backPanel);
+        trackPanel.add(Box.createHorizontalGlue());
+        trackPanel.add(trackingAreaPanel);
+
+        orderPanel.add(trackPanel, BorderLayout.CENTER);
+
+        circleY = 600;
+        timer = new Timer(30, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (circleY > targetY) {
+                    circleY -= speed;
+
+                    checkPanelPosition(placePanel, placeLabel, placeSublabel);
+                    checkPanelPosition(sortPanel, sortLabel, sortSublabel);
+                    checkPanelPosition(courierPanel, courierLabel, courierSublabel);
+                    checkPanelPosition(collectPanel, collectLabel, collectSublabel);
+                    checkPanelPosition(shipPanel, shipLabel, shipSublabel);
+                    checkPanelPosition(deliverPanel, deliverLabel, deliverSublabel);
+                    checkPanelPosition(receivePanel, receiveLabel, receiveSublabel);
+
+                    trackingAreaPanel.repaint();
+                } else {
+                    ((Timer) e.getSource()).stop();
+                }
+            }
+        });
+        timer.start();
+
+        orderPanel.revalidate();
+        orderPanel.repaint();
+    }
+
+    private TrackingPanel createTrackingPanel(String labelText, String sublabelText) {
+        TrackingPanel panel = new TrackingPanel();
+
+        JLabel label = new JLabel(labelText);
+        label.setFont(customFont.deriveFont(20f));
+        label.setForeground(lightGray);
+
+        JLabel sublabel = new JLabel(sublabelText);
+        sublabel.setFont(new Font(null, Font.PLAIN, 12));
+        sublabel.setForeground(lightGray);
+
+        panel.add(label);
+        panel.add(Box.createVerticalStrut(5));
+        panel.add(sublabel);
+
+        if (labelText.equals("Order placed")) {
+            placeLabel = label;
+            placeSublabel = sublabel;
+        } else if (labelText.equals("At the sorting hub")) {
+            sortLabel = label;
+            sortSublabel = sublabel;
+        } else if (labelText.equals("On its way to the courier")) {
+            courierLabel = label;
+            courierSublabel = sublabel;
+        } else if (labelText.equals("Collected by the courier")) {
+            collectLabel = label;
+            collectSublabel = sublabel;
+        } else if (labelText.equals("Order shipped")) {
+            shipLabel = label;
+            shipSublabel = sublabel;
+        } else if (labelText.equals("Delivery will be attempted")) {
+            deliverLabel = label;
+            deliverSublabel = sublabel;
+        } else if (labelText.equals("Order received")) {
+            receiveLabel = label;
+            receiveSublabel = sublabel;
+        }
+
+        return panel;
+    }
+
+    private void checkPanelPosition(TrackingPanel panel, JLabel label, JLabel sublabel) {
+        // Use the top of the panel instead of its center
+        Point panelLocation = panel.getLocationOnScreen();
+        Point frameLocation = SwingUtilities.getWindowAncestor(this).getLocationOnScreen();
+        int panelY = panelLocation.y - frameLocation.y;
+
+        // Only start the timer if the moving circle has passed the top of the panel
+        // and the timer hasn't already been started for this panel
+        if (circleY <= panelY && !panel.isTimerStarted()) {
+            panel.setTimerStarted(true); // Mark the timer as started
+            int delay = 4350;
+            new Timer(delay, e -> {
+                label.setForeground(Color.BLACK);
+                sublabel.setForeground(Color.BLACK);
+                panel.setShowCircle(true); // Show the green circle after the delay
+                ((Timer) e.getSource()).stop();
+            }).start();
+        }
+    }
+
+    private JButton createBackButton() {
+        backButton = new JButton("←") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D graphics2d = (Graphics2D) g.create();
+                graphics2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                graphics2d.setColor(none);
+                graphics2d.fillRect(0, 0, getWidth(), getHeight());
+
+                int size = Math.min(getWidth(), getHeight()) - 4;
+                if (getModel().isPressed()) {
+                    graphics2d.setColor(darkerGray.darker());
+                } else if (getModel().isRollover()) {
+                    graphics2d.setColor(darkerGray);
+                } else {
+                    graphics2d.setColor(darkGray);
+                }
+
+                graphics2d.fill(new Ellipse2D.Double(2, 2, size, size));
+                graphics2d.setColor(getModel().isPressed() || getModel().isRollover() ? white : black);
+                graphics2d.setFont(getFont());
+
+                FontMetrics metrics = graphics2d.getFontMetrics();
+                int x = (getWidth() - metrics.stringWidth(getText())) / 2;
+                int y = (getHeight() + metrics.getAscent() - metrics.getDescent()) / 2;
+                graphics2d.drawString(getText(), x, y);
+                graphics2d.dispose();
+            }
+
+            @Override
+            public boolean contains(int x, int y) {
+                int size = Math.min(getWidth(), getHeight());
+                double radius = size / 2.0;
+                double cx = getWidth() / 2.0;
+                double cy = getHeight() / 2.0;
+                return Point.distance(cx, cy, x, y) <= radius;
+            }
+        };
+
+        backButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        backButton.setFocusable(false);
+        backButton.setOpaque(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setBorderPainted(false);
+        backButton.setFont(customFont.deriveFont(30f));
+        backButton.setPreferredSize(new Dimension(40, 40));
+
+        backButton.addActionListener(e -> {
+            if (timer != null && timer.isRunning()) {
+                timer.stop();
+            }
+            orderPanel.remove(trackPanel);
+            displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
+        });
+
+        return backButton;
     }
 }

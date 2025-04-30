@@ -9,42 +9,19 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class AnimatedCircle extends JFrame {
-    private int circleY = 600; // Starting position (bottom)
-    private final int circleX = 200; // Fixed X position
-    private final int circleSize = 20; // Circle diameter
-    private final int speed = 1; // Pixels per frame
-    private final int targetY = 50; // Target position (top)
-    private JPanel leftPanel;
-    private JPanel rightPanel;
-    private JPanel placePanel;
-    private JLabel placeLabel;
-    private JLabel placeSublabel;
-    private JPanel sortPanel;
-    private JLabel sortLabel;
-    private JLabel sortSublabel;
-    private JPanel courierPanel;
-    private JLabel courierLabel;
-    private JLabel courierSublabel;
-    private JPanel collectPanel;
-    private JLabel collectLabel;
-    private JLabel collectSublabel;
-    private JPanel shipPanel;
-    private JLabel shipLabel;
-    private JLabel shipSublabel;
-    private JPanel deliverPanel;
-    private JLabel deliverLabel;
-    private JLabel deliverSublabel;
-    private JPanel receivePanel;
-    private JLabel receiveLabel;
-    private JLabel receiveSublabel;
+    private int circleY = 600;
+    private final int circleX = 50;
+    private final int circleSize = 20;
+    private final int speed = 1;
+    private final int targetY = 30;
+    private JPanel leftPanel, rightPanel, placePanel, sortPanel, courierPanel, collectPanel, shipPanel, deliverPanel, receivePanel;
+    private JLabel placeLabel, placeSublabel, sortLabel, sortSublabel, courierLabel, courierSublabel, collectLabel, collectSublabel, shipLabel, shipSublabel, deliverLabel, deliverSublabel, receiveLabel, receiveSublabel;
     private Timer timer;
     private Font customFont;
     private LocalDate currentDate;
-    private DateTimeFormatter dateFormatter;
-    private String formattedDate;
+    private DateTimeFormatter dateFormatter, timeFormatter;
+    private String formattedDate, formattedTime;
     private LocalTime currentTime;
-    private DateTimeFormatter timeFormatter;
-    private String formattedTime;
     private Color lightGray = Color.LIGHT_GRAY;
 
     public AnimatedCircle() {
@@ -63,12 +40,10 @@ public class AnimatedCircle extends JFrame {
             customFont = new Font("Serif", Font.ITALIC, 40);
         }
         
-        // Create a panel for custom drawing
         leftPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                // Draw the circle
                 g.setColor(Color.GREEN);
                 g.fillOval(circleX, circleY, circleSize, circleSize);
             }
@@ -76,10 +51,9 @@ public class AnimatedCircle extends JFrame {
 
         rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-        rightPanel.setPreferredSize(new Dimension(400, 650));
-        rightPanel.setMaximumSize(new Dimension(400, 650));
+        rightPanel.setPreferredSize(new Dimension(700, 650));
+        rightPanel.setMaximumSize(new Dimension(700, 650));
         
-        // Place Panel: Stack labels tightly
         placePanel = new JPanel();
         placePanel.setLayout(new BoxLayout(placePanel, BoxLayout.Y_AXIS));
         placePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
@@ -101,7 +75,6 @@ public class AnimatedCircle extends JFrame {
         placeSublabel.setFont(new Font(null, Font.PLAIN, 12));
         placeSublabel.setForeground(lightGray);
 
-        // Sort Panel: Stack labels tightly
         sortPanel = new JPanel();
         sortPanel.setLayout(new BoxLayout(sortPanel, BoxLayout.Y_AXIS));
         sortPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 0));
@@ -193,10 +166,9 @@ public class AnimatedCircle extends JFrame {
         receiveSublabel.setForeground(lightGray);
         
         leftPanel.setBackground(Color.WHITE);
-        leftPanel.setPreferredSize(new Dimension(400, 650));
-        leftPanel.setMaximumSize(new Dimension(400, 650));
+        leftPanel.setPreferredSize(new Dimension(100, 650));
+        leftPanel.setMaximumSize(new Dimension(100, 650));
 
-        // Add labels to their respective panels with minimal spacing
         placePanel.add(placeLabel);
         placePanel.add(Box.createVerticalStrut(5));
         placePanel.add(placeSublabel);
@@ -225,7 +197,6 @@ public class AnimatedCircle extends JFrame {
         receivePanel.add(Box.createVerticalStrut(5));
         receivePanel.add(receiveSublabel);
 
-        // Add panels to rightPanel with spacing between them
         rightPanel.add(receivePanel);
         rightPanel.add(Box.createVerticalStrut(0));
         rightPanel.add(deliverPanel);
@@ -244,15 +215,12 @@ public class AnimatedCircle extends JFrame {
         add(leftPanel, BorderLayout.WEST);
         add(rightPanel, BorderLayout.EAST);
 
-        // Set up the timer for animation
         timer = new Timer(30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Move the circle upwards
                 if (circleY > targetY) {
                     circleY -= speed;
 
-                    // Check each panel's position and change text color if circle passes it
                     checkPanelPosition(placePanel, placeLabel, placeSublabel);
                     checkPanelPosition(sortPanel, sortLabel, sortSublabel);
                     checkPanelPosition(courierPanel, courierLabel, courierSublabel);
@@ -263,24 +231,27 @@ public class AnimatedCircle extends JFrame {
 
                     leftPanel.repaint();
                 } else {
-                    ((Timer) e.getSource()).stop(); // Stop the timer when the circle reaches the target
+                    ((Timer) e.getSource()).stop(); 
                 }
             }
         });
-        timer.start(); // Start the animation
+        timer.start(); 
     }
 
     private void checkPanelPosition(JPanel panel, JLabel label, JLabel sublabel) {
-        // Get the panel's position relative to the frame
         Rectangle bounds = panel.getBounds();
         Point panelLocation = panel.getLocationOnScreen();
         Point frameLocation = getLocationOnScreen();
         int panelY = panelLocation.y - frameLocation.y + bounds.height;
 
-        // If the circle's top passes the bottom of the panel, change the text color to black
         if (circleY <= panelY) {
-            label.setForeground(Color.BLACK);
-            sublabel.setForeground(Color.BLACK);
+            int delay = 2000;
+
+            new javax.swing.Timer(delay, e -> {
+                label.setForeground(Color.BLACK);
+                sublabel.setForeground(Color.BLACK);
+                ((javax.swing.Timer) e.getSource()).stop();
+            }).start();
         }
     }
 

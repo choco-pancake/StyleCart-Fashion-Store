@@ -10,7 +10,7 @@ public class MainContents extends JPanel {
     private Font titleFont, itemFont;
     private JPanel mainPanel, topPanel, categoryPanel, featuredPanel, brandPanel;
     private JPanel categoryTitle, featuredTitle, brandTitle, featuredItemsPanel;
-    private JLabel greetLabel, pfpLabel, categoryLabel, featuredLabel, featuredView, brandLabel/*, brandView*/;
+    private JLabel greetLabel, pfpLabel, categoryLabel, featuredLabel, featuredView, brandLabel;
     private ImageIcon icon;
     private Image scaledImage;
     private JScrollPane scrollPane;
@@ -289,13 +289,7 @@ public class MainContents extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if/*(itemName.trim().equals("Tops")) {
-                    JPanel topsPanel = new TopsPanel(cardLayout, contentPanel, lightBlue, white, darkerBlue, peach, black, lightGray, darkGray, itemFont);
-                    contentPanel.add(topsPanel, "TopsView");
-                    cardLayout.show(contentPanel, "TopsView");
-                    contentPanel.revalidate();
-                    contentPanel.repaint();
-                } else if */(itemName.trim().equals("Active Wear")) {
+                if(itemName.trim().equals("Active Wear")) {
                     JPanel activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkerBlue, peach, black, lightGray, darkGray, itemFont);
                     contentPanel.add(activeWearPanel, "ActiveWearView");
                     cardLayout.show(contentPanel, "ActiveWearView");
@@ -388,7 +382,7 @@ public class MainContents extends JPanel {
             tagLabel.setFont(itemFont);
             tagLabel.setForeground(black);
             tagPanel.add(tagLabel);
-            // Set tagPanel size based on the label's preferred size
+
             Dimension labelSize = tagLabel.getPreferredSize();
             tagPanel.setPreferredSize(new Dimension(labelSize.width + 10, labelSize.height + 6));
 

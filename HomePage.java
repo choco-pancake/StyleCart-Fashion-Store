@@ -164,19 +164,13 @@ public class HomePage extends JFrame {
         }, orderSummaryPage, ratingsPage, customFont); 
 
         MainContents homeContent = new MainContents();
-/*        homeContent.setOnBrandViewClick(() -> {
-            cardLayout.show(contentPanel, "BrandsView");
-        });*/
         homeContent.setOnViewCartClick(() -> {
             cartPage.showCart();
             menuItemWhite("Shopping Cart");
             cardLayout.show(contentPanel, "CartView");
         });
+        
         contentPanel.add(homeContent, "MainView");
-/*
-        AvailableBrands brandsPanel = new AvailableBrands(cardLayout, contentPanel);
-        contentPanel.add(brandsPanel, "BrandsView");
-*/
         contentPanel.add(cartPage, "CartView");
         contentPanel.add(orderSummaryPage, "OrderSummaryView");
         contentPanel.add(ratingsPage, "RatingsView");
