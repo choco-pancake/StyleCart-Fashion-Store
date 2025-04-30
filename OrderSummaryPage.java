@@ -19,12 +19,11 @@ public class OrderSummaryPage extends JPanel {
     private List<Object[]> allOrders;
     private LocalDateTime orderPlacedTime;
 
-    // AnimatedCircle components
-    private int circleY = 600;
+    private int circleY = 100;
     private final int circleX = 10;
     private final int circleSize = 20;
     private final int speed = 1;
-    private final int targetY = 63;
+    private final int targetY = 23;
     private TrackingAreaPanel trackingAreaPanel;
     private TrackingPanel placePanel, sortPanel, courierPanel, collectPanel, shipPanel, deliverPanel, receivePanel;
     private JLabel placeLabel, placeSublabel, sortLabel, sortSublabel, courierLabel, courierSublabel;
@@ -42,16 +41,15 @@ public class OrderSummaryPage extends JPanel {
     private Color black = Color.BLACK;
     private Color darkerGray = Color.GRAY;
 
-    // Custom panel class to draw a green circle on the left side after a delay
     private class TrackingPanel extends JPanel {
         private boolean showCircle = false;
-        private boolean timerStarted = false; // Flag to prevent multiple timers
+        private boolean timerStarted = false;
 
         public TrackingPanel() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setOpaque(false);
-            setBorder(BorderFactory.createEmptyBorder(20, 40, 0, 0)); // Increased left padding to make space for the circle
-            setAlignmentX(Component.LEFT_ALIGNMENT);
+            setBorder(BorderFactory.createEmptyBorder(20, 40, 0, 0)); 
+            setAlignmentX(Component.CENTER_ALIGNMENT);
         }
 
         public void setShowCircle(boolean show) {
@@ -72,28 +70,55 @@ public class OrderSummaryPage extends JPanel {
             super.paintComponent(g);
             if (showCircle) {
                 g.setColor(Color.GREEN);
-                int circleYPos = (getHeight() - circleSize) / 2; // Center the circle vertically within the panel
-                g.fillOval(10, circleYPos, circleSize, circleSize); // Draw circle on the left side
+                int circleYPos = (getHeight() - circleSize) / 2; 
+                g.fillOval(10, circleYPos, circleSize, circleSize); 
             }
         }
     }
 
-    // Custom panel to handle both the moving circle and the tracking panels
     private class TrackingAreaPanel extends JPanel {
+        private List<Integer> circleYPositions = new ArrayList<>(); 
+        private int startY = -1; 
+        private int endY = -1;   
+        private int currentEndY = -1; 
+
         public TrackingAreaPanel() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBackground(lightGray);
-            setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
-            setPreferredSize(new Dimension(800, 650));
-            setMaximumSize(new Dimension(800, 650));
+            setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); 
+            setAlignmentX(Component.CENTER_ALIGNMENT); 
+        }
+
+        public void addCircleYPosition(int yPos) {
+            circleYPositions.add(yPos);
+            if (circleYPositions.size() == 1) {
+                startY = yPos; 
+                currentEndY = startY; 
+            }
+            if (circleYPositions.size() == 7) { 
+                endY = yPos; 
+            }
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            // Draw the moving circle on top of everything else
+
             g.setColor(Color.GREEN);
             g.fillOval(circleX, circleY, circleSize, circleSize);
+
+            for (int yPos : circleYPositions) {
+                if (circleY <= yPos) {
+                    currentEndY = yPos; 
+                    break; 
+                }
+            }
+
+            if (startY != -1 && currentEndY != -1) {
+                g.setColor(Color.GREEN);
+                int lineEndY = (currentEndY == startY) ? startY : Math.max(currentEndY, endY); 
+                g.drawLine(circleX + circleSize / 2, startY + circleSize / 2, circleX + circleSize / 2, lineEndY + circleSize / 2);
+            }
         }
     }
 
@@ -363,10 +388,26 @@ public class OrderSummaryPage extends JPanel {
         }
 
         trackPanel = new JPanel();
+        BorderLayout borderLayout = new BorderLayout(0, 0);
+        borderLayout.setVgap(0); // Remove vertical gap between components
+        trackPanel.setLayout(borderLayout);
         trackPanel.setBackground(lightGray);
-        trackPanel.setLayout(new BoxLayout(trackPanel, BoxLayout.X_AXIS));
 
         trackingAreaPanel = new TrackingAreaPanel();
+        trackingAreaPanel.setLayout(new BoxLayout(trackingAreaPanel, BoxLayout.Y_AXIS));
+        trackingAreaPanel.setOpaque(true); // Ensure background is visible
+        trackingAreaPanel.setBackground(lightGray);
+
+        // Wrap trackingAreaPanel in a centering panel
+        JPanel centeringPanel = new JPanel(new GridBagLayout());
+        centeringPanel.setOpaque(false);
+        centeringPanel.add(trackingAreaPanel, new GridBagConstraints());
+
+        JScrollPane scrollPane2 = new JScrollPane(centeringPanel);
+        scrollPane2.setOpaque(false);
+        scrollPane2.getViewport().setOpaque(false);
+        scrollPane2.setBorder(null);
+        scrollPane2.getVerticalScrollBar().setUnitIncrement(16);
 
         if (orderPlacedTime == null) {
             orderPlacedTime = LocalDateTime.now();
@@ -381,6 +422,15 @@ public class OrderSummaryPage extends JPanel {
         shipPanel = createTrackingPanel("Order shipped", orderPlacedTime.plusHours(4).format(formatter));
         deliverPanel = createTrackingPanel("Delivery will be attempted", orderPlacedTime.plusHours(5).format(formatter));
         receivePanel = createTrackingPanel("Order received", orderPlacedTime.plusHours(6).format(formatter));
+
+        // Center each tracking panel within trackingAreaPanel
+        placePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        sortPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        courierPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        collectPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        shipPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        deliverPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        receivePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         trackingAreaPanel.add(receivePanel);
         trackingAreaPanel.add(Box.createVerticalStrut(0));
@@ -398,21 +448,55 @@ public class OrderSummaryPage extends JPanel {
         trackingAreaPanel.add(Box.createVerticalGlue());
 
         backButton = createBackButton();
-        backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        backButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+
+        backPanel = new JPanel();
+        backPanel.setLayout(new BoxLayout(backPanel, BoxLayout.X_AXIS));
         backPanel.setOpaque(false);
-        backPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
-        backPanel.setPreferredSize(new Dimension(200, 650)); // Increased width to accommodate the label
+        backPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        backPanel.setPreferredSize(new Dimension(200, 50));
 
         trackLabel = new JLabel("Order Tracking");
         trackLabel.setFont(customFont.deriveFont(30f));
-        trackLabel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
         trackLabel.setForeground(black);
+        trackLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+
+        backButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+        trackLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
 
         backPanel.add(backButton);
-        backPanel.add(trackLabel); // Add the label to the right of the backButton
-        trackPanel.add(backPanel);
-        trackPanel.add(Box.createHorizontalGlue());
-        trackPanel.add(trackingAreaPanel);
+        backPanel.add(Box.createHorizontalStrut(20)); 
+        backPanel.add(trackLabel);
+        backPanel.add(Box.createHorizontalGlue());
+
+        backPanel = new JPanel() {
+            {
+                setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+                setOpaque(false);
+                setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+                setPreferredSize(new Dimension(200, 80));
+                add(backButton);
+                add(Box.createHorizontalStrut(20));
+                add(trackLabel);
+                add(Box.createHorizontalGlue());
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setColor(black);
+                g2d.setStroke(new BasicStroke(1));
+                int startX = -getX();
+                int startY = backButton.getY() + backButton.getHeight() + 3; 
+                Window window = SwingUtilities.getWindowAncestor(OrderSummaryPage.this);
+                int endX = window.getWidth() - getX();
+                g2d.drawLine(startX, startY, endX, startY);
+            }
+        };
+
+        trackPanel.add(backPanel, BorderLayout.NORTH);
+        trackPanel.add(scrollPane2, BorderLayout.CENTER);
 
         orderPanel.add(trackPanel, BorderLayout.CENTER);
 
@@ -485,20 +569,23 @@ public class OrderSummaryPage extends JPanel {
     }
 
     private void checkPanelPosition(TrackingPanel panel, JLabel label, JLabel sublabel) {
-        // Use the top of the panel instead of its center
         Point panelLocation = panel.getLocationOnScreen();
         Point frameLocation = SwingUtilities.getWindowAncestor(this).getLocationOnScreen();
         int panelY = panelLocation.y - frameLocation.y;
 
-        // Only start the timer if the moving circle has passed the top of the panel
-        // and the timer hasn't already been started for this panel
-        if (circleY <= panelY && !panel.isTimerStarted()) {
-            panel.setTimerStarted(true); // Mark the timer as started
-            int delay = 4350;
+        if (panel == placePanel && circleY < 600 && !panel.isTimerStarted()) {
+            // For placePanel, turn labels black and show the static circle as soon as the moving circle starts moving into the frame
+            panel.setTimerStarted(true);
+            label.setForeground(Color.BLACK);
+            sublabel.setForeground(Color.BLACK);
+            panel.setShowCircle(true);
+        } else if (circleY <= panelY && !panel.isTimerStarted()) {
+            panel.setTimerStarted(true);
+            int delay = 6800;
             new Timer(delay, e -> {
                 label.setForeground(Color.BLACK);
                 sublabel.setForeground(Color.BLACK);
-                panel.setShowCircle(true); // Show the green circle after the delay
+                panel.setShowCircle(true); 
                 ((Timer) e.getSource()).stop();
             }).start();
         }
