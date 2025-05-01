@@ -31,7 +31,7 @@ public class OrderSummaryPage extends JPanel {
     private boolean isTrackingComplete = false;
     private long animationStartTime;
     private long pausedTime;
-    private long[] panelTriggerTimes = new long[7]; // To track when each panel should activate
+    private long[] panelTriggerTimes = new long[7]; 
 
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
@@ -48,7 +48,7 @@ public class OrderSummaryPage extends JPanel {
     private class TrackingPanel extends JPanel {
         private boolean showCircle = false;
         private boolean timerStarted = false;
-        private Color circleColor = green; // Default to green for most panels
+        private Color circleColor = green; 
 
         public TrackingPanel() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -143,7 +143,7 @@ public class OrderSummaryPage extends JPanel {
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         buttonPanel.setBackground(lightBlue);
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         buttonPanel.setOpaque(true);
 
         receiptButton = new JButton("Generate Receipt");
@@ -243,10 +243,9 @@ public class OrderSummaryPage extends JPanel {
 
     public void displayOrderSummary(Object[][] selectedData, String[] columnNames, Font tableFont) {
         if (selectedData != null && selectedData.length > 0) {
-            // Clear existing orders and reset tracking state for the new order
             allOrders.clear();
             orderPlacedTime = LocalDateTime.now();
-            resetTrackingState(); // Reset tracking when a new order is placed
+            resetTrackingState(); 
             for (Object[] row : selectedData) {
                 allOrders.add(row);
             }
@@ -313,14 +312,12 @@ public class OrderSummaryPage extends JPanel {
     }
 
     private void resetTrackingState() {
-        // Reset tracking-related flags and states
         isTrackingInitialized = false;
         isTrackingComplete = false;
         isAnimationPaused = false;
         if (timer != null) {
             timer.stop();
         }
-        // Reset all tracking panels
         if (placePanel != null) {
             placePanel.setTimerStarted(false);
             placePanel.setShowCircle(false);
@@ -365,7 +362,6 @@ public class OrderSummaryPage extends JPanel {
             receiveSublabel.setText("");
             receivePanel.setCircleColor(red);
         }
-        // Clear the track panel
         if (trackPanel != null) {
             orderPanel.remove(trackPanel);
             trackPanel = null;
@@ -426,9 +422,7 @@ public class OrderSummaryPage extends JPanel {
 
             JOptionPane.showMessageDialog(this, "You will be redirected to your receipt.", "Generate Receipt", JOptionPane.INFORMATION_MESSAGE);
             java.awt.Desktop.getDesktop().browse(new File(fileName).toURI());
-            // Do not clear allOrders here to allow tracking of the current order
             orderPlacedTime = null;
-            // Reset tracking state after generating receipt
             resetTrackingState();
             displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
         } catch (IOException ex) {
@@ -439,7 +433,6 @@ public class OrderSummaryPage extends JPanel {
 
     public void trackOrder() {
         if (isTrackingInitialized || isTrackingComplete) {
-            // If tracking is already initialized, just show the panel
             orderPanel.removeAll();
             orderPanel.add(trackPanel, BorderLayout.CENTER);
             orderPanel.revalidate();
@@ -480,7 +473,7 @@ public class OrderSummaryPage extends JPanel {
         shipPanel = createTrackingPanel("Order shipped", orderPlacedTime.plusHours(72).format(formatter));
         deliverPanel = createTrackingPanel("Delivery will be attempted", orderPlacedTime.plusMinutes(4440).format(formatter));
         receivePanel = createTrackingPanel("Order received", "");
-        receivePanel.setCircleColor(red); // Set initial color to red for receivePanel
+        receivePanel.setCircleColor(red); 
 
         placePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         sortPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -560,15 +553,14 @@ public class OrderSummaryPage extends JPanel {
 
         animationStartTime = System.currentTimeMillis();
 
-        // Set staggered delays for each panel (in milliseconds since animation start)
-        long delayBetweenPanels = 2000; // 2 seconds delay between each panel
-        panelTriggerTimes[0] = 0;              // placePanel
-        panelTriggerTimes[1] = 2000;           // sortPanel (2s after placePanel)
-        panelTriggerTimes[2] = 4000;           // courierPanel (2s after sortPanel)
-        panelTriggerTimes[3] = 6000;           // collectPanel (2s after courierPanel)
-        panelTriggerTimes[4] = 8000;           // shipPanel (2s after collectPanel)
-        panelTriggerTimes[5] = 10000;          // deliverPanel (2s after shipPanel)
-        panelTriggerTimes[6] = 12000;          // receivePanel (2s after deliverPanel)
+        long delayBetweenPanels = 2000; 
+        panelTriggerTimes[0] = 0;              
+        panelTriggerTimes[1] = 2000;           
+        panelTriggerTimes[2] = 4000;           
+        panelTriggerTimes[3] = 6000;           
+        panelTriggerTimes[4] = 8000;           
+        panelTriggerTimes[5] = 10000;          
+        panelTriggerTimes[6] = 12000;          
 
         timer = new Timer(30, new ActionListener() {
             @Override
@@ -585,7 +577,6 @@ public class OrderSummaryPage extends JPanel {
                 checkPanelPosition(deliverPanel, deliverLabel, deliverSublabel, 5);
                 checkPanelPosition(receivePanel, receiveLabel, receiveSublabel, 6);
 
-                // Stop the timer after the last panel (receivePanel) is activated
                 if (elapsedTime >= panelTriggerTimes[6]) {
                     ((Timer) e.getSource()).stop();
                     isAnimationPaused = false;
@@ -617,7 +608,7 @@ public class OrderSummaryPage extends JPanel {
                 receiveSublabel.setText(receivedTime);
                 receiveLabel.setForeground(black);
                 receiveSublabel.setForeground(black);
-                receivePanel.setCircleColor(green); // Change to green when "Yes" is selected
+                receivePanel.setCircleColor(green); 
                 isTrackingComplete = true;
 
                 JOptionPane.showMessageDialog(orderPanel,
@@ -625,7 +616,6 @@ public class OrderSummaryPage extends JPanel {
                         "Reception Confirmed",
                         JOptionPane.INFORMATION_MESSAGE);
             } else {
-                // Reset both deliverPanel and receivePanel to allow re-attempt
                 deliverPanel.setTimerStarted(false);
                 deliverPanel.setShowCircle(false);
                 deliverLabel.setForeground(lightGray);
@@ -636,14 +626,12 @@ public class OrderSummaryPage extends JPanel {
                 receiveLabel.setForeground(lightGray);
                 receiveSublabel.setForeground(lightGray);
                 receiveSublabel.setText("");
-                receivePanel.setCircleColor(red); // Ensure it remains red on retry
+                receivePanel.setCircleColor(red); 
 
-                // Adjust the trigger times to re-display deliverPanel and receivePanel with a delay
                 animationStartTime = System.currentTimeMillis();
-                panelTriggerTimes[5] = 2000; // deliverPanel appears after 2 seconds
-                panelTriggerTimes[6] = 4000; // receivePanel appears 2 seconds after deliverPanel
+                panelTriggerTimes[5] = 2000; 
+                panelTriggerTimes[6] = 4000; 
 
-                // Restart the timer to trigger the panels again
                 timer = new Timer(30, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -654,11 +642,10 @@ public class OrderSummaryPage extends JPanel {
                         checkPanelPosition(deliverPanel, deliverLabel, deliverSublabel, 5);
                         checkPanelPosition(receivePanel, receiveLabel, receiveSublabel, 6);
 
-                        // Stop the timer after the last panel (receivePanel) is activated
                         if (elapsedTime >= panelTriggerTimes[6]) {
                             ((Timer) e.getSource()).stop();
                             isAnimationPaused = false;
-                            confirmReception(); // Loop back to show the JOptionPane again
+                            confirmReception(); 
                         }
                     }
                 });

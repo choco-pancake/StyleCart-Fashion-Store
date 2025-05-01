@@ -77,7 +77,7 @@ public class ShoppingCartPage extends JPanel {
 
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         buttonPanel.setBackground(lightBlue);
 
         addButton = new JButton("Add to Cart");
@@ -88,7 +88,7 @@ public class ShoppingCartPage extends JPanel {
         addButton.setContentAreaFilled(false);
         addButton.setBorder(BorderFactory.createCompoundBorder(
                            BorderFactory.createLineBorder(lightGray, 1),
-                           BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                           BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         addButton.addActionListener(e -> addToCart());
         addButton.setOpaque(true);
@@ -123,7 +123,7 @@ public class ShoppingCartPage extends JPanel {
         removeButton.setContentAreaFilled(false);
         removeButton.setBorder(BorderFactory.createCompoundBorder(
                               BorderFactory.createLineBorder(lightGray, 1),
-                              BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                              BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         removeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         removeButton.addActionListener(e -> removeFromCart());
         removeButton.setOpaque(true);
@@ -158,7 +158,7 @@ public class ShoppingCartPage extends JPanel {
         placeButton.setContentAreaFilled(false);
         placeButton.setBorder(BorderFactory.createCompoundBorder(
                                BorderFactory.createLineBorder(lightGray, 1),
-                               BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                               BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         placeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         placeButton.addActionListener(e -> confirmOrder());
         placeButton.setOpaque(true);
