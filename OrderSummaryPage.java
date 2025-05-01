@@ -19,17 +19,19 @@ public class OrderSummaryPage extends JPanel {
     private List<Object[]> allOrders;
     private LocalDateTime orderPlacedTime;
 
-    private int circleY = 100;
-    private final int circleX = 10;
     private final int circleSize = 20;
-    private final int speed = 1;
-    private final int targetY = 23;
     private TrackingAreaPanel trackingAreaPanel;
     private TrackingPanel placePanel, sortPanel, courierPanel, collectPanel, shipPanel, deliverPanel, receivePanel;
     private JLabel placeLabel, placeSublabel, sortLabel, sortSublabel, courierLabel, courierSublabel;
     private JLabel collectLabel, collectSublabel, shipLabel, shipSublabel, deliverLabel, deliverSublabel;
     private JLabel receiveLabel, receiveSublabel;
     private Timer timer;
+    private boolean isAnimationPaused = false;
+    private boolean isTrackingInitialized = false;
+    private boolean isTrackingComplete = false;
+    private long animationStartTime;
+    private long pausedTime;
+    private long[] panelTriggerTimes = new long[7]; // To track when each panel should activate
 
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
@@ -40,10 +42,13 @@ public class OrderSummaryPage extends JPanel {
     private Color darkGray = new Color(180, 180, 180);
     private Color black = Color.BLACK;
     private Color darkerGray = Color.GRAY;
+    private Color green = Color.GREEN;
+    private Color red = Color.RED;
 
     private class TrackingPanel extends JPanel {
         private boolean showCircle = false;
         private boolean timerStarted = false;
+        private Color circleColor = green; // Default to green for most panels
 
         public TrackingPanel() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -54,6 +59,11 @@ public class OrderSummaryPage extends JPanel {
 
         public void setShowCircle(boolean show) {
             this.showCircle = show;
+            repaint();
+        }
+
+        public void setCircleColor(Color color) {
+            this.circleColor = color;
             repaint();
         }
 
@@ -69,7 +79,7 @@ public class OrderSummaryPage extends JPanel {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (showCircle) {
-                g.setColor(Color.GREEN);
+                g.setColor(circleColor);
                 int circleYPos = (getHeight() - circleSize) / 2; 
                 g.fillOval(10, circleYPos, circleSize, circleSize); 
             }
@@ -77,11 +87,6 @@ public class OrderSummaryPage extends JPanel {
     }
 
     private class TrackingAreaPanel extends JPanel {
-        private List<Integer> circleYPositions = new ArrayList<>(); 
-        private int startY = -1; 
-        private int endY = -1;   
-        private int currentEndY = -1; 
-
         public TrackingAreaPanel() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBackground(lightGray);
@@ -89,36 +94,9 @@ public class OrderSummaryPage extends JPanel {
             setAlignmentX(Component.CENTER_ALIGNMENT); 
         }
 
-        public void addCircleYPosition(int yPos) {
-            circleYPositions.add(yPos);
-            if (circleYPositions.size() == 1) {
-                startY = yPos; 
-                currentEndY = startY; 
-            }
-            if (circleYPositions.size() == 7) { 
-                endY = yPos; 
-            }
-        }
-
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-
-            g.setColor(Color.GREEN);
-            g.fillOval(circleX, circleY, circleSize, circleSize);
-
-            for (int yPos : circleYPositions) {
-                if (circleY <= yPos) {
-                    currentEndY = yPos; 
-                    break; 
-                }
-            }
-
-            if (startY != -1 && currentEndY != -1) {
-                g.setColor(Color.GREEN);
-                int lineEndY = (currentEndY == startY) ? startY : Math.max(currentEndY, endY); 
-                g.drawLine(circleX + circleSize / 2, startY + circleSize / 2, circleX + circleSize / 2, lineEndY + circleSize / 2);
-            }
         }
     }
 
@@ -213,7 +191,21 @@ public class OrderSummaryPage extends JPanel {
                 BorderFactory.createLineBorder(lightGray, 1),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         trackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        trackButton.addActionListener(e -> trackOrder());
+        trackButton.addActionListener(e -> {
+            if (isAnimationPaused && isTrackingInitialized) {
+                // Resume animation
+                isAnimationPaused = false;
+                long pausedDuration = System.currentTimeMillis() - pausedTime;
+                animationStartTime += pausedDuration;
+                timer.start();
+                orderPanel.removeAll();
+                orderPanel.add(trackPanel, BorderLayout.CENTER);
+                orderPanel.revalidate();
+                orderPanel.repaint();
+            } else {
+                trackOrder();
+            }
+        });
         trackButton.setOpaque(true);
 
         trackButton.addMouseListener(new MouseAdapter() {
@@ -251,9 +243,10 @@ public class OrderSummaryPage extends JPanel {
 
     public void displayOrderSummary(Object[][] selectedData, String[] columnNames, Font tableFont) {
         if (selectedData != null && selectedData.length > 0) {
-            if (allOrders.isEmpty()) {
-                orderPlacedTime = LocalDateTime.now();
-            }
+            // Clear existing orders and reset tracking state for the new order
+            allOrders.clear();
+            orderPlacedTime = LocalDateTime.now();
+            resetTrackingState(); // Reset tracking when a new order is placed
             for (Object[] row : selectedData) {
                 allOrders.add(row);
             }
@@ -319,6 +312,66 @@ public class OrderSummaryPage extends JPanel {
         repaint();
     }
 
+    private void resetTrackingState() {
+        // Reset tracking-related flags and states
+        isTrackingInitialized = false;
+        isTrackingComplete = false;
+        isAnimationPaused = false;
+        if (timer != null) {
+            timer.stop();
+        }
+        // Reset all tracking panels
+        if (placePanel != null) {
+            placePanel.setTimerStarted(false);
+            placePanel.setShowCircle(false);
+            placeLabel.setForeground(lightGray);
+            placeSublabel.setForeground(lightGray);
+        }
+        if (sortPanel != null) {
+            sortPanel.setTimerStarted(false);
+            sortPanel.setShowCircle(false);
+            sortLabel.setForeground(lightGray);
+            sortSublabel.setForeground(lightGray);
+        }
+        if (courierPanel != null) {
+            courierPanel.setTimerStarted(false);
+            courierPanel.setShowCircle(false);
+            courierLabel.setForeground(lightGray);
+            courierSublabel.setForeground(lightGray);
+        }
+        if (collectPanel != null) {
+            collectPanel.setTimerStarted(false);
+            collectPanel.setShowCircle(false);
+            collectLabel.setForeground(lightGray);
+            collectSublabel.setForeground(lightGray);
+        }
+        if (shipPanel != null) {
+            shipPanel.setTimerStarted(false);
+            shipPanel.setShowCircle(false);
+            shipLabel.setForeground(lightGray);
+            shipSublabel.setForeground(lightGray);
+        }
+        if (deliverPanel != null) {
+            deliverPanel.setTimerStarted(false);
+            deliverPanel.setShowCircle(false);
+            deliverLabel.setForeground(lightGray);
+            deliverSublabel.setForeground(lightGray);
+        }
+        if (receivePanel != null) {
+            receivePanel.setTimerStarted(false);
+            receivePanel.setShowCircle(false);
+            receiveLabel.setForeground(lightGray);
+            receiveSublabel.setForeground(lightGray);
+            receiveSublabel.setText("");
+            receivePanel.setCircleColor(red);
+        }
+        // Clear the track panel
+        if (trackPanel != null) {
+            orderPanel.remove(trackPanel);
+            trackPanel = null;
+        }
+    }
+
     public void generateReceipt() {
         if (allOrders.isEmpty()) {
             JOptionPane.showMessageDialog(this, "There are no orders to generate receipt for.", "Cart Empty", JOptionPane.WARNING_MESSAGE);
@@ -373,9 +426,11 @@ public class OrderSummaryPage extends JPanel {
 
             JOptionPane.showMessageDialog(this, "You will be redirected to your receipt.", "Generate Receipt", JOptionPane.INFORMATION_MESSAGE);
             java.awt.Desktop.getDesktop().browse(new File(fileName).toURI());
-            allOrders.clear();
+            // Do not clear allOrders here to allow tracking of the current order
             orderPlacedTime = null;
-            displayOrderSummary(null, new String[] {"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
+            // Reset tracking state after generating receipt
+            resetTrackingState();
+            displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
         } catch (IOException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error generating receipt!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -383,31 +438,34 @@ public class OrderSummaryPage extends JPanel {
     }
 
     public void trackOrder() {
+        if (isTrackingInitialized || isTrackingComplete) {
+            // If tracking is already initialized, just show the panel
+            orderPanel.removeAll();
+            orderPanel.add(trackPanel, BorderLayout.CENTER);
+            orderPanel.revalidate();
+            orderPanel.repaint();
+            return;
+        }
+
         if (scrollPane != null) {
             orderPanel.remove(scrollPane);
         }
 
         trackPanel = new JPanel();
         BorderLayout borderLayout = new BorderLayout(0, 0);
-        borderLayout.setVgap(0); // Remove vertical gap between components
+        borderLayout.setVgap(0); 
         trackPanel.setLayout(borderLayout);
         trackPanel.setBackground(lightGray);
+        trackPanel.setBorder(BorderFactory.createLineBorder(darkerGray, 1));
 
         trackingAreaPanel = new TrackingAreaPanel();
         trackingAreaPanel.setLayout(new BoxLayout(trackingAreaPanel, BoxLayout.Y_AXIS));
-        trackingAreaPanel.setOpaque(true); // Ensure background is visible
+        trackingAreaPanel.setOpaque(true); 
         trackingAreaPanel.setBackground(lightGray);
 
-        // Wrap trackingAreaPanel in a centering panel
         JPanel centeringPanel = new JPanel(new GridBagLayout());
         centeringPanel.setOpaque(false);
         centeringPanel.add(trackingAreaPanel, new GridBagConstraints());
-
-        JScrollPane scrollPane2 = new JScrollPane(centeringPanel);
-        scrollPane2.setOpaque(false);
-        scrollPane2.getViewport().setOpaque(false);
-        scrollPane2.setBorder(null);
-        scrollPane2.getVerticalScrollBar().setUnitIncrement(16);
 
         if (orderPlacedTime == null) {
             orderPlacedTime = LocalDateTime.now();
@@ -416,14 +474,14 @@ public class OrderSummaryPage extends JPanel {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm a");
 
         placePanel = createTrackingPanel("Order placed", orderPlacedTime.format(formatter));
-        sortPanel = createTrackingPanel("At the sorting hub", orderPlacedTime.plusHours(1).format(formatter));
-        courierPanel = createTrackingPanel("On its way to the courier", orderPlacedTime.plusHours(2).format(formatter));
-        collectPanel = createTrackingPanel("Collected by the courier", orderPlacedTime.plusHours(3).format(formatter));
-        shipPanel = createTrackingPanel("Order shipped", orderPlacedTime.plusHours(4).format(formatter));
-        deliverPanel = createTrackingPanel("Delivery will be attempted", orderPlacedTime.plusHours(5).format(formatter));
-        receivePanel = createTrackingPanel("Order received", orderPlacedTime.plusHours(6).format(formatter));
+        sortPanel = createTrackingPanel("At the sorting hub", orderPlacedTime.plusMinutes(1443).format(formatter));
+        courierPanel = createTrackingPanel("On its way to the courier", orderPlacedTime.plusMinutes(2760).format(formatter));
+        collectPanel = createTrackingPanel("Collected by the courier", orderPlacedTime.plusMinutes(2890).format(formatter));
+        shipPanel = createTrackingPanel("Order shipped", orderPlacedTime.plusHours(72).format(formatter));
+        deliverPanel = createTrackingPanel("Delivery will be attempted", orderPlacedTime.plusMinutes(4440).format(formatter));
+        receivePanel = createTrackingPanel("Order received", "");
+        receivePanel.setCircleColor(red); // Set initial color to red for receivePanel
 
-        // Center each tracking panel within trackingAreaPanel
         placePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         sortPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         courierPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -445,7 +503,7 @@ public class OrderSummaryPage extends JPanel {
         trackingAreaPanel.add(sortPanel);
         trackingAreaPanel.add(Box.createVerticalStrut(0));
         trackingAreaPanel.add(placePanel);
-        trackingAreaPanel.add(Box.createVerticalGlue());
+        trackingAreaPanel.add(Box.createVerticalStrut(50));
 
         backButton = createBackButton();
         backButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
@@ -496,35 +554,117 @@ public class OrderSummaryPage extends JPanel {
         };
 
         trackPanel.add(backPanel, BorderLayout.NORTH);
-        trackPanel.add(scrollPane2, BorderLayout.CENTER);
+        trackPanel.add(centeringPanel, BorderLayout.CENTER);
 
         orderPanel.add(trackPanel, BorderLayout.CENTER);
 
-        circleY = 600;
+        animationStartTime = System.currentTimeMillis();
+
+        // Set staggered delays for each panel (in milliseconds since animation start)
+        long delayBetweenPanels = 2000; // 2 seconds delay between each panel
+        panelTriggerTimes[0] = 0;              // placePanel
+        panelTriggerTimes[1] = 2000;           // sortPanel (2s after placePanel)
+        panelTriggerTimes[2] = 4000;           // courierPanel (2s after sortPanel)
+        panelTriggerTimes[3] = 6000;           // collectPanel (2s after courierPanel)
+        panelTriggerTimes[4] = 8000;           // shipPanel (2s after collectPanel)
+        panelTriggerTimes[5] = 10000;          // deliverPanel (2s after shipPanel)
+        panelTriggerTimes[6] = 12000;          // receivePanel (2s after deliverPanel)
+
         timer = new Timer(30, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (circleY > targetY) {
-                    circleY -= speed;
+                if (isAnimationPaused) return;
 
-                    checkPanelPosition(placePanel, placeLabel, placeSublabel);
-                    checkPanelPosition(sortPanel, sortLabel, sortSublabel);
-                    checkPanelPosition(courierPanel, courierLabel, courierSublabel);
-                    checkPanelPosition(collectPanel, collectLabel, collectSublabel);
-                    checkPanelPosition(shipPanel, shipLabel, shipSublabel);
-                    checkPanelPosition(deliverPanel, deliverLabel, deliverSublabel);
-                    checkPanelPosition(receivePanel, receiveLabel, receiveSublabel);
+                long elapsedTime = System.currentTimeMillis() - animationStartTime;
 
-                    trackingAreaPanel.repaint();
-                } else {
+                checkPanelPosition(placePanel, placeLabel, placeSublabel, 0);
+                checkPanelPosition(sortPanel, sortLabel, sortSublabel, 1);
+                checkPanelPosition(courierPanel, courierLabel, courierSublabel, 2);
+                checkPanelPosition(collectPanel, collectLabel, collectSublabel, 3);
+                checkPanelPosition(shipPanel, shipLabel, shipSublabel, 4);
+                checkPanelPosition(deliverPanel, deliverLabel, deliverSublabel, 5);
+                checkPanelPosition(receivePanel, receiveLabel, receiveSublabel, 6);
+
+                // Stop the timer after the last panel (receivePanel) is activated
+                if (elapsedTime >= panelTriggerTimes[6]) {
                     ((Timer) e.getSource()).stop();
+                    isAnimationPaused = false;
+                    isTrackingInitialized = false;
+                    confirmReception();
                 }
             }
         });
         timer.start();
 
+        isTrackingInitialized = true;
         orderPanel.revalidate();
         orderPanel.repaint();
+    }
+
+    private void confirmReception() {
+        SwingUtilities.invokeLater(() -> {
+            int response = JOptionPane.showConfirmDialog(
+                    orderPanel,
+                    "Did you successfully receive your order?",
+                    "Order Confirmation",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (response == JOptionPane.YES_OPTION) {
+                String receivedTime = orderPlacedTime.plusMinutes(5747).format(DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm a"));
+
+                receiveSublabel.setText(receivedTime);
+                receiveLabel.setForeground(black);
+                receiveSublabel.setForeground(black);
+                receivePanel.setCircleColor(green); // Change to green when "Yes" is selected
+                isTrackingComplete = true;
+
+                JOptionPane.showMessageDialog(orderPanel,
+                        "Order received!",
+                        "Reception Confirmed",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                // Reset both deliverPanel and receivePanel to allow re-attempt
+                deliverPanel.setTimerStarted(false);
+                deliverPanel.setShowCircle(false);
+                deliverLabel.setForeground(lightGray);
+                deliverSublabel.setForeground(lightGray);
+
+                receivePanel.setTimerStarted(false);
+                receivePanel.setShowCircle(false);
+                receiveLabel.setForeground(lightGray);
+                receiveSublabel.setForeground(lightGray);
+                receiveSublabel.setText("");
+                receivePanel.setCircleColor(red); // Ensure it remains red on retry
+
+                // Adjust the trigger times to re-display deliverPanel and receivePanel with a delay
+                animationStartTime = System.currentTimeMillis();
+                panelTriggerTimes[5] = 2000; // deliverPanel appears after 2 seconds
+                panelTriggerTimes[6] = 4000; // receivePanel appears 2 seconds after deliverPanel
+
+                // Restart the timer to trigger the panels again
+                timer = new Timer(30, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (isAnimationPaused) return;
+
+                        long elapsedTime = System.currentTimeMillis() - animationStartTime;
+
+                        checkPanelPosition(deliverPanel, deliverLabel, deliverSublabel, 5);
+                        checkPanelPosition(receivePanel, receiveLabel, receiveSublabel, 6);
+
+                        // Stop the timer after the last panel (receivePanel) is activated
+                        if (elapsedTime >= panelTriggerTimes[6]) {
+                            ((Timer) e.getSource()).stop();
+                            isAnimationPaused = false;
+                            confirmReception(); // Loop back to show the JOptionPane again
+                        }
+                    }
+                });
+                timer.start();
+            }
+        });
     }
 
     private TrackingPanel createTrackingPanel(String labelText, String sublabelText) {
@@ -568,26 +708,16 @@ public class OrderSummaryPage extends JPanel {
         return panel;
     }
 
-    private void checkPanelPosition(TrackingPanel panel, JLabel label, JLabel sublabel) {
-        Point panelLocation = panel.getLocationOnScreen();
-        Point frameLocation = SwingUtilities.getWindowAncestor(this).getLocationOnScreen();
-        int panelY = panelLocation.y - frameLocation.y;
+    private void checkPanelPosition(TrackingPanel panel, JLabel label, JLabel sublabel, int panelIndex) {
+        if (isAnimationPaused) return;
 
-        if (panel == placePanel && circleY < 600 && !panel.isTimerStarted()) {
-            // For placePanel, turn labels black and show the static circle as soon as the moving circle starts moving into the frame
+        long elapsedTime = System.currentTimeMillis() - animationStartTime;
+
+        if (!panel.isTimerStarted() && elapsedTime >= panelTriggerTimes[panelIndex]) {
             panel.setTimerStarted(true);
             label.setForeground(Color.BLACK);
             sublabel.setForeground(Color.BLACK);
             panel.setShowCircle(true);
-        } else if (circleY <= panelY && !panel.isTimerStarted()) {
-            panel.setTimerStarted(true);
-            int delay = 6800;
-            new Timer(delay, e -> {
-                label.setForeground(Color.BLACK);
-                sublabel.setForeground(Color.BLACK);
-                panel.setShowCircle(true); 
-                ((Timer) e.getSource()).stop();
-            }).start();
         }
     }
 
@@ -614,8 +744,10 @@ public class OrderSummaryPage extends JPanel {
                 graphics2d.setFont(getFont());
 
                 FontMetrics metrics = graphics2d.getFontMetrics();
-                int x = (getWidth() - metrics.stringWidth(getText())) / 2;
-                int y = (getHeight() + metrics.getAscent() - metrics.getDescent()) / 2;
+                int stringWidth = metrics.stringWidth(getText());
+                int stringHeight = metrics.getAscent() - metrics.getDescent();
+                int x = (getWidth() - stringWidth) / 2 - 1;
+                int y = (getHeight() - stringHeight) / 2 + 15;
                 graphics2d.drawString(getText(), x, y);
                 graphics2d.dispose();
             }
@@ -641,6 +773,8 @@ public class OrderSummaryPage extends JPanel {
         backButton.addActionListener(e -> {
             if (timer != null && timer.isRunning()) {
                 timer.stop();
+                isAnimationPaused = true;
+                pausedTime = System.currentTimeMillis();
             }
             orderPanel.remove(trackPanel);
             displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);

@@ -164,9 +164,9 @@ public class RatingsPage extends JPanel {
             orderTable.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
 
             orderTable.getColumnModel().getColumn(0).setPreferredWidth(120); 
-            orderTable.getColumnModel().getColumn(1).setPreferredWidth(200); 
+            orderTable.getColumnModel().getColumn(1).setPreferredWidth(300);
             orderTable.getColumnModel().getColumn(2).setPreferredWidth(100); 
-            orderTable.getColumnModel().getColumn(3).setPreferredWidth(100); 
+            orderTable.getColumnModel().getColumn(3).setPreferredWidth(80);
             orderTable.getColumnModel().getColumn(4).setPreferredWidth(100); 
 
             tableScrollPane = new JScrollPane(orderTable);
