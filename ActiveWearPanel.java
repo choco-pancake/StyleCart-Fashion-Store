@@ -1,7 +1,5 @@
 import javax.swing.*;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
@@ -76,7 +74,7 @@ public class ActiveWearPanel extends JPanel {
         backPanel.setOpaque(false);
         backPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
         backPanel.add(backButton);
-    
+    /*
         ImageIcon icon = null;
         try {
             icon = new ImageIcon("images/activeweartop.png"); 
@@ -85,7 +83,7 @@ public class ActiveWearPanel extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         } 
-    
+    */
         titleLabel = new JLabel("Active Wear");
         titleLabel.setFont(titleFont.deriveFont(40f));
         titleLabel.setForeground(white);
@@ -188,27 +186,23 @@ public class ActiveWearPanel extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         String[] items = {
-            "Adizero Essentials Running Shorts", "Own the Run Running T-Shirt",
-             "Adizero Running Singlet", "Power 3-Stripes Racerback Running Bra Tank Top",
-             "Run Pocket Medium Support Bra", "All Me Light Support Bra",
-             "Aeroimpact Luxe Training Light-Support Bra", "Believe This Medium-Support Sports Bra",
-             "Powerimpact Training Bra"
+            "Adizero Essentials Running Shorts", "Own the Run Running T-Shirt", "Adizero Running Singlet", "Power 3-Stripes Racerback Running Bra Tank Top", "Run Pocket Medium Support Bra",
+            "All Me Light Support Bra", "Aeroimpact Luxe Training Light-Support Bra", "Believe This Medium-Support Sports Bra", "Powerimpact Training Bra"
         };
 
         String[] prices = {
             "$30.00", "$40.00", "$70.00", "$45.00", "$22.00",
-             "$45.00", "$50.00", "$24.00", "$17.00"
+            "$45.00", "$50.00", "$24.00", "$17.00"
         };
 
         String[] tags = {
             "Adidas", "Adidas", "Adidas", "Adidas", "Adidas",
-             "Adidas", "Adidas", "Adidas", "Adidas"
+            "Adidas", "Adidas", "Adidas", "Adidas"
         };
 
         String[] icons = {
-            "images/activewear1.png", "images/activewear2.png", "images/activewear3.png",
-             "images/activewear4.png", "images/activewear5.png", "images/activewear6.png",
-             "images/activewear7.png", "images/activewear8.png", "images/activewear9.png"
+            "images/activewear1.png", "images/activewear2.png", "images/activewear3.png", "images/activewear4.png", "images/activewear5.png",
+            "images/activewear6.png", "images/activewear7.png", "images/activewear8.png", "images/activewear9.png"
         };
 
         for(int i = 0; i < 3; i++) {

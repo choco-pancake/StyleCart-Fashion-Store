@@ -26,6 +26,7 @@ public class MainContents extends JPanel {
     private Color black = Color.BLACK;
     private Color lightGray = new Color(211, 211, 211);
     private Color darkGray = new Color(169, 169, 169);
+    private Color none = new Color(0, 0, 0, 0); // Transparent color for BNY
     private CardLayout cardLayout;
     private JPanel contentPanel;
     private static List<CartItem> cartItems = new ArrayList<>();
@@ -138,8 +139,8 @@ public class MainContents extends JPanel {
         topPanel = new JPanel(new BorderLayout());
         topPanel.setOpaque(false);
         topPanel.setBorder(BorderFactory.createCompoundBorder(
-                           BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray),
-                           BorderFactory.createEmptyBorder(20, 20, 20, 20)));
+                BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)));
         topPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
 
         greetLabel = new JLabel(" Welcome to StyleCart!");
@@ -181,7 +182,7 @@ public class MainContents extends JPanel {
                 ImageIcon phoneIcon = new ImageIcon("images/phone.png");
                 Image fullPhoneIcon = phoneIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                 JLabel imageLabel2 = new JLabel(new ImageIcon(fullPhoneIcon));
-                JLabel phoneLabel = new JLabel("(123) 456-7890");
+                JLabel phoneLabel = new JLabel("+63 9 135-7924");
                 phoneLabel.setFont(itemFont.deriveFont(15f));
 
                 JPanel homePanel = new JPanel();
@@ -191,7 +192,7 @@ public class MainContents extends JPanel {
                 ImageIcon homeIcon = new ImageIcon("images/address.png");
                 Image fullHomeIcon = homeIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                 JLabel imageLabel3 = new JLabel(new ImageIcon(fullHomeIcon));
-                JLabel homeLabel = new JLabel("Boston, Massachusetts");
+                JLabel homeLabel = new JLabel("Velenzuela City, ManilacharacterCountLimit Philippines");
                 homeLabel.setFont(itemFont.deriveFont(15f));
 
                 profilePanel.add(imageLabel);
@@ -289,7 +290,7 @@ public class MainContents extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(itemName.trim().equals("Active Wear")) {
+                if (itemName.trim().equals("Active Wear")) {
                     JPanel activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkerBlue, peach, black, lightGray, darkGray, itemFont);
                     contentPanel.add(activeWearPanel, "ActiveWearView");
                     cardLayout.show(contentPanel, "ActiveWearView");
@@ -333,7 +334,7 @@ public class MainContents extends JPanel {
             }
 
             @Override
-              public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 featuredView.setForeground(darkerBlue.darker());
             }
 
@@ -568,9 +569,9 @@ public class MainContents extends JPanel {
         brandLabel.setForeground(white);
         brandLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
-        String[] brand = {"Adidas", "COS", "Everlane", "Mango", "Aritzia", "Nike"};
-        String[] brandIcon = {"images/adidas.png", "images/cos.png", "images/everlane.png", "images/mango.png", "images/aritzia.png", "images/nike.png"};
-        int[][] brandSize = {{130, 90}, {150, 140}, {185, 40}, {150, 100}, {180, 90}, {140, 100}};
+        String[] brand = {"BNY", "Bench", "Lee", "Memo", "Mossimo", "Penshoppe"};
+        String[] brandIcon = {"images/bny.png", "images/bench.png", "images/lee.png", "images/memo.jpg", "images/mossimo.png", "images/penshoppe.png"};
+        int[][] brandSize = {{140, 70}, {150, 40}, {105, 90}, {110, 100}, {170, 80}, {160, 30}};
 
         JPanel brandItemsPanel = new JPanel();
         brandItemsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -639,6 +640,24 @@ public class MainContents extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (brandName.equals("BNY")) {
+                    boolean bnyExists = false;
+
+                    for (Component comp : contentPanel.getComponents()) {
+                        if (comp instanceof BNY) {
+                            bnyExists = true;
+                            break;
+                        }
+                    }
+
+                    if (!bnyExists) {
+                        BNY bnyPanel = new BNY(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont);
+                        contentPanel.add(bnyPanel, "BNY");
+                    }
+                    cardLayout.show(contentPanel, "BNY");
+                    contentPanel.revalidate();
+                    contentPanel.repaint();
+                }
             }
         });
 

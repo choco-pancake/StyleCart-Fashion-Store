@@ -22,15 +22,13 @@ public class OrderSummaryPage extends JPanel {
     private final int circleSize = 20;
     private TrackingAreaPanel trackingAreaPanel;
     private TrackingPanel placePanel, sortPanel, courierPanel, collectPanel, shipPanel, deliverPanel, receivePanel;
-    private JLabel placeLabel, placeSublabel, sortLabel, sortSublabel, courierLabel, courierSublabel;
-    private JLabel collectLabel, collectSublabel, shipLabel, shipSublabel, deliverLabel, deliverSublabel;
-    private JLabel receiveLabel, receiveSublabel;
+    private JLabel placeLabel, placeSublabel, sortLabel, sortSublabel, courierLabel, courierSublabel, collectLabel, collectSublabel, shipLabel,
+                   shipSublabel, deliverLabel, deliverSublabel, receiveLabel, receiveSublabel;
     private Timer timer;
     private boolean isAnimationPaused = false;
     private boolean isTrackingInitialized = false;
     private boolean isTrackingComplete = false;
-    private long animationStartTime;
-    private long pausedTime;
+    private long animationStartTime, pausedTime;
     private long[] panelTriggerTimes = new long[7]; 
 
     private Color darkBlue = new Color(75, 75, 150);
@@ -193,7 +191,6 @@ public class OrderSummaryPage extends JPanel {
         trackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         trackButton.addActionListener(e -> {
             if (isAnimationPaused && isTrackingInitialized) {
-                // Resume animation
                 isAnimationPaused = false;
                 long pausedDuration = System.currentTimeMillis() - pausedTime;
                 animationStartTime += pausedDuration;
@@ -553,7 +550,7 @@ public class OrderSummaryPage extends JPanel {
 
         animationStartTime = System.currentTimeMillis();
 
-        long delayBetweenPanels = 2000; 
+        //long delayBetweenPanels = 2000; 
         panelTriggerTimes[0] = 0;              
         panelTriggerTimes[1] = 2000;           
         panelTriggerTimes[2] = 4000;           
