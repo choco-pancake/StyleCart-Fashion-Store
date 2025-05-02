@@ -141,7 +141,7 @@ public class ShoppingCartPage extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                removeButton.setBackground(mediumBlue);
+                removeButton.setBackground(darkBlue);
             }
 
             @Override
@@ -215,7 +215,7 @@ public class ShoppingCartPage extends JPanel {
                 MainContents.CartItem item = currentItems.get(i);
                 ImageIcon itemIcon = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
                 data[i][0] = itemIcon;
-                data[i][1] = String.format("<html>%s<br>Color: %s<br>Size: %s</html>", item.name, item.color, item.size);
+                data[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
                 data[i][2] = item.price;
                 data[i][3] = item.quantity;
                 double price = Double.parseDouble(item.price.replace("$", "").replace(",", ""));
@@ -341,7 +341,7 @@ public class ShoppingCartPage extends JPanel {
                 subtotal += itemSubtotal;
     
                 selectedData[i][0] = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                selectedData[i][1] = String.format("<html>%s<br>Color: %s<br>Size: %s</html>", item.name, item.color, item.size);
+                selectedData[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
                 selectedData[i][2] = item.price;
                 selectedData[i][3] = item.quantity;
                 selectedData[i][4] = "$" + String.format("%,.2f", itemSubtotal);

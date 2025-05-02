@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.text.*;
 
 public class MainContents extends JPanel {
-    private Font titleFont, itemFont;
+    private Font titleFont, itemFont, dropdownFont;
     private JPanel mainPanel, topPanel, categoryPanel, featuredPanel, brandPanel;
     private JPanel categoryTitle, featuredTitle, brandTitle, featuredItemsPanel;
     private JLabel greetLabel, pfpLabel, categoryLabel, featuredLabel, featuredView, brandLabel;
@@ -26,7 +26,7 @@ public class MainContents extends JPanel {
     private Color black = Color.BLACK;
     private Color lightGray = new Color(211, 211, 211);
     private Color darkGray = new Color(169, 169, 169);
-    private Color none = new Color(0, 0, 0, 0); // Transparent color for BNY
+    private Color none = new Color(0, 0, 0, 0);
     private CardLayout cardLayout;
     private JPanel contentPanel;
     private static List<CartItem> cartItems = new ArrayList<>();
@@ -40,15 +40,13 @@ public class MainContents extends JPanel {
     public static class CartItem {
         String name;
         String price;
-        String color;
         String size;
         String iconPath;
         int quantity;
 
-        public CartItem(String name, String price, String color, String size, String iconPath, int quantity) {
+        public CartItem(String name, String price, String size, String iconPath, int quantity) {
             this.name = name;
             this.price = price;
-            this.color = color;
             this.size = size;
             this.iconPath = iconPath;
             this.quantity = quantity;
@@ -69,10 +67,12 @@ public class MainContents extends JPanel {
             GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
             environment.registerFont(titleFont);
             itemFont = titleFont.deriveFont(16f);
+            dropdownFont = itemFont.deriveFont(16f);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             titleFont = new Font("Serif", Font.ITALIC, 40);
             itemFont = titleFont.deriveFont(16f);
+            dropdownFont = itemFont.deriveFont(16f);
         }
 
         mainPanel = new JPanel() {
@@ -192,7 +192,7 @@ public class MainContents extends JPanel {
                 ImageIcon homeIcon = new ImageIcon("images/address.png");
                 Image fullHomeIcon = homeIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                 JLabel imageLabel3 = new JLabel(new ImageIcon(fullHomeIcon));
-                JLabel homeLabel = new JLabel("Velenzuela City, ManilacharacterCountLimit Philippines");
+                JLabel homeLabel = new JLabel("Valenzuela City, Metro Manila, Philippines");
                 homeLabel.setFont(itemFont.deriveFont(15f));
 
                 profilePanel.add(imageLabel);
@@ -291,7 +291,7 @@ public class MainContents extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (itemName.trim().equals("Active Wear")) {
-                    JPanel activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkerBlue, peach, black, lightGray, darkGray, itemFont);
+                    JPanel activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
                     contentPanel.add(activeWearPanel, "ActiveWearView");
                     cardLayout.show(contentPanel, "ActiveWearView");
                     contentPanel.revalidate();
@@ -373,6 +373,135 @@ public class MainContents extends JPanel {
                 BorderFactory.createLineBorder(borderGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
+        JPanel itemDetailsPanel = new JPanel();
+        itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
+        itemDetailsPanel.setOpaque(false);
+
+        ImageIcon itemIcon = new ImageIcon(icon);
+        Image scaledImage = itemIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
+        JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
+        iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JTextPane namePane = new JTextPane();
+        namePane.setText(item);
+        namePane.setOpaque(false);
+        namePane.setForeground(black);
+        namePane.setFocusable(false);
+        namePane.setHighlighter(null);
+        namePane.setAlignmentX(Component.CENTER_ALIGNMENT);
+        namePane.setFont(itemFont);
+        namePane.setPreferredSize(new Dimension(200, 90));
+        namePane.setMaximumSize(new Dimension(200, 90));
+
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        namePane.setParagraphAttributes(center, true);
+
+        StyledDocument doc = namePane.getStyledDocument();
+        SimpleAttributeSet attrs = new SimpleAttributeSet();
+        StyleConstants.setFontFamily(attrs, itemFont.getFamily());
+        StyleConstants.setFontSize(attrs, itemFont.getSize());
+        StyleConstants.setBold(attrs, itemFont.isBold());
+        StyleConstants.setAlignment(attrs, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), attrs, false);
+
+        JPanel pricePanel = new JPanel();
+        pricePanel.setLayout(new BorderLayout());
+        pricePanel.setOpaque(false);
+
+        JLabel priceLabel = new JLabel(price);
+        priceLabel.setFont(itemFont);
+        priceLabel.setForeground(black);
+        priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
+
+        JButton addButton = new JButton("🛒");
+        addButton.setForeground(black);
+        addButton.setBackground(lightGray);
+        addButton.setOpaque(true);
+        addButton.setBorderPainted(false);
+        addButton.setFont(new Font(null, Font.PLAIN, 15));
+        addButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        addButton.setFocusable(false);
+        addButton.setPreferredSize(new Dimension(40, 30));
+        addButton.setMaximumSize(new Dimension(40, 30));
+
+        addButton.addActionListener(e -> {
+            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
+
+            JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+            detailsPanel.setPreferredSize(new Dimension(400, 200));
+            detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+            detailsPanel.setFocusable(false);
+
+            JLabel sizeLabel = new JLabel("Select Size:");
+            sizeLabel.setFont(itemFont);
+            sizeLabel.setFocusable(false);
+
+            JComboBox<String> sizeBox = new JComboBox<>(sizes);
+            sizeBox.setFont(dropdownFont);
+            sizeBox.setFocusable(false);
+
+            JLabel quantityLabel = new JLabel("Quantity:");
+            quantityLabel.setFont(itemFont);
+            quantityLabel.setFocusable(false);
+
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
+            JSpinner quantitySpinner = new JSpinner(spinnerModel);
+            quantitySpinner.setFont(dropdownFont);
+            quantitySpinner.setFocusable(false);
+
+            detailsPanel.add(sizeLabel);
+            detailsPanel.add(sizeBox);
+            detailsPanel.add(quantityLabel);
+            detailsPanel.add(quantitySpinner);
+
+            int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (result == JOptionPane.OK_OPTION) {
+                String selectedSize = (String) sizeBox.getSelectedItem();
+                int selectedQuantity = (Integer) quantitySpinner.getValue();
+                cartItems.add(new CartItem(item, price, selectedSize, icon, selectedQuantity));
+                JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+            }
+        });
+
+        addButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                addButton.setBackground(darkGray);
+                addButton.setOpaque(true);
+                addButton.setBorderPainted(false);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                addButton.setBackground(darkGray.darker());
+                addButton.setOpaque(true);
+                addButton.setBorderPainted(false);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                addButton.setBackground(darkGray);
+                addButton.setOpaque(true);
+                addButton.setBorderPainted(false);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                addButton.setBackground(lightGray);
+                addButton.setOpaque(true);
+                addButton.setBorderPainted(false);
+            }
+        });
+
+        JPanel buttonWrapper = new JPanel();
+        buttonWrapper.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        buttonWrapper.setOpaque(false);
+
         if (!tag.isEmpty()) {
             JPanel tagPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
             tagPanel.setBackground(peach);
@@ -389,168 +518,23 @@ public class MainContents extends JPanel {
 
             JPanel tagContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
             tagContainer.setOpaque(false);
-
-            JPanel itemDetailsPanel = new JPanel();
-            itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
-            itemDetailsPanel.setOpaque(false);
-
-            ImageIcon itemIcon = new ImageIcon(icon);
-            Image scaledImage = itemIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-
-            JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
-            iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-            JTextPane namePane = new JTextPane();
-            namePane.setText(item);
-            namePane.setOpaque(false);
-            namePane.setForeground(black);
-            namePane.setFocusable(false);
-            namePane.setHighlighter(null);
-            namePane.setAlignmentX(Component.CENTER_ALIGNMENT);
-            namePane.setFont(itemFont);
-            namePane.setPreferredSize(new Dimension(200, 90));
-            namePane.setMaximumSize(new Dimension(200, 90));
-
-            SimpleAttributeSet center = new SimpleAttributeSet();
-            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-            namePane.setParagraphAttributes(center, true);
-
-            StyledDocument doc = namePane.getStyledDocument();
-            SimpleAttributeSet attrs = new SimpleAttributeSet();
-            StyleConstants.setFontFamily(attrs, itemFont.getFamily());
-            StyleConstants.setFontSize(attrs, itemFont.getSize());
-            StyleConstants.setBold(attrs, itemFont.isBold());
-            StyleConstants.setAlignment(attrs, StyleConstants.ALIGN_CENTER);
-            doc.setParagraphAttributes(0, doc.getLength(), attrs, false);
-
-            JPanel nameWrapper = new JPanel();
-            nameWrapper.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-            nameWrapper.setOpaque(false);
-            nameWrapper.setPreferredSize(new Dimension(200, 80));
-
-            JPanel pricePanel = new JPanel();
-            pricePanel.setLayout(new BorderLayout());
-            pricePanel.setOpaque(false);
-
-            JLabel priceLabel = new JLabel(price);
-            priceLabel.setFont(itemFont);
-            priceLabel.setForeground(black);
-            priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-            JButton addButton = new JButton("🛒");
-            addButton.setForeground(black);
-            addButton.setBackground(lightGray);
-            addButton.setOpaque(true);
-            addButton.setBorderPainted(false);
-            addButton.setFont(new Font(null, Font.PLAIN, 15));
-            addButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-            addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            addButton.setFocusable(false);
-            addButton.setPreferredSize(new Dimension(40, 30));
-            addButton.setMaximumSize(new Dimension(40, 30));
-
-            addButton.addActionListener(e -> {
-                String[] color = {"Red", "Green", "Blue", "Black", "White"};
-                String[] size = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
-
-                JPanel detailsPanel = new JPanel(new GridLayout(3, 2, 10, 10));
-                detailsPanel.setPreferredSize(new Dimension(400, 200));
-                detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-                detailsPanel.setFocusable(false);
-
-                JLabel colorLabel = new JLabel("Select Color:");
-                colorLabel.setFont(itemFont);
-                colorLabel.setFocusable(false);
-
-                JComboBox<String> colorBox = new JComboBox<>(color);
-                Font dropdownFont = itemFont.deriveFont(16f);
-                colorBox.setFont(dropdownFont);
-                colorBox.setFocusable(false);
-
-                JLabel sizeLabel = new JLabel("Select size:");
-                sizeLabel.setFont(itemFont);
-                sizeLabel.setFocusable(false);
-
-                JComboBox<String> sizeBox = new JComboBox<>(size);
-                sizeBox.setFont(dropdownFont);
-                sizeBox.setFocusable(false);
-
-                JLabel quantityLabel = new JLabel("Quantity:");
-                quantityLabel.setFont(itemFont);
-                quantityLabel.setFocusable(false);
-
-                SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
-                JSpinner quantitySpinner = new JSpinner(spinnerModel);
-                quantitySpinner.setFont(dropdownFont);
-                quantitySpinner.setFocusable(false);
-
-                detailsPanel.add(colorLabel);
-                detailsPanel.add(colorBox);
-                detailsPanel.add(sizeLabel);
-                detailsPanel.add(sizeBox);
-                detailsPanel.add(quantityLabel);
-                detailsPanel.add(quantitySpinner);
-
-                int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-                if (result == JOptionPane.OK_OPTION) {
-                    String selectedColor = (String) colorBox.getSelectedItem();
-                    String selectedSize = (String) sizeBox.getSelectedItem();
-                    int selectedQuantity = (Integer) quantitySpinner.getValue();
-                    cartItems.add(new CartItem(item, price, selectedColor, selectedSize, icon, selectedQuantity));
-                    JOptionPane.showMessageDialog(null, item + " added to cart! \nColor: " + selectedColor + "\nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
-                }
-            });
-
-            addButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    addButton.setBackground(darkGray);
-                    addButton.setOpaque(true);
-                    addButton.setBorderPainted(false);
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    addButton.setBackground(darkGray.darker());
-                    addButton.setOpaque(true);
-                    addButton.setBorderPainted(false);
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    addButton.setBackground(darkGray);
-                    addButton.setOpaque(true);
-                    addButton.setBorderPainted(false);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    addButton.setBackground(lightGray);
-                    addButton.setOpaque(true);
-                    addButton.setBorderPainted(false);
-                }
-            });
-
-            JPanel buttonWrapper = new JPanel();
-            buttonWrapper.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-            buttonWrapper.setOpaque(false);
-
             tagContainer.add(tagPanel);
-            pricePanel.add(priceLabel, BorderLayout.WEST);
-            buttonWrapper.add(addButton);
-            pricePanel.add(buttonWrapper, BorderLayout.EAST);
-            itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-            itemDetailsPanel.add(iconLabel);
-            itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-            itemDetailsPanel.add(namePane);
-            itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-            itemDetailsPanel.add(pricePanel);
+
             itemPanel.add(tagContainer, BorderLayout.NORTH);
-            itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
         } else {
-            itemPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+            itemPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.NORTH);
         }
+
+        pricePanel.add(priceLabel, BorderLayout.WEST);
+        buttonWrapper.add(addButton);
+        pricePanel.add(buttonWrapper, BorderLayout.EAST);
+        itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        itemDetailsPanel.add(iconLabel);
+        itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        itemDetailsPanel.add(namePane);
+        itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        itemDetailsPanel.add(pricePanel);
+        itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
 
         return itemPanel;
     }
@@ -641,22 +625,9 @@ public class MainContents extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (brandName.equals("BNY")) {
-                    boolean bnyExists = false;
-
-                    for (Component comp : contentPanel.getComponents()) {
-                        if (comp instanceof BNY) {
-                            bnyExists = true;
-                            break;
-                        }
+                    if (onBrandViewClick != null) {
+                        onBrandViewClick.run();
                     }
-
-                    if (!bnyExists) {
-                        BNY bnyPanel = new BNY(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont);
-                        contentPanel.add(bnyPanel, "BNY");
-                    }
-                    cardLayout.show(contentPanel, "BNY");
-                    contentPanel.revalidate();
-                    contentPanel.repaint();
                 }
             }
         });
