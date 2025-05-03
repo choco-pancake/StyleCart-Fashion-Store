@@ -295,7 +295,7 @@ public class ActiveWearPanel extends JPanel {
         addButton.setBackground(lightGray);
         addButton.setOpaque(true);
         addButton.setBorderPainted(false);
-        addButton.setFont(new Font(null, Font.PLAIN, 15));
+        addButton.setFont(new Font("SansSerif", Font.PLAIN, 15));
         addButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         addButton.setFocusable(false);

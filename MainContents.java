@@ -228,7 +228,7 @@ public class MainContents extends JPanel {
         categoryTitle.setOpaque(false);
 
         categoryLabel = new JLabel("  CLOTHING CATEGORY");
-        categoryLabel.setFont(new Font(null, Font.BOLD, 20));
+        categoryLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         categoryLabel.setForeground(white);
         categoryLabel.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 10));
 
@@ -312,12 +312,12 @@ public class MainContents extends JPanel {
         featuredTitle.setOpaque(false);
 
         featuredLabel = new JLabel("  FEATURED ITEMS");
-        featuredLabel.setFont(new Font(null, Font.BOLD, 20));
+        featuredLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         featuredLabel.setForeground(white);
         featuredLabel.setBorder(BorderFactory.createEmptyBorder(15, 0, 20, 10));
 
         featuredView = new JLabel("View All >");
-        featuredView.setFont(new Font(null, Font.PLAIN, 17));
+        featuredView.setFont(new Font("SansSerif", Font.PLAIN, 17));
         featuredView.setForeground(white);
 
         featuredView.addMouseListener(new MouseAdapter() {
@@ -420,7 +420,7 @@ public class MainContents extends JPanel {
         addButton.setBackground(lightGray);
         addButton.setOpaque(true);
         addButton.setBorderPainted(false);
-        addButton.setFont(new Font(null, Font.PLAIN, 15));
+        addButton.setFont(new Font("SansSerif", Font.PLAIN, 15));
         addButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         addButton.setFocusable(false);
@@ -548,7 +548,7 @@ public class MainContents extends JPanel {
         brandTitle.setOpaque(false);
 
         brandLabel = new JLabel("  AVAILABLE BRANDS");
-        brandLabel.setFont(new Font(null, Font.BOLD, 20));
+        brandLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         brandLabel.setForeground(white);
         brandLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 

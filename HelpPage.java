@@ -61,7 +61,7 @@ public class HelpPage extends JPanel {
         tabbedPane.addTab("FAQs", createFAQsPanel());
         tabbedPane.addTab("Tutorial", createTutorialPanel());
         tabbedPane.addTab("Contact", createContactPanel());
-        tabbedPane.setFont(new Font(null, Font.BOLD, 15));
+        tabbedPane.setFont(new Font("SansSerif", Font.BOLD, 15));
         tabbedPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         tabbedPane.setFocusable(false);
         tabbedPane.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

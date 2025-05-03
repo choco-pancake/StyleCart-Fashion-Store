@@ -285,33 +285,49 @@ public class ShoppingCartPage extends JPanel {
 
         if (selectedRows.length == 0) {
             JOptionPane.showMessageDialog(this, "Please select at least one item to remove.", "No Selection", JOptionPane.WARNING_MESSAGE);
-        } else {
-            java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
-            java.util.List<MainContents.CartItem> toRemove = new java.util.ArrayList<>();
-            StringBuilder builder = new StringBuilder();
+            return;
+        }
 
-            for (int row : selectedRows) {
-                if (row >= 0 && row < cartItems.size()) {
-                    MainContents.CartItem item = cartItems.get(row);
-                    toRemove.add(item);
-                    builder.append(item.name).append(", ");
-                }
+        java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
+        java.util.List<MainContents.CartItem> toRemove = new java.util.ArrayList<>();
+        StringBuilder builder = new StringBuilder();
+
+        for (int row : selectedRows) {
+            if (row >= 0 && row < cartItems.size()) {
+                MainContents.CartItem item = cartItems.get(row);
+                toRemove.add(item);
+                builder.append(item.name).append(", ");
             }
+        }
 
-            if (builder.length() > 0) {
-                builder.setLength(builder.length() - 2);
-            }
+        if(toRemove.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "There are no items to remove.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
+        builder.setLength(builder.length() - 2);
+            
+        // Create a custom JOptionPane with fixed width
+        JLabel label = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>" + "Are you sure you want to remove " + builder.toString() + " from your cart?" + "</div></html>");
+        int confirm = JOptionPane.showConfirmDialog(
+            this,
+            label,
+            "Confirm Removal",
+            JOptionPane.YES_NO_OPTION);
+
+        if(confirm == JOptionPane.YES_OPTION) {
             cartItems.removeAll(toRemove);
             refreshCartItems();
 
-            if (cartItems.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Your cart is now empty.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, builder.toString() + " removed from cart.", "Items Removed", JOptionPane.INFORMATION_MESSAGE);
-            }
+        if (cartItems.isEmpty()) {
+            JLabel emptyLabel = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>Your cart is now empty.</div></html>");
+            JOptionPane.showMessageDialog(this, emptyLabel, "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JLabel removedLabel = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>" + builder.toString() + " removed from cart.</div></html>");
+            JOptionPane.showMessageDialog(this, removedLabel, "Items Removed", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+}
 
     private void confirmOrder() {
         java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();

@@ -165,7 +165,7 @@ public class RatingsPage extends JPanel {
 
         if(orderData.isEmpty()) {
             emptyLabel = new JLabel("No orders to rate yet.");
-            emptyLabel.setFont(new Font(null, Font.BOLD, 20));
+            emptyLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
             emptyLabel.setForeground(white);
             emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             emptyLabel.setBorder(BorderFactory.createEmptyBorder(20, 545, 0, 0));
@@ -323,7 +323,7 @@ public class RatingsPage extends JPanel {
         reviewLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 5, 0));
 
         HintTextField reviewField = new HintTextField("Write your review here...");
-        reviewField.setFont(new Font(null, Font.PLAIN, 15));
+        reviewField.setFont(new Font("SansSerif", Font.PLAIN, 15));
         reviewField.setPreferredSize(new Dimension(300, 30));
             
         rateProductPanel.add(topPanel, BorderLayout.NORTH);
@@ -366,7 +366,6 @@ public class RatingsPage extends JPanel {
                 confirmPanel.add(reviewDisplayPanel);
 
                 JOptionPane.showMessageDialog(this, confirmPanel, "Product Rated", JOptionPane.INFORMATION_MESSAGE);
-                //orderData.remove(selectedRow);
                 displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
             }
         }
@@ -377,107 +376,113 @@ public class RatingsPage extends JPanel {
             JOptionPane.showMessageDialog(this, "There are no deliveries to rate.", "No Deliveries", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-
+    
         if(orderTable.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Please select an item to rate.", "No Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
-        JPanel rateProductPanel = new JPanel();
-        rateProductPanel.setLayout(new BorderLayout(10, 10));
-
+    
+        JPanel rateProductPanel = new JPanel(new BorderLayout(10, 10));
+    
         int selectedRow = orderTable.getSelectedRow();
         String productDetails = (String) orderTable.getValueAt(selectedRow, 1);
         String productName = productDetails.split("<br>")[0].replace("<html>", "").trim();
-
+    
         JLabel productNameLabel = new JLabel(productName);
         productNameLabel.setFont(customFont.deriveFont(Font.BOLD, 16f));
         productNameLabel.setForeground(darkBlue);
         productNameLabel.setBorder(BorderFactory.createCompoundBorder(
-                                   BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray),
-                                   BorderFactory.createEmptyBorder(10, 0, 10, 0)));
-        
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new BorderLayout());
-        topPanel.setOpaque(false);
-
+                BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray),
+                BorderFactory.createEmptyBorder(10, 0, 10, 0)));
+    
         JPanel questionPanel = new JPanel();
         questionPanel.setLayout(new BoxLayout(questionPanel, BoxLayout.Y_AXIS));
         questionPanel.setBorder(BorderFactory.createCompoundBorder(
-                                BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray),
-                                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+                BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         questionPanel.setOpaque(false);
-
+    
         JRadioButton q1 = new JRadioButton("Was the delivery faster than expected?");
-        q1.setFocusable(false);
-        q1.setOpaque(false);
-
         JRadioButton q2 = new JRadioButton("Is the packaging of the product in good condition?");
-        q2.setFocusable(false);
-        q2.setOpaque(false);
-
         JRadioButton q3 = new JRadioButton("Was the delivery driver's behavior professional?");
-        q3.setFocusable(false);
-        q3.setOpaque(false);
-
         JRadioButton q4 = new JRadioButton("Are you satisfied with the overall delivery process?");
-        q4.setFocusable(false);
-        q4.setOpaque(false);
-
-        for(JRadioButton button : new JRadioButton[]{q1, q2, q3, q4}) {
+    
+        for (JRadioButton button : new JRadioButton[]{q1, q2, q3, q4}) {
             button.setFont(customFont.deriveFont(15f));
-            button.setBackground(white);
+            button.setOpaque(false);
+            button.setFocusable(false);
             questionPanel.add(button);
         }
-
-        JPanel reviewPanel = new JPanel();
-        reviewPanel.setLayout(new BorderLayout());
+    
+        JPanel reviewPanel = new JPanel(new BorderLayout());
         reviewPanel.setOpaque(false);
-
+    
         JLabel reviewLabel = new JLabel("Leave a review!");
         reviewLabel.setFont(customFont.deriveFont(15f));
         reviewLabel.setForeground(black);
         reviewLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-
+    
         HintTextField reviewField = new HintTextField("Write your review here...");
         reviewField.setFont(customFont.deriveFont(15f));
         reviewField.setBorder(BorderFactory.createCompoundBorder(
-                              BorderFactory.createLineBorder(lightGray),
-                              BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        reviewField.setBackground(white);
-
-        reviewPanel.add(productNameLabel, BorderLayout.NORTH);
+                BorderFactory.createLineBorder(lightGray),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        reviewField.setOpaque(false);
+    
         reviewPanel.add(reviewLabel, BorderLayout.NORTH);
         reviewPanel.add(reviewField, BorderLayout.CENTER);
+    
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setOpaque(false);
         topPanel.add(productNameLabel, BorderLayout.NORTH);
         topPanel.add(questionPanel, BorderLayout.CENTER);
         topPanel.add(reviewPanel, BorderLayout.SOUTH);
+    
         rateProductPanel.add(topPanel, BorderLayout.NORTH);
-
+    
         int result = JOptionPane.showConfirmDialog(this, rateProductPanel, "Rate Delivery", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-        if(result == JOptionPane.OK_OPTION) {
+    
+        if (result == JOptionPane.OK_OPTION) {
             boolean anySelected = q1.isSelected() || q2.isSelected() || q3.isSelected() || q4.isSelected();
             String reviewText = reviewField.getText().trim();
-
-            if(!anySelected && reviewText.isEmpty()) {
+    
+            if (!anySelected && reviewText.isEmpty()) {
                 return;
             }
-
-            StringBuilder builder = new StringBuilder("Delivery rated!\n");
-
-            if(q1.isSelected()) builder.append("✔️ Swift Delivery\n");
-            if(q2.isSelected()) builder.append("✔️ Product in Good Condition\n");
-            if(q3.isSelected()) builder.append("✔️ Professional Driver Behavior\n");
-            if(q4.isSelected()) builder.append("✔️ Satisfactory Delivery\n");
-
-            
-
-            if(!reviewText.isEmpty()) {
-                builder.append("Review: ").append(reviewText);
-            }
-
-            JOptionPane.showMessageDialog(this, builder.toString(), "Delivery Review", JOptionPane.INFORMATION_MESSAGE);
+    
+            ImageIcon checkIcon = new ImageIcon(getClass().getResource("images/check.png"));
+            ImageIcon xIcon = new ImageIcon(getClass().getResource("images/x.png"));
+            int iconSize = 20;
+            checkIcon = new ImageIcon(checkIcon.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
+            xIcon = new ImageIcon(xIcon.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
+    
+            JPanel messagePanel = new JPanel();
+            messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
+            messagePanel.setOpaque(false);
+    
+            JLabel titleLabel = new JLabel("Delivery rated!");
+            titleLabel.setFont(customFont.deriveFont(Font.BOLD, 15f));
+            messagePanel.add(titleLabel);
+            messagePanel.add(Box.createVerticalStrut(10));
+    
+            messagePanel.add(createRow("Swift Delivery", q1.isSelected(), checkIcon, xIcon));
+            messagePanel.add(createRow("Product in Good Condition", q2.isSelected(), checkIcon, xIcon));
+            messagePanel.add(createRow("Professional Driver Behavior", q3.isSelected(), checkIcon, xIcon));
+            messagePanel.add(createRow("Satisfactory Delivery", q4.isSelected(), checkIcon, xIcon));
+    
+            String reviewOutput = reviewText.isEmpty() ? "None" : reviewText;
+            JLabel review = new JLabel("Review: " + reviewOutput);
+            review.setFont(new Font(null, Font.PLAIN, 15));
+            review.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+            messagePanel.add(review);
+    
+            JOptionPane.showMessageDialog(this, messagePanel, "Delivery Review", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+    
+    private JLabel createRow(String text, boolean selected, ImageIcon checkIcon, ImageIcon xIcon) {
+        JLabel label = new JLabel(text, selected ? checkIcon : xIcon, JLabel.LEADING);
+        label.setFont(customFont.deriveFont(15f));
+        return label;
+    }    
 }
