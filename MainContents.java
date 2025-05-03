@@ -18,7 +18,6 @@ public class MainContents extends JPanel {
     private Color lightBlue = new Color(173, 216, 230);
     private Color white = Color.WHITE;
     private Color gray = Color.GRAY;
-    private Color borderGray = new Color(169, 169, 169);
     private Color darkerBlue = new Color(0, 0, 139);
     private Color hoverBlue = new Color(135, 206, 250);
     private Color selectBlue = new Color(100, 149, 237);
@@ -255,7 +254,7 @@ public class MainContents extends JPanel {
         itemPanel.setLayout(new BorderLayout());
         itemPanel.setBackground(lightBlue);
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(borderGray, 1),
+                BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 0, 10)));
         itemPanel.setPreferredSize(new Dimension(230, 130));
 
@@ -349,7 +348,7 @@ public class MainContents extends JPanel {
 
         String[] items = {"Own the Run Running T-Shirt", "Aeroimpact Luxe Training Light-Support Bra", "Essentials 3-Stripes Hoodie",
                 "Slim-Fit Wool Pants", "Belted Wool Midi Dress"};
-        String[] itemsPrice = {"$40.00", "$50.00", "$39.00", "$165.00", "$135.00"};
+        String[] itemsPrice = {"₱40.00", "₱50.00", "₱39.00", "₱165.00", "₱135.00"};
         String[] itemsTag = {"Top rated", "Top rated", "Top rated", "Best offer", "Best style"};
         String[] itemsIcon = {"images/featuredAdidas1.png", "images/featuredAdidas2.png", "images/featuredAdidas3.png", "images/featuredCOS1.png", "images/featuredCOS2.png"};
 
@@ -370,7 +369,7 @@ public class MainContents extends JPanel {
         itemPanel.setPreferredSize(new Dimension(230, 300));
         itemPanel.setBackground(lightBlue);
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(borderGray, 1),
+                BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
         JPanel itemDetailsPanel = new JPanel();
@@ -576,7 +575,7 @@ public class MainContents extends JPanel {
         itemPanel.setLayout(new BorderLayout());
         itemPanel.setBackground(lightBlue);
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(lightGray, 1),
+                BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 5, 10)));
         itemPanel.setPreferredSize(new Dimension(188, 150));
 

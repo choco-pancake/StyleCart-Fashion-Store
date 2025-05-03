@@ -400,7 +400,7 @@ public class OrderSummaryPage extends JPanel {
                 String qty = row[3].toString();
                 String subtotal = row[4].toString();
 
-                total += Double.parseDouble(subtotal.replace("$", "").replace(",", ""));
+                total += Double.parseDouble(subtotal.replace("₱", "").replace(",", ""));
 
                 writer.write("<tr>");
                 writer.write("<td>" + details + "</td>");
@@ -411,7 +411,7 @@ public class OrderSummaryPage extends JPanel {
 
             writer.write("</table>");
             writer.write("<hr>");
-            writer.write("<h3>Total Amount: $" + String.format("%,.2f", total) + "</h3>");
+            writer.write("<h3>Total Amount: ₱" + String.format("%,.2f", total) + "</h3>");
             writer.write("<hr>");
             writer.write("<p>Thank you for shopping at <strong>StyleCart Fashion Store!</strong></p>");
             writer.write("</body></html>");

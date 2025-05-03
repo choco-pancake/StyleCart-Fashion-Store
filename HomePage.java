@@ -137,7 +137,7 @@ public class HomePage extends JFrame {
                 moneyLabel.setForeground(black);
                 moneyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                numberLabel = new JLabel("$5,000.00");
+                numberLabel = new JLabel("₱10,000.00");
                 numberLabel.setFont(customFont.deriveFont(25f));
                 numberLabel.setForeground(black);
                 numberLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -226,7 +226,7 @@ public class HomePage extends JFrame {
 
     public void updateBalance(double newBalance) {
         if (numberLabel != null) {
-            numberLabel.setText(String.format("$%,.2f", newBalance));
+            numberLabel.setText(String.format("₱%,.2f", newBalance));
         }
     }
 

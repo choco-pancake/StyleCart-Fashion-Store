@@ -218,8 +218,8 @@ public class ShoppingCartPage extends JPanel {
                 data[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
                 data[i][2] = item.price;
                 data[i][3] = item.quantity;
-                double price = Double.parseDouble(item.price.replace("$", "").replace(",", ""));
-                data[i][4] = "$" + String.format("%,.2f", price * item.quantity);
+                double price = Double.parseDouble(item.price.replace("₱", "").replace(",", ""));
+                data[i][4] = "₱" + String.format("%,.2f", price * item.quantity);
             }
 
             cartTable = new JTable(data, columnNames) {
@@ -306,7 +306,7 @@ public class ShoppingCartPage extends JPanel {
             refreshCartItems();
 
             if (cartItems.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "There are no items to remove.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Your cart is now empty.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, builder.toString() + " removed from cart.", "Items Removed", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -336,7 +336,7 @@ public class ShoppingCartPage extends JPanel {
             int row = selectedRows[i];
             if (row >= 0 && row < cartItems.size()) {
                 MainContents.CartItem item = cartItems.get(row);
-                double itemPrice = Double.parseDouble(item.price.replace("$", "").replace(",", ""));
+                double itemPrice = Double.parseDouble(item.price.replace("₱", "").replace(",", ""));
                 double itemSubtotal = itemPrice * item.quantity;
                 subtotal += itemSubtotal;
     
@@ -344,7 +344,7 @@ public class ShoppingCartPage extends JPanel {
                 selectedData[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
                 selectedData[i][2] = item.price;
                 selectedData[i][3] = item.quantity;
-                selectedData[i][4] = "$" + String.format("%,.2f", itemSubtotal);
+                selectedData[i][4] = "₱" + String.format("%,.2f", itemSubtotal);
     
                 toRemove.add(item);
             }
@@ -357,9 +357,9 @@ public class ShoppingCartPage extends JPanel {
         }
     
         String infoMessage = String.format("""
-            Current Balance: $%,.2f
-            Item Subtotal: $%,.2f
-            After Purchase: $%,.2f
+            Current Balance: ₱%,.2f
+            Item Subtotal: ₱%,.2f
+            After Purchase: ₱%,.2f
     
             Do you want to place this order?
             """, currentBalance, subtotal, remainingBalance);

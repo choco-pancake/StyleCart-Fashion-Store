@@ -180,52 +180,88 @@ public class BNY extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         String[] items = {
-            "Plain Hoodie Jacket with Zipper", "Kaiki White Color Street Trendy Versace Shirt", "Chinos 4-Pockets above-Knee Plain Garter Short", "Cod Men's Casual Sweat Jogger Sport Short", "Ezra Black Regular Fit Boys Dress Pants",
-            "Fashion Taslan Short", "Fiaunt Fashions Oversized Retro Classic T-Shirt", "Flower Style Valentine's Day Casual Polo Dating Shirt", "High Quality Shortsleeve Casual Polo Shirt", "HK Fashion Plain Short (with Belt)",
-            "Korean New York Jacket with Zipper", "Korean Vintage Loose Short-Sleeved T-Shirt", "LSB# Super Hot CEC Men's Tide Brand Trend Lightweight Jacket", "Wild Cargo Pants", "Bomber with Zipper Jacket",
-            "Taslan Loose Casual Pants", "Street Style Short", "New DUKE Dri-Fit Men's Sport Short Casual Basketball Shorts", "New WESTERN Summer Casual Pure Color Short Sleeved Shirt", "Rope Workwear with Pocket Loose Wide Leg Ankle Banded Pants",
-            "Smart Stretch Pleat Slacks Beige", "TATA Fashion New Long Sleeve Plain Varsity Jacket", "Korean Style Loose Fit Oversize Shirt Mens Silk Polo Shirt", "Baggy Straight Cut Slacks", "Above-Knee Casual Garter Beach Short",
-            "Sweatpant Wide Leg Baggy Loose Straight Cut", "Business Formal Pants", "Plain Polo Shirt with 2 Lines", "New York Printed Design Hoodie Jacket", "TATA Fashion New Casual Baseball Jacket"
+            "Kaiki White Color Street Trendy Versace Shirt", "Fiaunt Fashions Oversized Retro Classic T-Shirt", "Flower Style Valentine's Day Casual Polo Dating Shirt", "High Quality Shortsleeve Casual Polo Shirt", "Korean Vintage Loose Short-Sleeved T-Shirt",
+            "New WESTERN Summer Casual Pure Color Short Sleeved Shirt", "Korean Style Loose Fit Oversize Shirt Mens Silk Polo Shirt", "Plain Polo Shirt with 2 Lines", "Plain Hoodie Jacket with Zipper", "Korean New York Jacket with Zipper",
+            "LSB# Super Hot CEC Men's Tide Brand Trend Lightweight Jacket", "Bomber with Zipper Jacket", "TATA Fashion New Long Sleeve Plain Varsity Jacket", "New York Printed Design Hoodie Jacket", "TATA Fashion New Casual Baseball Jacket",
+            "Chinos 4-Pockets above-Knee Plain Garter Short", "Cod Men's Casual Sweat Jogger Sport Short", "Fashion Taslan Short", "HK Fashion Plain Short (with Belt)", "Street Style Short",
+            "New DUKE Dri-Fit Men's Sport Short Casual Basketball Shorts", "Above-Knee Casual Garter Beach Short", "Ezra Black Regular Fit Boys Dress Pants", "Wild Cargo Pants", "Taslan Loose Casual Pants",
+            "Rope Workwear with Pocket Loose Wide Leg Ankle Banded Pants", "Smart Stretch Pleat Slacks Beige", "Baggy Straight Cut Slacks", "Sweatpant Wide Leg Baggy Loose Straight Cut", "Business Formal Pants",
+            
+            "Casual Plain Color Block Embroidery Zipper T-Shirt", "Short Letter Pattern Slim Fit Printed T-Shirt", "Summer Square Neck Short Sleeve Slim Bottoming Knit Top", "Elegant Plain Split T-Shirt", "Sporty Plain Contrast Binding Crop T-Shirt",
+"Slubs V-Neck T-Shirt with Bunny Embro", "Sleeveless Tank Vest Solid Top", "Solid Ribbed Knit Tube Basic Crop Top", "Casual Pleated Crop Tank Top", "Flower Tube Top with Pads",
+"Hepburn Style Dress Summer Fashion Loose Slimmer", "Green Floral Strappy Dress", "Spring Autumn Sweater Dress", "Summer New Style Polo Color Short Sleeved Dress", "Heavy Industry Three-Dimensional Bow Knot Letter Diamond Dress",
+"Small Leather Jacket", "Fried Street Yellow Floral Jacket", "Western Style Jacket New French Light Luxury", "Western Style Jacket European Station Spring Autumn", "Black Jacket",
+"Fashion Trendy Plain Trouser Shorts", "New Taslan Short", "Casual Plain Button Short", "Casual Stripped Lace Up Zipper Short", "High Waisted Loose Fit Slim Stretchable Shorts Bermuda Short",
+"Mid-waist Relaxed Pants", "Highwaist Pants Denim Ripped Jeans", "Full Length High Rise Wide Leg Jeans", "Highwaist Pants with Belt", "Wide Leg Pants Fashion High Waist Solid Button"
         };
-
+    
         String[] prices = {
-            "₱145", "₱259", "₱169", "₱156", "₱401",
-            "₱355", "₱144", "₱176", "₱188", "₱199",
-            "₱277", "₱199", "₱189", "₱246", "₱145",
-            "₱169", "₱169", "₱294", "₱174", "₱345",
-            "₱350", "₱323", "₱170", "₱159", "₱248",
-            "₱149", "₱400", "₱142", "₱143", "₱422",
-        };
+            "₱259", "₱144", "₱176", "₱188", "₱199",
+            "₱174", "₱170", "₱142", "₱145", "₱277",
+            "₱189", "₱145", "₱323", "₱143", "₱422",
+            "₱169", "₱156", "₱355", "₱199", "₱169",
+            "₱294", "₱248", "₱401", "₱246", "₱169",
+            "₱345", "₱350", "₱159", "₱149", "₱400",
 
+            "₱282", "₱200", "₱129", "₱330", "₱549",
+            "₱211", "₱159", "₱179", "₱177", "₱109",
+            "₱930", "₱262", "₱700", "₱900", "₱824",
+            "₱398", "₱443", "₱700", "₱668", "₱890",
+            "₱105", "₱128", "₱283", "₱273", "₱281",
+            "₱400", "₱458", "₱389", "₱500", "₱458"
+        };
+    
         String[] icons = {
-            "images/bnymen1outerwear.png", "images/bnymen2tops.png", "images/bnymen3bottoms.png", "images/bnymen4bottoms.png", "images/bnymen5bottoms.png",
-            "images/bnymen6activewear.png", "images/bnymen7tops.png", "images/bnymen8tops.png", "images/bnymen9tops.png", "images/bnymen10bottoms.png",
-            "images/bnymen11outerwear.png", "images/bnymen12tops.png", "images/bnymen13outerwear.png", "images/bnymen14bottoms.png", "images/bnymen15outerwear.png",
-            "images/bnymen16activewear.png", "images/bnymen17activewear.png", "images/bnymen18activewear.png", "images/bnymen19tops.png", "images/bnymen20bottoms.png",
-            "images/bnymen21bottoms.png", "images/bnymen22outerwear.png", "images/bnymen23tops.png", "images/bnymen24bottoms.png", "images/bnymen25bottoms.png",
-            "images/bnymen26bottoms.png", "images/bnymen27bottoms.png", "images/bnymen28tops.png", "images/bnymen29outerwear.png", "images/bnymen30outerwear.png",
+            "images/bnymen2tops.png", "images/bnymen7tops.png", "images/bnymen8tops.png", "images/bnymen9tops.png", "images/bnymen12tops.png",
+            "images/bnymen19tops.png", "images/bnymen23tops.png", "images/bnymen28tops.png", "images/bnymen1outerwear.png", "images/bnymen11outerwear.png",
+            "images/bnymen13outerwear.png", "images/bnymen15outerwear.png", "images/bnymen22outerwear.png", "images/bnymen29outerwear.png", "images/bnymen30outerwear.png",
+            "images/bnymen3bottoms.png", "images/bnymen4bottoms.png", "images/bnymen6activewear.png", "images/bnymen10bottoms.png", "images/bnymen17activewear.png",
+            "images/bnymen18activewear.png", "images/bnymen25bottoms.png", "images/bnymen5bottoms.png", "images/bnymen14bottoms.png", "images/bnymen16activewear.png",
+            "images/bnymen20bottoms.png", "images/bnymen21bottoms.png","images/bnymen24bottoms.png",  "images/bnymen26bottoms.png", "images/bnymen27bottoms.png",
+
+            "images/bnywomen2tops.png", "images/bnywomen11tops.png", "images/bnywomen15tops.png", "images/bnywomen21tops.png", "images/bnywomen22tops.png",
+	        "images/bnywomen27tops.png", "images/bnywomen1tops.png", "images/bnywomen13tops.png", "images/bnywomen19tops.png", "images/bnywomen26tops.png",
+	        "images/bnywomen4dresses.png", "images/bnywomen6dresses.png", "images/bnywomen14dresses.png", "images/bnywomen24dresses.png", "images/bnywomen25dresses.png",
+	        "images/bnywomen5outerwear.png","images/bnywomen9outerwear.png", "images/bnywomen16outerwear.png", "images/bnywomen17outerwear.png", "images/bnywomen28outerwear.png",
+	        "images/bnywomen3bottoms.png", "images/bnywomen10activewear.png", "images/bnywomen18bottoms.png", "images/bnywomen20bottoms.png", "images/bnywomen23bottoms.png",
+	        "images/bnywomen7bottoms.png", "images/bnywomen8bottoms.png", "images/bnywomen12bottoms.png", "images/bnywomen29bottoms.png", "images/bnywomen30bottoms.png"
+
         };
 
         int[][] brandSize = {
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {70, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {50, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {70, 100}, {50, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
         };
 
-        for (int i = 0; i < 30; i++) {
-            menPanel.add(createBNYItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+        for (int i = 0; i < 60; i++) {
+            if(i < 30) {
+                menPanel.add(createBNYItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+            } else {
+                womenPanel.add(createBNYItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+            }
         }
 
         sectionContainer = new JPanel();
-        sectionContainer.setLayout(new BorderLayout());
+        sectionContainer.setLayout(new BoxLayout(sectionContainer, BoxLayout.Y_AXIS));
         sectionContainer.setOpaque(false);
 
         menContainer.add(menLabel, BorderLayout.NORTH);
         menContainer.add(menPanel, BorderLayout.CENTER);
-        sectionContainer.add(menContainer, BorderLayout.NORTH);
+        womenContainer.add(womenLabel, BorderLayout.NORTH);
+        womenContainer.add(womenPanel, BorderLayout.CENTER);
+        sectionContainer.add(menContainer);
+        sectionContainer.add(womenContainer);
         mainPanel.add(sectionContainer, BorderLayout.CENTER);
     }
 
