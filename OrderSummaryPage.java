@@ -18,6 +18,7 @@ public class OrderSummaryPage extends JPanel {
     private JButton receiptButton, trackButton, backButton;
     private List<Object[]> allOrders;
     private LocalDateTime orderPlacedTime;
+    private boolean receiptGenerated = false; // New flag to track receipt generation
 
     private final int circleSize = 20;
     private TrackingAreaPanel trackingAreaPanel;
@@ -238,10 +239,15 @@ public class OrderSummaryPage extends JPanel {
         displayOrderSummary(null, columnNames, customFont);
     }
 
+    public boolean isReceiptGenerated() {
+        return !receiptGenerated && !allOrders.isEmpty();
+    }
+
     public void displayOrderSummary(Object[][] selectedData, String[] columnNames, Font tableFont) {
         if (selectedData != null && selectedData.length > 0) {
             allOrders.clear();
             orderPlacedTime = LocalDateTime.now();
+            receiptGenerated = false; 
             resetTrackingState(); 
             for (Object[] row : selectedData) {
                 allOrders.add(row);
@@ -417,7 +423,8 @@ public class OrderSummaryPage extends JPanel {
             writer.write("</body></html>");
             writer.close();
 
-            JOptionPane.showMessageDialog(this, "You will be redirected to your receipt.", "Generate Receipt", JOptionPane.INFORMATION_MESSAGE);
+            receiptGenerated = true; 
+            JOptionPane.showMessageDialog(null, "You will be redirected to your receipt.", "Generate Receipt", JOptionPane.INFORMATION_MESSAGE);
             java.awt.Desktop.getDesktop().browse(new File(fileName).toURI());
             orderPlacedTime = null;
             resetTrackingState();
@@ -550,7 +557,6 @@ public class OrderSummaryPage extends JPanel {
 
         animationStartTime = System.currentTimeMillis();
 
-        //long delayBetweenPanels = 2000; 
         panelTriggerTimes[0] = 0;              
         panelTriggerTimes[1] = 2000;           
         panelTriggerTimes[2] = 4000;           

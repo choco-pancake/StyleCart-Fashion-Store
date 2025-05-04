@@ -307,7 +307,6 @@ public class ShoppingCartPage extends JPanel {
 
         builder.setLength(builder.length() - 2);
             
-        // Create a custom JOptionPane with fixed width
         JLabel label = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>" + "Are you sure you want to remove " + builder.toString() + " from your cart?" + "</div></html>");
         int confirm = JOptionPane.showConfirmDialog(
             this,
@@ -343,6 +342,21 @@ public class ShoppingCartPage extends JPanel {
             return;
         }
     
+        if (orderSummaryPage.isReceiptGenerated()) {
+            String message = "You haven't generated a receipt for the previous order yet.";
+            String title = "Pending Receipt";
+            String[] options = {"Generate Receipt", "Place Order Later"};
+
+            int response = JOptionPane.showOptionDialog(this, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+
+            if(response == 0) {
+                orderSummaryPage.generateReceipt();;
+                return;
+            } else {
+                return;
+            }
+        }
+        
         double subtotal = 0.00;
         java.util.List<MainContents.CartItem> toRemove = new java.util.ArrayList<>();
         Object[][] selectedData = new Object[selectedRows.length][5];
@@ -356,48 +370,48 @@ public class ShoppingCartPage extends JPanel {
                 double itemSubtotal = itemPrice * item.quantity;
                 subtotal += itemSubtotal;
     
-                selectedData[i][0] = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                selectedData[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
-                selectedData[i][2] = item.price;
-                selectedData[i][3] = item.quantity;
-                selectedData[i][4] = "₱" + String.format("%,.2f", itemSubtotal);
+                    selectedData[i][0] = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                    selectedData[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
+                    selectedData[i][2] = item.price;
+                    selectedData[i][3] = item.quantity;
+                    selectedData[i][4] = "₱" + String.format("%,.2f", itemSubtotal);
     
-                toRemove.add(item);
-            }
-        }
-    
-        double remainingBalance = currentBalance - subtotal;
-        if (remainingBalance < 0) {
-            JOptionPane.showMessageDialog(this, "Not enough balance!", "Insufficient Funds", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-    
-        String infoMessage = String.format("""
-            Current Balance: ₱%,.2f
-            Item Subtotal: ₱%,.2f
-            After Purchase: ₱%,.2f
-    
-            Do you want to place this order?
-            """, currentBalance, subtotal, remainingBalance);
-    
-        int choice = JOptionPane.showConfirmDialog(this, infoMessage, "Order Details", JOptionPane.OK_CANCEL_OPTION);
-    
-        if (choice == JOptionPane.OK_OPTION) {
-            currentBalance = remainingBalance;
-            if (homePage != null) {
-                homePage.updateBalance(remainingBalance);
+                    toRemove.add(item);
+                }
             }
     
-            orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
-            ratingsPage.displayOrderSummary(selectedData, columnNames, customFont);
-            cartItems.removeAll(toRemove);
-            refreshCartItems();
-            JOptionPane.showMessageDialog(this, "Order placed!", "Order Placed", JOptionPane.INFORMATION_MESSAGE);
+            double remainingBalance = currentBalance - subtotal;
+            if (remainingBalance < 0) {
+                JOptionPane.showMessageDialog(this, "Not enough balance!", "Insufficient Funds", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+    
+            String infoMessage = String.format("""
+                Current Balance: ₱%,.2f
+                Item Subtotal: ₱%,.2f
+                After Purchase: ₱%,.2f
+    
+                Do you want to place this order?
+                """, currentBalance, subtotal, remainingBalance);
+    
+            int choice = JOptionPane.showConfirmDialog(this, infoMessage, "Order Details", JOptionPane.OK_CANCEL_OPTION);
+    
+            if (choice == JOptionPane.OK_OPTION) {
+                currentBalance = remainingBalance;
+                if (homePage != null) {
+                    homePage.updateBalance(remainingBalance);
+                }
+    
+                orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
+                ratingsPage.displayOrderSummary(selectedData, columnNames, customFont);
+                cartItems.removeAll(toRemove);
+                refreshCartItems();
+                JOptionPane.showMessageDialog(this, "Order placed!", "Order Placed", JOptionPane.INFORMATION_MESSAGE);
             
-            if (homePage != null) {
-                homePage.showPanel("OrderSummaryView");
-                homePage.menuItemWhite("Order Summary");
+                if (homePage != null) {
+                    homePage.showPanel("OrderSummaryView");
+                    homePage.menuItemWhite("Order Summary");
+                }
             }
         }
-    }
-}
+    }  
