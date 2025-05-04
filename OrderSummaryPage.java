@@ -424,7 +424,7 @@ public class OrderSummaryPage extends JPanel {
             writer.close();
 
             receiptGenerated = true; 
-            JOptionPane.showMessageDialog(null, "You will be redirected to your receipt.", "Generate Receipt", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(orderPanel, "You will be redirected to your receipt.", "Generate Receipt", JOptionPane.INFORMATION_MESSAGE);
             java.awt.Desktop.getDesktop().browse(new File(fileName).toURI());
             orderPlacedTime = null;
             resetTrackingState();

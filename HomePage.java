@@ -124,8 +124,8 @@ public class HomePage extends JFrame {
             menuItemPanel = createMenuItemPanel(name);
             sidePanel.add(menuItemPanel);
             sidePanel.add(Box.createRigidArea(new Dimension(0, 50)));
-        
-            if(name.equals("Help")) {
+
+            if (name.equals("Help")) {
                 moneyPanel = new RoundedPanel(lightBrown, 30);
                 moneyPanel.setLayout(new BoxLayout(moneyPanel, BoxLayout.Y_AXIS));
                 moneyPanel.setBorder(new EmptyBorder(20, 10, 10, 10));
@@ -137,7 +137,7 @@ public class HomePage extends JFrame {
                 moneyLabel.setForeground(black);
                 moneyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                numberLabel = new JLabel("₱10,000.00");
+                numberLabel = new JLabel("₱10,000.00"); 
                 numberLabel.setFont(customFont.deriveFont(25f));
                 numberLabel.setForeground(black);
                 numberLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -154,16 +154,16 @@ public class HomePage extends JFrame {
         contentPanel = new JPanel(cardLayout);
         contentPanel.setBackground(new Color(245, 245, 245));
 
-        orderSummaryPage = new OrderSummaryPage(); 
-        ratingsPage = new RatingsPage(); 
+        orderSummaryPage = new OrderSummaryPage();
+        ratingsPage = new RatingsPage();
         helpPage = new HelpPage();
 
-        cartPage = new ShoppingCartPage(this, () -> {
+        MainContents homeContent = new MainContents();
+        cartPage = new ShoppingCartPage(this, homeContent, () -> {
             menuItemWhite("Home");
             cardLayout.show(contentPanel, "MainView");
-        }, orderSummaryPage, ratingsPage, customFont); 
+        }, orderSummaryPage, ratingsPage, customFont);
 
-        MainContents homeContent = new MainContents();
         homeContent.setOnBrandViewClick(() -> {
             boolean bnyExists = false;
             for (Component comp : contentPanel.getComponents()) {
@@ -186,7 +186,7 @@ public class HomePage extends JFrame {
             menuItemWhite("Shopping Cart");
             cardLayout.show(contentPanel, "CartView");
         });
-        
+
         contentPanel.add(homeContent, "MainView");
         contentPanel.add(cartPage, "CartView");
         contentPanel.add(orderSummaryPage, "OrderSummaryView");

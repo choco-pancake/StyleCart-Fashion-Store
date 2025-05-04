@@ -188,11 +188,11 @@ public class BNY extends JPanel {
             "Rope Workwear with Pocket Loose Wide Leg Ankle Banded Pants", "Smart Stretch Pleat Slacks Beige", "Baggy Straight Cut Slacks", "Sweatpant Wide Leg Baggy Loose Straight Cut", "Business Formal Pants",
             
             "Casual Plain Color Block Embroidery Zipper T-Shirt", "Short Letter Pattern Slim Fit Printed T-Shirt", "Summer Square Neck Short Sleeve Slim Bottoming Knit Top", "Elegant Plain Split T-Shirt", "Sporty Plain Contrast Binding Crop T-Shirt",
-"Slubs V-Neck T-Shirt with Bunny Embro", "Sleeveless Tank Vest Solid Top", "Solid Ribbed Knit Tube Basic Crop Top", "Casual Pleated Crop Tank Top", "Flower Tube Top with Pads",
-"Hepburn Style Dress Summer Fashion Loose Slimmer", "Green Floral Strappy Dress", "Spring Autumn Sweater Dress", "Summer New Style Polo Color Short Sleeved Dress", "Heavy Industry Three-Dimensional Bow Knot Letter Diamond Dress",
-"Small Leather Jacket", "Fried Street Yellow Floral Jacket", "Western Style Jacket New French Light Luxury", "Western Style Jacket European Station Spring Autumn", "Black Jacket",
-"Fashion Trendy Plain Trouser Shorts", "New Taslan Short", "Casual Plain Button Short", "Casual Stripped Lace Up Zipper Short", "High Waisted Loose Fit Slim Stretchable Shorts Bermuda Short",
-"Mid-waist Relaxed Pants", "Highwaist Pants Denim Ripped Jeans", "Full Length High Rise Wide Leg Jeans", "Highwaist Pants with Belt", "Wide Leg Pants Fashion High Waist Solid Button"
+            "Slubs V-Neck T-Shirt with Bunny Embro", "Sleeveless Tank Vest Solid Top", "Solid Ribbed Knit Tube Basic Crop Top", "Casual Pleated Crop Tank Top", "Flower Tube Top with Pads",
+            "Hepburn Style Dress Summer Fashion Loose Slimmer", "Green Floral Strappy Dress", "Spring Autumn Sweater Dress", "Summer New Style Polo Color Short Sleeved Dress", "Heavy Industry Three-Dimensional Bow Knot Letter Diamond Dress",
+            "Small Leather Jacket", "Fried Street Yellow Floral Jacket", "Western Style Jacket New French Light Luxury", "Western Style Jacket European Station Spring Autumn", "Black Jacket",
+            "Fashion Trendy Plain Trouser Shorts", "New Taslan Short", "Casual Plain Button Short", "Casual Stripped Lace Up Zipper Short", "High Waisted Loose Fit Slim Stretchable Shorts Bermuda Short",
+            "Mid-waist Relaxed Pants", "Highwaist Pants Denim Ripped Jeans", "Full Length High Rise Wide Leg Jeans", "Highwaist Pants with Belt", "Wide Leg Pants Fashion High Waist Solid Button"
         };
     
         String[] prices = {

@@ -14,6 +14,7 @@ public class ShoppingCartPage extends JPanel {
     private JTable cartTable;
     private double currentBalance = 5000.00;
     private HomePage homePage;
+    private MainContents mainContents; // Added to access MainContents
     private Runnable onAddToCartRedirect;
     private OrderSummaryPage orderSummaryPage;
     private RatingsPage ratingsPage;
@@ -23,14 +24,15 @@ public class ShoppingCartPage extends JPanel {
     private Color lightGray = new Color(211, 211, 211);
     private Color mediumBlue = new Color(125, 125, 200);
 
-    public ShoppingCartPage(HomePage homePage, Runnable onAddToCartRedirect, OrderSummaryPage orderSummaryPage, RatingsPage ratingsPage, Font font) {
+    public ShoppingCartPage(HomePage homePage, MainContents mainContents, Runnable onAddToCartRedirect, OrderSummaryPage orderSummaryPage, RatingsPage ratingsPage, Font font) {
         setLayout(new BorderLayout());
 
         this.homePage = homePage;
+        this.mainContents = mainContents; // Initialize MainContents
         this.onAddToCartRedirect = onAddToCartRedirect;
         this.orderSummaryPage = orderSummaryPage;
         this.ratingsPage = ratingsPage;
-        
+
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(40f);
             GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -39,15 +41,15 @@ public class ShoppingCartPage extends JPanel {
             e.printStackTrace();
             customFont = new Font("Serif", Font.ITALIC, 40);
         }
-        
+
         this.customFont = (font != null) ? font : customFont;
 
         titlePanel = new JPanel();
         titlePanel.setBackground(darkBlue);
         titlePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         titlePanel.setBorder(BorderFactory.createCompoundBorder(
-                             BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray),
-                             BorderFactory.createEmptyBorder(20, 20, 20, 0)));
+                BorderFactory.createMatteBorder(0, 0, 1, 0, lightGray),
+                BorderFactory.createEmptyBorder(20, 20, 20, 0)));
 
         titleLabel = new JLabel(" Shopping Cart");
         titleLabel.setFont(customFont.deriveFont(40f));
@@ -87,8 +89,8 @@ public class ShoppingCartPage extends JPanel {
         addButton.setFocusable(false);
         addButton.setContentAreaFilled(false);
         addButton.setBorder(BorderFactory.createCompoundBorder(
-                           BorderFactory.createLineBorder(lightGray, 1),
-                           BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+                BorderFactory.createLineBorder(lightGray, 1),
+                BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         addButton.addActionListener(e -> addToCart());
         addButton.setOpaque(true);
@@ -122,8 +124,8 @@ public class ShoppingCartPage extends JPanel {
         removeButton.setFocusable(false);
         removeButton.setContentAreaFilled(false);
         removeButton.setBorder(BorderFactory.createCompoundBorder(
-                              BorderFactory.createLineBorder(lightGray, 1),
-                              BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+                BorderFactory.createLineBorder(lightGray, 1),
+                BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         removeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         removeButton.addActionListener(e -> removeFromCart());
         removeButton.setOpaque(true);
@@ -157,8 +159,8 @@ public class ShoppingCartPage extends JPanel {
         placeButton.setFocusable(false);
         placeButton.setContentAreaFilled(false);
         placeButton.setBorder(BorderFactory.createCompoundBorder(
-                               BorderFactory.createLineBorder(lightGray, 1),
-                               BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+                BorderFactory.createLineBorder(lightGray, 1),
+                BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         placeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         placeButton.addActionListener(e -> confirmOrder());
         placeButton.setOpaque(true);
@@ -238,7 +240,7 @@ public class ShoppingCartPage extends JPanel {
             cartTable.getTableHeader().setFont(customFont.deriveFont(20f));
 
             DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer)
-            cartTable.getTableHeader().getDefaultRenderer();
+                    cartTable.getTableHeader().getDefaultRenderer();
             headerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
             cartTable.setBackground(new Color(211, 211, 211));
@@ -251,7 +253,7 @@ public class ShoppingCartPage extends JPanel {
             cartTable.getColumnModel().getColumn(0).setPreferredWidth(120);
             cartTable.getColumnModel().getColumn(1).setPreferredWidth(300);
             cartTable.getColumnModel().getColumn(2).setPreferredWidth(100);
-            cartTable.getColumnModel().getColumn(3).setPreferredWidth(80); 
+            cartTable.getColumnModel().getColumn(3).setPreferredWidth(80);
             cartTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
             tablePane = new JScrollPane(cartTable);
@@ -276,7 +278,7 @@ public class ShoppingCartPage extends JPanel {
     }
 
     private void removeFromCart() {
-        if(cartTable == null || cartTable.getRowCount() == 0) {
+        if (cartTable == null || cartTable.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "There are no items to remove.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -300,48 +302,48 @@ public class ShoppingCartPage extends JPanel {
             }
         }
 
-        if(toRemove.isEmpty()) {
+        if (toRemove.isEmpty()) {
             JOptionPane.showMessageDialog(this, "There are no items to remove.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
         builder.setLength(builder.length() - 2);
-            
+
         JLabel label = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>" + "Are you sure you want to remove " + builder.toString() + " from your cart?" + "</div></html>");
         int confirm = JOptionPane.showConfirmDialog(
-            this,
-            label,
-            "Confirm Removal",
-            JOptionPane.YES_NO_OPTION);
+                this,
+                label,
+                "Confirm Removal",
+                JOptionPane.YES_NO_OPTION);
 
-        if(confirm == JOptionPane.YES_OPTION) {
+        if (confirm == JOptionPane.YES_OPTION) {
             cartItems.removeAll(toRemove);
             refreshCartItems();
 
-        if (cartItems.isEmpty()) {
-            JLabel emptyLabel = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>Your cart is now empty.</div></html>");
-            JOptionPane.showMessageDialog(this, emptyLabel, "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JLabel removedLabel = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>" + builder.toString() + " removed from cart.</div></html>");
-            JOptionPane.showMessageDialog(this, removedLabel, "Items Removed", JOptionPane.INFORMATION_MESSAGE);
+            if (cartItems.isEmpty()) {
+                JLabel emptyLabel = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>Your cart is now empty.</div></html>");
+                JOptionPane.showMessageDialog(this, emptyLabel, "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JLabel removedLabel = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>" + builder.toString() + " removed from cart.</div></html>");
+                JOptionPane.showMessageDialog(this, removedLabel, "Items Removed", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
-}
 
     private void confirmOrder() {
         java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
-        
+
         if (cartItems.isEmpty()) {
             JOptionPane.showMessageDialog(this, "There are no items to be placed.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-    
+
         int[] selectedRows = cartTable.getSelectedRows();
         if (selectedRows.length == 0) {
             JOptionPane.showMessageDialog(this, "Please select at least one item to place.", "No Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
-    
+
         if (orderSummaryPage.isReceiptGenerated()) {
             String message = "You haven't generated a receipt for the previous order yet.";
             String title = "Pending Receipt";
@@ -349,19 +351,19 @@ public class ShoppingCartPage extends JPanel {
 
             int response = JOptionPane.showOptionDialog(this, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
-            if(response == 0) {
-                orderSummaryPage.generateReceipt();;
+            if (response == 0) {
+                orderSummaryPage.generateReceipt();
                 return;
             } else {
                 return;
             }
         }
-        
+
         double subtotal = 0.00;
         java.util.List<MainContents.CartItem> toRemove = new java.util.ArrayList<>();
         Object[][] selectedData = new Object[selectedRows.length][5];
         String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
-    
+
         for (int i = 0; i < selectedRows.length; i++) {
             int row = selectedRows[i];
             if (row >= 0 && row < cartItems.size()) {
@@ -369,49 +371,53 @@ public class ShoppingCartPage extends JPanel {
                 double itemPrice = Double.parseDouble(item.price.replace("₱", "").replace(",", ""));
                 double itemSubtotal = itemPrice * item.quantity;
                 subtotal += itemSubtotal;
-    
-                    selectedData[i][0] = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                    selectedData[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
-                    selectedData[i][2] = item.price;
-                    selectedData[i][3] = item.quantity;
-                    selectedData[i][4] = "₱" + String.format("%,.2f", itemSubtotal);
-    
-                    toRemove.add(item);
-                }
+
+                selectedData[i][0] = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                selectedData[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
+                selectedData[i][2] = item.price;
+                selectedData[i][3] = item.quantity;
+                selectedData[i][4] = "₱" + String.format("%,.2f", itemSubtotal);
+
+                toRemove.add(item);
             }
-    
-            double remainingBalance = currentBalance - subtotal;
-            if (remainingBalance < 0) {
-                JOptionPane.showMessageDialog(this, "Not enough balance!", "Insufficient Funds", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-    
-            String infoMessage = String.format("""
+        }
+
+        double remainingBalance = currentBalance - subtotal;
+        if (remainingBalance < 0) {
+            JOptionPane.showMessageDialog(this, "Not enough balance!", "Insufficient Funds", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String infoMessage = String.format("""
                 Current Balance: ₱%,.2f
                 Item Subtotal: ₱%,.2f
                 After Purchase: ₱%,.2f
-    
+
                 Do you want to place this order?
                 """, currentBalance, subtotal, remainingBalance);
-    
-            int choice = JOptionPane.showConfirmDialog(this, infoMessage, "Order Details", JOptionPane.OK_CANCEL_OPTION);
-    
-            if (choice == JOptionPane.OK_OPTION) {
-                currentBalance = remainingBalance;
-                if (homePage != null) {
-                    homePage.updateBalance(remainingBalance);
-                }
-    
-                orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
-                ratingsPage.displayOrderSummary(selectedData, columnNames, customFont);
-                cartItems.removeAll(toRemove);
-                refreshCartItems();
-                JOptionPane.showMessageDialog(this, "Order placed!", "Order Placed", JOptionPane.INFORMATION_MESSAGE);
-            
-                if (homePage != null) {
-                    homePage.showPanel("OrderSummaryView");
-                    homePage.menuItemWhite("Order Summary");
-                }
+
+        int choice = JOptionPane.showConfirmDialog(this, infoMessage, "Order Details", JOptionPane.OK_CANCEL_OPTION);
+
+        if (choice == JOptionPane.OK_OPTION) {
+            currentBalance = remainingBalance;
+            if (homePage != null) {
+                homePage.updateBalance(remainingBalance);
+            }
+
+            for (MainContents.CartItem item : toRemove) {
+                mainContents.decreaseStock(item.name, item.quantity);
+            }
+
+            orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
+            ratingsPage.displayOrderSummary(selectedData, columnNames, customFont);
+            cartItems.removeAll(toRemove);
+            refreshCartItems();
+            JOptionPane.showMessageDialog(this, "Order placed!", "Order Placed", JOptionPane.INFORMATION_MESSAGE);
+
+            if (homePage != null) {
+                homePage.showPanel("OrderSummaryView");
+                homePage.menuItemWhite("Order Summary");
             }
         }
-    }  
+    }
+}
