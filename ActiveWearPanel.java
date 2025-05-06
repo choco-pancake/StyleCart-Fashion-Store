@@ -339,6 +339,8 @@ public class ActiveWearPanel extends JPanel {
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity);
                 MainContents.getCartItems().add(newItem);
+
+                UIManager.put("OptionPane.messageFont", new Font("SansSerif", Font.PLAIN, 12));
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });

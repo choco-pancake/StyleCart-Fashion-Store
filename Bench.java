@@ -187,11 +187,12 @@ public class Bench extends JPanel {
             "Sleeveless Pullover Top", "Baekhyun Pullover Top", "Everyday Men’s Pullover Top", "Men's Long Sleeved Shirt", "Pokemon Men's Pullover",
             "Men's Jogging Shorts", "Men's Walking Shorts", "Men's Jogging Pants", "Men's Twill Pants", "SB19 Men's Twill Pants",
             
-            "Denim Pants", "Better Made Graphic Shirt", "Everyday Baggy Pants", "Pokemon Graphic Tee", "Sleeveless Top White",
-            "Cropped Plaid Resort Polo", "Oversized Graphic Tee", "Peasant Crop Top", "Puff Sleeve Top", "Scoop Neck Tank Top",
-            "Baggy Pants", "Boxy Resort Shirt", "Collared Top", "Plain Oversized Tee", "Cool Touch Crew Neck Short-sleeved T-Shirt",
-            "Women's Crop Top", "Cropped Logo Tee", "Denim Boxy Cropped Shirt", "Denim Carpenter Pants", "Women's Graphic T-Shirt",
-            "Women's Shift Dress", "Women's Sleeveless Top", "Women's Statement Tee", "Stripped Short Sleeve Polo", "Women's Woven Top"
+            "Better Made Graphic Shirt", "Pokemon Graphic Tee", "Cropped Plaid Resort Polo", "Oversized Graphic Tee", "Peasant Crop Top",
+	        "Puff Sleeve Top", "Boxy Resort Shirt", "Collared Top", "Plain Oversized Tee", "Cool Touch Crew Neck Short-sleeved T-Shirt",
+	        "Women's Crop Top", "Cropped Logo Tee", "Denim Boxy Cropped Shirt", "Women's Graphic T-Shirt", "Women’s K-Heart T-Shirt",
+	        "Oversized Polo Shirt", "Women's Plain Tee", "Women's Polo Shirt", "Women's Statement Tee", "Stripped Short Sleeve Polo",
+	        "Women's Woven Top", "Sleeveless Top White", "Scoop Neck Tank Top", "Women's Sleeveless Top", "Women's Hoodie Jacket",
+	        "Women's Shift Dress", "Denim Pants", "Everyday Baggy Pants", "Baggy Pants", "Denim Carpenter Pants"
         };
        
         String[] prices = {
@@ -202,11 +203,12 @@ public class Bench extends JPanel {
             "₱599", "₱599", "₱599", "₱499", "₱448",
             "₱499", "₱699", "₱499", "₱899", "₱899",
 
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱"
+            "₱321", "₱349", "₱699", "₱349", "₱699",
+            "₱999", "₱899", "₱419", "₱230", "₱230",
+            "₱279", "₱265", "₱899", "₱349", "₱349",
+            "₱321", "₱244", "₱349", "₱307", "₱699",
+            "₱799", "₱160", "₱104", "₱160", "₱539",
+            "₱699", "₱699", "₱799", "₱699", "₱899"
         };
        
         String[] icons = {
@@ -217,12 +219,12 @@ public class Bench extends JPanel {
            "images/benchmen24outerwear.png", "images/benchmen1tops.png", "images/benchmen8outerwear.png", "images/benchmen16outerwear.png", "images/benchmen29outerwear.png",
            "images/benchmen14activewear.png", "images/benchmen28bottoms.png", "images/benchmen13activewear.png", "images/benchmen27bottoms.png", "images/benchmen30bottoms.png",
 
-           "images/benchwomen1bottoms.png", "images/benchwomen2tops.png", "images/benchwomen3bottoms.png", "images/benchwomen4tops.png", "images/benchwomen5tops.png",
-           "images/benchwomen6tops.png", "images/benchwomen7tops.png", "images/benchwomen8tops.png", "images/benchwomen9tops.png", "images/benchwomen10tops.png",
-           "images/benchwomen11bottoms.png", "images/benchwomen12tops.png", "images/benchwomen13tops.png", "images/benchwomen14tops.png", "images/benchwomen15tops.png",
-           "images/benchwomen16tops.png", "images/benchwomen17tops.png", "images/benchwomen18tops.png", "images/benchwomen19bottoms.png", "images/benchwomen20tops.png",
-           "images/benchwomen21tops.png", "images/benchwomen22outerwear.png", "images/benchwomen23tops.png", "images/benchwomen24tops.png", "images/benchwomen25tops.png",
-           "images/benchwomen26dresses.png", "images/benchwomen27tops.png", "images/benchwomen28tops.png", "images/benchwomen29tops.png", "images/benchwomen30tops.png"
+           "images/benchwomen2tops.png", "images/benchwomen4tops.png", "images/benchwomen6tops.png", "images/benchwomen7tops.png", "images/benchwomen8tops.png",
+           "images/benchwomen9tops.png", "images/benchwomen12tops.png", "images/benchwomen13tops.png", "images/benchwomen14tops.png", "images/benchwomen15tops.png",
+           "images/benchwomen16tops.png", "images/benchwomen17tops.png", "images/benchwomen18tops.png", "images/benchwomen20tops.png", "images/benchwomen21tops.png",
+           "images/benchwomen23tops.png", "images/benchwomen24tops.png", "images/benchwomen25tops.png", "images/benchwomen28tops.png", "images/benchwomen29tops.png",
+           "images/benchwomen30tops.png", "images/benchwomen5tops.png", "images/benchwomen10tops.png", "images/benchwomen27tops.png", "images/benchwomen22outerwear.png",
+           "images/benchwomen26dresses.png", "images/benchwomen1bottoms.png", "images/benchwomen3bottoms.png", "images/benchwomen11bottoms.png", "images/benchwomen19bottoms.png"
         };
 
         int[][] brandSize = {
@@ -237,7 +239,8 @@ public class Bench extends JPanel {
             {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
+            {100, 100}, {100, 100}, {80, 100}, {100, 100}, {100, 100},
+            {100, 100}, {80, 100}, {80, 100}, {80, 100}, {80, 100}
         };
  
         for (int i = 0; i < items.length; i++) {

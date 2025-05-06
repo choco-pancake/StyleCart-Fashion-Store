@@ -472,9 +472,9 @@ public class OrderSummaryPage extends JPanel {
 
         placePanel = createTrackingPanel("Order placed", orderPlacedTime.format(formatter));
         sortPanel = createTrackingPanel("At the sorting hub", orderPlacedTime.plusMinutes(1443).format(formatter));
-        courierPanel = createTrackingPanel("On its way to the courier", orderPlacedTime.plusMinutes(2760).format(formatter));
-        collectPanel = createTrackingPanel("Collected by the courier", orderPlacedTime.plusMinutes(2890).format(formatter));
-        shipPanel = createTrackingPanel("Order shipped", orderPlacedTime.plusHours(72).format(formatter));
+        courierPanel = createTrackingPanel("On its way to the courier", orderPlacedTime.plusMinutes(2772).format(formatter));
+        collectPanel = createTrackingPanel("Collected by the courier", orderPlacedTime.plusMinutes(2887).format(formatter));
+        shipPanel = createTrackingPanel("Order shipped", orderPlacedTime.plusMinutes(4336).format(formatter));
         deliverPanel = createTrackingPanel("Delivery will be attempted", orderPlacedTime.plusMinutes(4440).format(formatter));
         receivePanel = createTrackingPanel("Order received", "");
         receivePanel.setCircleColor(red); 
