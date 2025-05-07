@@ -164,23 +164,6 @@ public class HomePage extends JFrame {
             cardLayout.show(contentPanel, "MainView");
         }, orderSummaryPage, ratingsPage, customFont);
 
-        homeContent.setOnBrandViewClick(() -> {
-            boolean bnyExists = false;
-            for (Component comp : contentPanel.getComponents()) {
-                if (comp instanceof BNY) {
-                    bnyExists = true;
-                    break;
-                }
-            }
-            if (!bnyExists) {
-                BNY bnyPanel = new BNY(cardLayout, contentPanel, new Color(173, 216, 230), Color.WHITE, new Color(0, 0, 139), Color.BLACK, new Color(211, 211, 211), new Color(169, 169, 169), new Color(0, 0, 0, 0), customFont.deriveFont(16f), customFont.deriveFont(16f));
-                contentPanel.add(bnyPanel, "BNY");
-            }
-            cardLayout.show(contentPanel, "BNY");
-            contentPanel.revalidate();
-            contentPanel.repaint();
-        });
-
         homeContent.setOnViewCartClick(() -> {
             cartPage.showCart();
             menuItemWhite("Shopping Cart");

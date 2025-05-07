@@ -180,15 +180,29 @@ public class Lee extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         String[] items = {
-            "Button Down Polo", "Colored Shorts for Men", "Cut and Sew T-Shirt", "Embossed Logo T-Shirt Euro Fit", "Embossed Logo T-Shirt (Black)",
-            "Euro Fit Logo T-Shirt (Beige)", "Euro Fit T-Shirt", "Fits 'Em All French Terry Vest", "Fits 'Em All Logo Sweat Short (Oxford Blue)", "Fits 'Em All Logo Sweat Short (White)",
-            "Fits 'Em All Yarn Dyed Stripes Tee", "Graphic T-Shirt (Rust)", "Graphic T-Shirt (Stretchable Fabric)", "Graphic Tee for Men", "Graphic X-line T-Shirt",
-            "Logo T-Shirt for Men", "Loose Fits 'Em All Sweatshirt Hoodie", "Embossed Logo T-Shirt (Navy Blue)", "Oversized T-Shirt (Embroidered Logo)", "Oversized T-Shirt (Shitake)",
+            "Button Down Polo", "Cut and Sew T-Shirt", "Embossed Logo T-Shirt Euro Fit", "Embossed Logo T-Shirt (Black)", "Euro Fit Logo T-Shirt (Beige)",
+            "Euro Fit T-Shirt", "Fits 'Em All Yarn Dyed Stripes Tee", "Graphic T-Shirt (Rust)", "Graphic T-Shirt (Stretchable Fabric)", "Graphic Tee for Men",
+            "Graphic X-line T-Shirt", "Logo T-Shirt for Men", "Embossed Logo T-Shirt (Navy Blue)", "Oversized T-Shirt (Embroidered Logo)", "Oversized T-Shirt (Shitake)",
             "Polo Shirt Short Sleeve", "Polo Shirt Stripe Euro Fit", "Polo Shirt Stripes (Black and Yellow)", "Polo Shirt Stripes (Black and White)", "Regular Fit Raglan T-Shirt",
-            "Small Logo T-Shirt (Gray Ridge)", "Small Logo T-Shirt (Indigo)", "Stripes with Jacquard T-Shirt", "Tie dye T-Shirt", "Xline Graphic O-Neck T-Shirt"
+            "Small Logo T-Shirt (Gray Ridge)", "Small Logo T-Shirt (Indigo)", "Stripes with Jacquard T-Shirt", "Tie dye T-Shirt", "Xline Graphic O-Neck T-Shirt",
+            "Fits 'Em All French Terry Vest", "Loose Fits 'Em All Sweatshirt Hoodie", "Colored Shorts for Men", "Fits 'Em All Logo Sweat Short (Oxford Blue)", "Fits 'Em All Logo Sweat Short (White)",
+            
+            "Wide Leg Jeans", "Basic Tee for Women", "Cargo Shorts", "Contrast Combination Printed Logo Top", "Easy Shorts (Sea Green)",
+            "Easy Shorts (Waffle Fabric)", "Embossed Logo Tee Roundneck", "Embroidered Logo Tee", "Fits 'Em All French Terry Vest", "Fits 'Em All Logo Sweat Short",
+            "Fits 'Em All Oversized Polo Shirt", "High Neck Sleeveless Tops", "High Waist Shorts", "Logo Tee for Women", "Logo T-Shirt for Women",
+            "Modified Woven Blouse", "Modified Woven Blouse (Twill)", "Oversized Warm Beige Xline Graphic Tee", "Rhinestone Logo Tee", "Small Logo Tee",
+            "T-Crop Blouse Round-neck", "Trouser for Women (Arona)", "Trousers for Women", "Wide Leg Pants", "Wide Leg Straight Pants",
+            "Wide Leg Straight Pants for Women", "Woven Polo White", "Xline Cropped Tee", "Xline Croptop", "Xline Wide Leg Ultimate High Waist Gray Pants"
         };
-       
+    
         String[] prices = {
+            "₱951", "₱890", "₱890", "₱890", "₱890",
+            "₱890", "₱532", "₱890", "₱790", "₱890",
+            "₱600", "₱890", "₱890", "₱700", "₱990",
+            "₱499", "₱490", "₱799", "₱900", "₱990",
+            "₱990", "₱990", "₱990", "₱790", "₱550",
+            "₱855", "₱799", "₱900", "₱950", "₱723",
+
             "₱", "₱", "₱", "₱", "₱",
             "₱", "₱", "₱", "₱", "₱",
             "₱", "₱", "₱", "₱", "₱",
@@ -196,30 +210,44 @@ public class Lee extends JPanel {
             "₱", "₱", "₱", "₱", "₱",
             "₱", "₱", "₱", "₱", "₱"
         };
-       
+    
         String[] icons = {
-           "images/leemen1.png", "images/leemen2.png", "images/leemen3.png", "images/leemen4.png", "images/leemen5.png",
-           "images/leemen6.png", "images/leemen7.png", "images/leemen8.png", "images/leemen9.png", "images/leemen10.png",
-           "images/leemen11.png", "images/leemen12.png", "images/leemen13.png", "images/leemen14.png", "images/leemen15.png",
-           "images/leemen16.png", "images/leemen17.png", "images/leemen18.png", "images/leemen19.png", "images/leemen20.png",
-           "images/leemen21.png", "images/leemen22.png", "images/leemen23.png", "images/leemen24.png", "images/leemen25.png",
-           "images/leemen26.png", "images/leemen27.png", "images/leemen28.png", "images/leemen29.png", "images/leemen30.png"
+            "images/leemen1tops.png", "images/leemen3tops.png", "images/leemen4tops.png", "images/leemen5tops.png", "images/leemen6tops.png",
+            "images/leemen7tops.png", "images/leemen11tops.png", "images/leemen12tops.png", "images/leemen13tops.png", "images/leemen14tops.png",
+            "images/leemen15tops.png", "images/leemen16tops.png", "images/leemen18tops.png", "images/leemen19tops.png", "images/leemen20tops.png",
+            "images/leemen21tops.png", "images/leemen22tops.png", "images/leemen23tops.png", "images/leemen24tops.png", "images/leemen25tops.png",
+            "images/leemen26tops.png", "images/leemen27tops.png", "images/leemen28tops.png", "images/leemen29tops.png", "images/leemen30tops.png",
+            "images/leemen8tops.png", "images/leemen17outerwear.png", "images/leemen2bottoms.png", "images/leemen9bottoms.png", "images/leemen10activewear.png",
+
+            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png",
+            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png",
+            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png",
+            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png",
+            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png",
+            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png"
         };
 
         int[][] brandSize = {
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
+            {80, 100}, {80, 100}, {80, 100}, {80, 100}, {80, 100},
+            {100, 100}, {80, 100}, {80, 100}, {80, 100}, {80, 100},
+            {80, 100}, {80, 100}, {80, 100}, {80, 100}, {80, 100},
+            {80, 100}, {80, 100}, {80, 100}, {80, 100}, {80, 100},
+            {80, 100}, {80, 100}, {80, 100}, {80, 100}, {100, 100},
+            {80, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+
+            {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}
         };
  
         for (int i = 0; i < items.length; i++) {
             if (i < 30) {
-                menPanel.add(createBenchItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                menPanel.add(createLeeItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
             } else {
-                womenPanel.add(createBenchItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                womenPanel.add(createLeeItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
             }
         }
 
@@ -236,7 +264,7 @@ public class Lee extends JPanel {
         mainPanel.add(sectionContainer, BorderLayout.CENTER);
     }
 
-    private JPanel createBenchItem(String item, String price, String icon, int width, int height) {
+    private JPanel createLeeItem(String item, String price, String icon, int width, int height) {
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BorderLayout());
         itemPanel.setPreferredSize(new Dimension(230, 270));
@@ -336,7 +364,7 @@ public class Lee extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity);
+                MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }

@@ -220,12 +220,11 @@ public class BNY extends JPanel {
             "images/bnymen20bottoms.png", "images/bnymen21bottoms.png","images/bnymen24bottoms.png",  "images/bnymen26bottoms.png", "images/bnymen27bottoms.png",
 
             "images/bnywomen2tops.png", "images/bnywomen11tops.png", "images/bnywomen15tops.png", "images/bnywomen21tops.png", "images/bnywomen22tops.png",
-	        "images/bnywomen27tops.png", "images/bnywomen1tops.png", "images/bnywomen13tops.png", "images/bnywomen19tops.png", "images/bnywomen26tops.png",
-	        "images/bnywomen4dresses.png", "images/bnywomen6dresses.png", "images/bnywomen14dresses.png", "images/bnywomen24dresses.png", "images/bnywomen25dresses.png",
-	        "images/bnywomen5outerwear.png","images/bnywomen9outerwear.png", "images/bnywomen16outerwear.png", "images/bnywomen17outerwear.png", "images/bnywomen28outerwear.png",
-	        "images/bnywomen3bottoms.png", "images/bnywomen10activewear.png", "images/bnywomen18bottoms.png", "images/bnywomen20bottoms.png", "images/bnywomen23bottoms.png",
-	        "images/bnywomen7bottoms.png", "images/bnywomen8bottoms.png", "images/bnywomen12bottoms.png", "images/bnywomen29bottoms.png", "images/bnywomen30bottoms.png"
-
+            "images/bnywomen27tops.png", "images/bnywomen1tops.png", "images/bnywomen13tops.png", "images/bnywomen19tops.png", "images/bnywomen26tops.png",
+            "images/bnywomen4dresses.png", "images/bnywomen6dresses.png", "images/bnywomen14dresses.png", "images/bnywomen24dresses.png", "images/bnywomen25dresses.png",
+            "images/bnywomen5outerwear.png","images/bnywomen9outerwear.png", "images/bnywomen16outerwear.png", "images/bnywomen17outerwear.png", "images/bnywomen28outerwear.png",
+            "images/bnywomen3bottoms.png", "images/bnywomen10activewear.png", "images/bnywomen18bottoms.png", "images/bnywomen20bottoms.png", "images/bnywomen23bottoms.png",
+            "images/bnywomen7bottoms.png", "images/bnywomen8bottoms.png", "images/bnywomen12bottoms.png", "images/bnywomen29bottoms.png", "images/bnywomen30bottoms.png"
         };
 
         int[][] brandSize = {
@@ -244,8 +243,8 @@ public class BNY extends JPanel {
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
         };
 
-        for (int i = 0; i < 60; i++) {
-            if(i < 30) {
+        for (int i = 0; i < items.length; i++) {
+            if (i < 30) {
                 menPanel.add(createBNYItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
             } else {
                 womenPanel.add(createBNYItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
@@ -365,7 +364,7 @@ public class BNY extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity);
+                MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }

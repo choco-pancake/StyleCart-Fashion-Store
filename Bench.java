@@ -16,7 +16,7 @@ public class Bench extends JPanel {
     private JScrollPane scrollPane;
 
     public Bench(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white, Color darkerBlue, Color black, Color lightGray, Color darkGray, 
-               Color none, Font itemFont, Font dropdownFont) {
+                 Color none, Font itemFont, Font dropdownFont) {
         this.cardLayout = cardLayout;
         this.contentPanel = contentPanel;
         this.lightBlue = lightBlue;
@@ -188,11 +188,11 @@ public class Bench extends JPanel {
             "Men's Jogging Shorts", "Men's Walking Shorts", "Men's Jogging Pants", "Men's Twill Pants", "SB19 Men's Twill Pants",
             
             "Better Made Graphic Shirt", "Pokemon Graphic Tee", "Cropped Plaid Resort Polo", "Oversized Graphic Tee", "Peasant Crop Top",
-	        "Puff Sleeve Top", "Boxy Resort Shirt", "Collared Top", "Plain Oversized Tee", "Cool Touch Crew Neck Short-sleeved T-Shirt",
-	        "Women's Crop Top", "Cropped Logo Tee", "Denim Boxy Cropped Shirt", "Women's Graphic T-Shirt", "Women’s K-Heart T-Shirt",
-	        "Oversized Polo Shirt", "Women's Plain Tee", "Women's Polo Shirt", "Women's Statement Tee", "Stripped Short Sleeve Polo",
-	        "Women's Woven Top", "Sleeveless Top White", "Scoop Neck Tank Top", "Women's Sleeveless Top", "Women's Hoodie Jacket",
-	        "Women's Shift Dress", "Denim Pants", "Everyday Baggy Pants", "Baggy Pants", "Denim Carpenter Pants"
+            "Puff Sleeve Top", "Boxy Resort Shirt", "Collared Top", "Plain Oversized Tee", "Cool Touch Crew Neck Short-sleeved T-Shirt",
+            "Women's Crop Top", "Cropped Logo Tee", "Denim Boxy Cropped Shirt", "Women's Graphic T-Shirt", "Women’s K-Heart T-Shirt",
+            "Oversized Polo Shirt", "Women's Plain Tee", "Women's Polo Shirt", "Women's Statement Tee", "Stripped Short Sleeve Polo",
+            "Women's Woven Top", "Sleeveless Top White", "Scoop Neck Tank Top", "Women's Sleeveless Top", "Women's Hoodie Jacket",
+            "Women's Shift Dress", "Denim Pants", "Everyday Baggy Pants", "Baggy Pants", "Denim Carpenter Pants"
         };
        
         String[] prices = {
@@ -364,7 +364,7 @@ public class Bench extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity);
+                MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }

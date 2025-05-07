@@ -12,9 +12,9 @@ public class ShoppingCartPage extends JPanel {
     private JPanel orderPanel, titlePanel, buttonPanel;
     private JButton addButton, removeButton, placeButton;
     private JTable cartTable;
-    private double currentBalance = 5000.00;
+    private double currentBalance = 10000.00;
     private HomePage homePage;
-    private MainContents mainContents; // Added to access MainContents
+    private MainContents mainContents;
     private Runnable onAddToCartRedirect;
     private OrderSummaryPage orderSummaryPage;
     private RatingsPage ratingsPage;
@@ -28,7 +28,7 @@ public class ShoppingCartPage extends JPanel {
         setLayout(new BorderLayout());
 
         this.homePage = homePage;
-        this.mainContents = mainContents; // Initialize MainContents
+        this.mainContents = mainContents;
         this.onAddToCartRedirect = onAddToCartRedirect;
         this.orderSummaryPage = orderSummaryPage;
         this.ratingsPage = ratingsPage;
@@ -215,7 +215,7 @@ public class ShoppingCartPage extends JPanel {
 
             for (int i = 0; i < currentItems.size(); i++) {
                 MainContents.CartItem item = currentItems.get(i);
-                ImageIcon itemIcon = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                ImageIcon itemIcon = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(item.iconWidth, item.iconHeight, Image.SCALE_SMOOTH));
                 data[i][0] = itemIcon;
                 data[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
                 data[i][2] = item.price;
@@ -240,7 +240,7 @@ public class ShoppingCartPage extends JPanel {
             cartTable.getTableHeader().setFont(customFont.deriveFont(20f));
 
             DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer)
-                    cartTable.getTableHeader().getDefaultRenderer();
+            cartTable.getTableHeader().getDefaultRenderer();
             headerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
             cartTable.setBackground(new Color(211, 211, 211));

@@ -210,18 +210,27 @@ public class ActiveWearPanel extends JPanel {
         };
 
         String[] icons = {
-            "images/featuredAdidas1.png", "images/featuredAdidas3.png", "images/featuredAdidas2.png", "images/adidasMenActiveWear1.png", "images/adidasMenActiveWear2.png",
-            "images/adidasMenActiveWear3.png", "images/adidasMenActiveWear4.png", "images/adidasWomenActiveWear1.png", "images/adidasMenActiveWear5.png", "images/adidasWomenActiveWear2.png",
-            "images/adidasMenActiveWear6.png", "images/adidasMenActiveWear7.png", "images/adidasWomenActiveWear3.png", "images/adidasMenActiveWear8.png", "images/adidasWomenActiveWear4.png",
-            "images/adidasWomenActiveWear5.png", "images/adidasWomenActiveWear6.png", "images/adidasWomenActiveWear7.png", "images/adidasWomenActiveWear8.png", "images/adidasWomenActiveWear9.png",
-            "images/adidasWomenActiveWear10.png", "images/adidasMenActiveWear9.png", "images/adidasMenActiveWear10.png", "images/adidasMenActiveWear11.png", "images/adidasMenActiveWear12.png"
+            "", "", "", "", "",
+            "", "", "", "", "",
+            "", "", "", "", "",
+            "", "", "", "", "",
+            "", "", "", "", "",
+            "", "", "", "", ""
         };
 
-        for (int i = 0; i < 25; i++) {
+        int[][] brandSize = {
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
+        };
+
+        for (int i = 0; i < items.length; i++) {
             if (i < 12) {
-                menPanel.add(createActiveWearItem(items[i], prices[i], tags[i], icons[i]));
+                menPanel.add(createActiveWearItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));
             } else {
-                womenPanel.add(createActiveWearItem(items[i], prices[i], tags[i], icons[i]));
+                womenPanel.add(createActiveWearItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));
             }
         }
 
@@ -238,7 +247,7 @@ public class ActiveWearPanel extends JPanel {
         mainPanel.add(sectionContainer, BorderLayout.CENTER);
     }
 
-    private JPanel createActiveWearItem(String item, String price, String tag, String icon) {
+    private JPanel createActiveWearItem(String item, String price, String tag, String icon, int width, int height) {
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BorderLayout());
         itemPanel.setPreferredSize(new Dimension(230, 300));
@@ -251,10 +260,27 @@ public class ActiveWearPanel extends JPanel {
         itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
         itemDetailsPanel.setOpaque(false);
 
-        ImageIcon itemIcon = new ImageIcon(icon);
-        Image scaledImage = itemIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon itemIcon = null;
+        try {
+            itemIcon = new ImageIcon(getClass().getResource("/" + icon));
+            if (itemIcon.getIconWidth() == -1) {
+                itemIcon = null;
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading image: " + icon);
+            e.printStackTrace();
+        }
 
-        JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
+        JLabel iconLabel;
+        if (itemIcon != null) {
+            Image scaledImage = itemIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            iconLabel = new JLabel(new ImageIcon(scaledImage));
+        } else {
+            iconLabel = new JLabel("No Image");
+            iconLabel.setFont(itemFont);
+            iconLabel.setForeground(black);
+            iconLabel.setPreferredSize(new Dimension(width, height));
+        }
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JTextPane namePane = new JTextPane();
@@ -337,7 +363,7 @@ public class ActiveWearPanel extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity);
+                MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
 
                 UIManager.put("OptionPane.messageFont", new Font("SansSerif", Font.PLAIN, 12));

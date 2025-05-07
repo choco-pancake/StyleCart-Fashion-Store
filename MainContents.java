@@ -44,13 +44,17 @@ public class MainContents extends JPanel {
         String size;
         String iconPath;
         int quantity;
+        int iconWidth;
+        int iconHeight;
 
-        public CartItem(String name, String price, String size, String iconPath, int quantity) {
+        public CartItem(String name, String price, String size, String iconPath, int quantity, int iconWidth, int iconHeight) {
             this.name = name;
             this.price = price;
             this.size = size;
             this.iconPath = iconPath;
             this.quantity = quantity;
+            this.iconWidth = iconWidth;
+            this.iconHeight = iconHeight;
         }
     }
 
@@ -155,7 +159,7 @@ public class MainContents extends JPanel {
                 String itemName = addButton.getClientProperty("itemName").toString();
                 String price = addButton.getClientProperty("price").toString();
                 String iconPath = addButton.getClientProperty("iconPath").toString();
-                cartItems.add(new CartItem(itemName, price, selectedSize, iconPath, selectedQuantity));
+                cartItems.add(new CartItem(itemName, price, selectedSize, iconPath, selectedQuantity, 100, 100));
                 JOptionPane.showMessageDialog(null, itemName + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });
@@ -198,9 +202,14 @@ public class MainContents extends JPanel {
         contentPanel = new JPanel(cardLayout);
         contentPanel.add(scrollPane, "MainView");
 
-        // Add Bench panel to contentPanel
+        BNY bnyPanel = new BNY(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        contentPanel.add(bnyPanel, "BNYView");
+
         Bench benchPanel = new Bench(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(benchPanel, "BenchView");
+
+        Lee leePanel = new Lee(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        contentPanel.add(leePanel, "LeeView");
 
         createGreeting();
         createCategory();
@@ -609,7 +618,7 @@ public class MainContents extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                cartItems.add(new CartItem(item, price, selectedSize, icon, selectedQuantity));
+                cartItems.add(new CartItem(item, price, selectedSize, icon, selectedQuantity, 100, 100));
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });
@@ -747,14 +756,18 @@ public class MainContents extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (brandName.equals("Bench")) {
+                if (brandName.equals("BNY")) {
+                    cardLayout.show(contentPanel, "BNYView");
+                    contentPanel.revalidate();
+                    contentPanel.repaint();
+                } else if (brandName.equals("Bench")) {
                     cardLayout.show(contentPanel, "BenchView");
                     contentPanel.revalidate();
                     contentPanel.repaint();
-                } else if (brandName.equals("BNY")) {
-                    if (onBrandViewClick != null) {
-                        onBrandViewClick.run();
-                    }
+                } else if(brandName.equals("Lee")) {
+                    cardLayout.show(contentPanel, "LeeView");
+                    contentPanel.revalidate();
+                    contentPanel.repaint();
                 }
             }
         });
