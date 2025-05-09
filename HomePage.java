@@ -29,7 +29,7 @@ public class HomePage extends JFrame {
     private Color black = Color.BLACK;
 
     public HomePage() {
-        setTitle("Home");
+        setTitle("StyleCart");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -46,11 +46,10 @@ public class HomePage extends JFrame {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(30f);
             GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
             environment.registerFont(customFont);
-
             customFont2 = customFont.deriveFont(20f);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
-            customFont = new Font("Serif", Font.ITALIC, 40);
+            customFont = new Font("SansSerif", Font.PLAIN, 30);
             customFont2 = customFont.deriveFont(20f);
         }
 
@@ -114,12 +113,12 @@ public class HomePage extends JFrame {
         for (String[] item : menuItems) {
             String name = item[0];
             String[] iconPaths = item[1].split(", ");
-            String blackIconPath = iconPaths[0];
+            String brownIconPath = iconPaths[0];
             String whiteIconPath = iconPaths[1];
 
-            ImageIcon blackIcon = getScaledIcon(blackIconPath, 30, 30);
+            ImageIcon brownIcon = getScaledIcon(brownIconPath, 30, 30);
             ImageIcon whiteIcon = getScaledIcon(whiteIconPath, 30, 30);
-            iconMap.put(name, new ImageIcon[]{blackIcon, whiteIcon});
+            iconMap.put(name, new ImageIcon[]{brownIcon, whiteIcon});
 
             menuItemPanel = createMenuItemPanel(name);
             sidePanel.add(menuItemPanel);
@@ -137,7 +136,7 @@ public class HomePage extends JFrame {
                 moneyLabel.setForeground(black);
                 moneyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                numberLabel = new JLabel("₱10,000.00"); 
+                numberLabel = new JLabel("₱10,000.00");
                 numberLabel.setFont(customFont.deriveFont(25f));
                 numberLabel.setForeground(black);
                 numberLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -154,15 +153,19 @@ public class HomePage extends JFrame {
         contentPanel = new JPanel(cardLayout);
         contentPanel.setBackground(new Color(245, 245, 245));
 
-        orderSummaryPage = new OrderSummaryPage();
+        MainContents homeContent = new MainContents();
+        orderSummaryPage = new OrderSummaryPage(cardLayout, contentPanel);
         ratingsPage = new RatingsPage();
         helpPage = new HelpPage();
-
-        MainContents homeContent = new MainContents();
         cartPage = new ShoppingCartPage(this, homeContent, () -> {
             menuItemWhite("Home");
             cardLayout.show(contentPanel, "MainView");
         }, orderSummaryPage, ratingsPage, customFont);
+
+        homeContent.setOnBrandViewClick(() -> {
+            menuItemWhite("Home");
+            cardLayout.show(contentPanel, "MainView");
+        });
 
         homeContent.setOnViewCartClick(() -> {
             cartPage.showCart();
@@ -188,7 +191,7 @@ public class HomePage extends JFrame {
 
     class RoundedPanel extends JPanel {
         private Color backgroundColor;
-        private int cornerRadius = 15;
+        private int cornerRadius;
 
         public RoundedPanel(Color bgColor, int radius) {
             this.backgroundColor = bgColor;
@@ -203,7 +206,7 @@ public class HomePage extends JFrame {
             Graphics2D graphics2d = (Graphics2D) g;
             graphics2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics2d.setColor(backgroundColor);
-            graphics2d.fillRoundRect(0, 0, getWidth(), getHeight(), arcs.width, arcs.height);
+            graphics2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, arcs.width, arcs.height);
         }
     }
 
@@ -225,11 +228,10 @@ public class HomePage extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0);
 
         ImageIcon[] icons = iconMap.get(text);
-        ImageIcon blackIcon = icons[0];
+        ImageIcon brownIcon = icons[0];
 
-        JLabel sideLabel = new JLabel(text, blackIcon, JLabel.LEFT);
-        sideLabel.setFont(customFont);
-        sideLabel.setFont(new Font(null, Font.PLAIN, 17));
+        JLabel sideLabel = new JLabel(text, brownIcon, JLabel.LEFT);
+        sideLabel.setFont(customFont.deriveFont(17f));
         sideLabel.setForeground(white);
         sideLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
@@ -245,7 +247,6 @@ public class HomePage extends JFrame {
                     break;
                 case "Shopping Cart":
                     cartPage.showCart();
-                    menuItemWhite("Shopping Cart");
                     cardLayout.show(contentPanel, "CartView");
                     break;
                 case "Order Summary":
@@ -295,7 +296,7 @@ public class HomePage extends JFrame {
             return new ImageIcon(scaled);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ImageIcon(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)); // Fallback empty icon
         }
     }
 
@@ -309,8 +310,6 @@ public class HomePage extends JFrame {
                 entryPanel.setOpaque(true);
                 entryLabel.setForeground(gray);
                 entryLabel.setIcon(iconMap.get(entry.getKey())[1]);
-                entryPanel.setPreferredSize(entryLabel.getPreferredSize());
-                entryPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, entryLabel.getPreferredSize().height));
             } else {
                 entryPanel.setBackground(null);
                 entryPanel.setOpaque(false);
@@ -334,7 +333,6 @@ public class HomePage extends JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             new HomePage();
         });
     }

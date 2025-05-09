@@ -187,12 +187,12 @@ public class Lee extends JPanel {
             "Small Logo T-Shirt (Gray Ridge)", "Small Logo T-Shirt (Indigo)", "Stripes with Jacquard T-Shirt", "Tie dye T-Shirt", "Xline Graphic O-Neck T-Shirt",
             "Fits 'Em All French Terry Vest", "Loose Fits 'Em All Sweatshirt Hoodie", "Colored Shorts for Men", "Fits 'Em All Logo Sweat Short (Oxford Blue)", "Fits 'Em All Logo Sweat Short (White)",
             
-            "Wide Leg Jeans", "Basic Tee for Women", "Cargo Shorts", "Contrast Combination Printed Logo Top", "Easy Shorts (Sea Green)",
-            "Easy Shorts (Waffle Fabric)", "Embossed Logo Tee Roundneck", "Embroidered Logo Tee", "Fits 'Em All French Terry Vest", "Fits 'Em All Logo Sweat Short",
-            "Fits 'Em All Oversized Polo Shirt", "High Neck Sleeveless Tops", "High Waist Shorts", "Logo Tee for Women", "Logo T-Shirt for Women",
-            "Modified Woven Blouse", "Modified Woven Blouse (Twill)", "Oversized Warm Beige Xline Graphic Tee", "Rhinestone Logo Tee", "Small Logo Tee",
-            "T-Crop Blouse Round-neck", "Trouser for Women (Arona)", "Trousers for Women", "Wide Leg Pants", "Wide Leg Straight Pants",
-            "Wide Leg Straight Pants for Women", "Woven Polo White", "Xline Cropped Tee", "Xline Croptop", "Xline Wide Leg Ultimate High Waist Gray Pants"
+	        "Basic Tee for Women", "Contrast Combination Printed Logo Top", "Embossed Logo Tee Roundneck", "Embroidered Logo Tee", "Fits 'Em All Oversized Polo Shirt",
+	        "Logo Tee for Women", "Logo T-Shirt for Women", "Modified Woven Blouse", "Modified Woven Blouse (Twill)", "Oversized Warm Beige Xline Graphic Tee",
+	        "Rhinestone Logo Tee", "Small Logo Tee", "T-Crop Blouse Round-neck", "Xline Cropped Tee", "Xline Croptop",
+	        "Fits 'Em All French Terry Vest", "High Neck Sleeveless Tops", "Woven Polo White", "Cargo Shorts", "Easy Shorts (Sea Green)",
+	        "Easy Shorts (Waffle Fabric)", "Fits 'Em All Logo Sweat Short", "High Waist Shorts", "Wide Leg Jeans", "Trouser for Women (Arona)",
+	        "Trousers for Women", "Wide Leg Pants", "Wide Leg Straight Pants", "Wide Leg Straight Pants for Women", "Xline Wide Leg Ultimate High Waist Gray Pants"
         };
     
         String[] prices = {
@@ -203,14 +203,14 @@ public class Lee extends JPanel {
             "₱990", "₱990", "₱990", "₱790", "₱550",
             "₱855", "₱799", "₱900", "₱950", "₱723",
 
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱"
+            "₱690", "₱790", "₱790", "₱690", "₱877",
+            "₱690", "₱790", "₱890", "₱890", "₱690",
+            "₱690", "₱690", "₱645", "₱350", "₱350",
+            "₱900", "₱590", "₱990", "₱623", "₱890",
+            "₱790", "₱723", "₱990", "₱973", "₱810",
+            "₱810", "₱810", "₱810", "₱923", "₱800"
         };
-    
+
         String[] icons = {
             "images/leemen1tops.png", "images/leemen3tops.png", "images/leemen4tops.png", "images/leemen5tops.png", "images/leemen6tops.png",
             "images/leemen7tops.png", "images/leemen11tops.png", "images/leemen12tops.png", "images/leemen13tops.png", "images/leemen14tops.png",
@@ -219,12 +219,12 @@ public class Lee extends JPanel {
             "images/leemen26tops.png", "images/leemen27tops.png", "images/leemen28tops.png", "images/leemen29tops.png", "images/leemen30tops.png",
             "images/leemen8tops.png", "images/leemen17outerwear.png", "images/leemen2bottoms.png", "images/leemen9bottoms.png", "images/leemen10activewear.png",
 
-            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png",
-            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png",
-            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png",
-            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png",
-            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png",
-            "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png", "images/leewomen.png"
+            "images/leewomen2tops.png", "images/leewomen4tops.png", "images/leewomen7tops.png", "images/leewomen8tops.png", "images/leewomen11tops.png", 
+            "images/leewomen14tops.png", "images/leewomen15tops.png", "images/leewomen16tops.png", "images/leewomen17tops.png", "images/leewomen18tops.png",
+            "images/leewomen19tops.png", "images/leewomen20tops.png", "images/leewomen21tops.png", "images/leewomen28tops.png", "images/leewomen29tops.png",
+            "images/leewomen9tops.png", "images/leewomen12tops.png", "images/leewomen27tops.png", "images/leewomen3bottoms.png", "images/leewomen5activewear.png",
+            "images/leewomen6activewear.png", "images/leewomen10bottoms.png", "images/leewomen13bottoms.png", "images/leewomen1bottoms.png", "images/leewomen22bottoms.png.",
+            "images/leewomen23bottoms.png", "images/leewomen24bottoms.png", "images/leewomen25bottoms.png", "images/leewomen26bottoms.png", "images/leewomen30bottoms.png"
         };
 
         int[][] brandSize = {
@@ -235,12 +235,12 @@ public class Lee extends JPanel {
             {80, 100}, {80, 100}, {80, 100}, {80, 100}, {100, 100},
             {80, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
 
-            {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}
+            {80, 100}, {80, 100}, {80, 100}, {100, 100}, {100, 100},
+            {90, 100}, {90, 100}, {80, 100}, {80, 100}, {100, 100},
+            {90, 100}, {90, 100}, {90, 100}, {100, 100}, {100, 100},
+            {90, 100}, {100, 100}, {80, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {60, 100}, {60, 100},
+            {60, 100}, {50, 100}, {60, 100}, {60, 100}, {60, 100}
         };
  
         for (int i = 0; i < items.length; i++) {

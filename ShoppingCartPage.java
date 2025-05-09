@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShoppingCartPage extends JPanel {
     private Font customFont;
@@ -39,7 +41,7 @@ public class ShoppingCartPage extends JPanel {
             environment.registerFont(customFont);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
-            customFont = new Font("Serif", Font.ITALIC, 40);
+            customFont = new Font("SansSerif", Font.PLAIN, 40);
         }
 
         this.customFont = (font != null) ? font : customFont;
@@ -201,34 +203,38 @@ public class ShoppingCartPage extends JPanel {
     public void refreshCartItems() {
         orderPanel.removeAll();
 
-        java.util.List<MainContents.CartItem> currentItems = MainContents.getCartItems();
+        List<MainContents.CartItem> currentItems = MainContents.getCartItems();
 
         if (currentItems.isEmpty()) {
             emptyLabel = new JLabel("Your cart is empty.");
-            emptyLabel.setFont(new Font(null, Font.BOLD, 20));
+            emptyLabel.setFont(new Font(null, Font.BOLD, 25));
             emptyLabel.setForeground(white);
             emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            orderPanel.add(Box.createVerticalGlue());
             orderPanel.add(emptyLabel);
+            orderPanel.add(Box.createVerticalGlue());
         } else {
             String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
             Object[][] data = new Object[currentItems.size()][5];
 
             for (int i = 0; i < currentItems.size(); i++) {
                 MainContents.CartItem item = currentItems.get(i);
-                ImageIcon itemIcon = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(item.iconWidth, item.iconHeight, Image.SCALE_SMOOTH));
+                ImageIcon itemIcon = new ImageIcon(new ImageIcon(item.getIconPath()).getImage().getScaledInstance(item.getIconWidth(), item.getIconHeight(), Image.SCALE_SMOOTH));
                 data[i][0] = itemIcon;
-                data[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
-                data[i][2] = item.price;
-                data[i][3] = item.quantity;
-                double price = Double.parseDouble(item.price.replace("₱", "").replace(",", ""));
-                data[i][4] = "₱" + String.format("%,.2f", price * item.quantity);
+                data[i][1] = String.format("<html>%s<br>Size: %s</html>", item.getName(), item.getSize());
+                data[i][2] = item.getPrice();
+                data[i][3] = item.getQuantity();
+                double price = Double.parseDouble(item.getPrice().replace("₱", "").replace(",", ""));
+                data[i][4] = "₱" + String.format("%,.2f", price * item.getQuantity());
             }
 
             cartTable = new JTable(data, columnNames) {
+                @Override
                 public boolean isCellEditable(int row, int col) {
                     return false;
                 }
 
+                @Override
                 public Class<?> getColumnClass(int column) {
                     return getValueAt(0, column).getClass();
                 }
@@ -239,25 +245,26 @@ public class ShoppingCartPage extends JPanel {
             cartTable.setFont(customFont.deriveFont(15f));
             cartTable.getTableHeader().setFont(customFont.deriveFont(20f));
 
-            DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer)
-            cartTable.getTableHeader().getDefaultRenderer();
+            DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) cartTable.getTableHeader().getDefaultRenderer();
             headerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-            cartTable.setBackground(new Color(211, 211, 211));
+            cartTable.setBackground(lightGray);
             cartTable.setOpaque(true);
 
             DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
             leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+            cartTable.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
             cartTable.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
 
             cartTable.getColumnModel().getColumn(0).setPreferredWidth(120);
             cartTable.getColumnModel().getColumn(1).setPreferredWidth(300);
             cartTable.getColumnModel().getColumn(2).setPreferredWidth(100);
-            cartTable.getColumnModel().getColumn(3).setPreferredWidth(80);
+            cartTable.getColumnModel().getColumn(3).setPreferredWidth(100);
             cartTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
             tablePane = new JScrollPane(cartTable);
-            tablePane.getViewport().setBackground(new Color(211, 211, 211));
+            tablePane.getViewport().setBackground(lightGray);
+            tablePane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             orderPanel.add(tablePane);
         }
 
@@ -290,15 +297,15 @@ public class ShoppingCartPage extends JPanel {
             return;
         }
 
-        java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
-        java.util.List<MainContents.CartItem> toRemove = new java.util.ArrayList<>();
+        List<MainContents.CartItem> cartItems = MainContents.getCartItems();
+        List<MainContents.CartItem> toRemove = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
 
         for (int row : selectedRows) {
             if (row >= 0 && row < cartItems.size()) {
                 MainContents.CartItem item = cartItems.get(row);
                 toRemove.add(item);
-                builder.append(item.name).append(", ");
+                builder.append(item.getName()).append(", ");
             }
         }
 
@@ -309,7 +316,7 @@ public class ShoppingCartPage extends JPanel {
 
         builder.setLength(builder.length() - 2);
 
-        JLabel label = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>" + "Are you sure you want to remove " + builder.toString() + " from your cart?" + "</div></html>");
+        JLabel label = new JLabel("<html><div style='width: 500px; font-size: 12px; font-family: SansSerif'>Are you sure you want to remove " + builder.toString() + " from your cart?</div></html>");
         int confirm = JOptionPane.showConfirmDialog(
                 this,
                 label,
@@ -321,17 +328,17 @@ public class ShoppingCartPage extends JPanel {
             refreshCartItems();
 
             if (cartItems.isEmpty()) {
-                JLabel emptyLabel = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>Your cart is now empty.</div></html>");
+                JLabel emptyLabel = new JLabel("<html><div style='width: 500px; font-size: 12px; font-family: SansSerif'>Your cart is now empty.</div></html>");
                 JOptionPane.showMessageDialog(this, emptyLabel, "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JLabel removedLabel = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>" + builder.toString() + " removed from cart.</div></html>");
+                JLabel removedLabel = new JLabel("<html><div style='width: 500px; font-size: 12px; font-family: SansSerif'>" + builder.toString() + " removed from cart.</div></html>");
                 JOptionPane.showMessageDialog(this, removedLabel, "Items Removed", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
 
     private void confirmOrder() {
-        java.util.List<MainContents.CartItem> cartItems = MainContents.getCartItems();
+        List<MainContents.CartItem> cartItems = MainContents.getCartItems();
 
         if (cartItems.isEmpty()) {
             JOptionPane.showMessageDialog(this, "There are no items to be placed.", "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
@@ -344,23 +351,35 @@ public class ShoppingCartPage extends JPanel {
             return;
         }
 
-        if (orderSummaryPage.isReceiptGenerated()) {
+        // Check if there is a pending order without a generated receipt
+        if (!orderSummaryPage.isReceiptGenerated() && !orderSummaryPage.getOrderedItems().isEmpty()) {
             String message = "You haven't generated a receipt for the previous order yet.";
             String title = "Pending Receipt";
             String[] options = {"Generate Receipt", "Place Order Later"};
+            int response = JOptionPane.showOptionDialog(
+                    this,
+                    message,
+                    title,
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
 
-            int response = JOptionPane.showOptionDialog(this, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-
-            if (response == 0) {
+            if (response == JOptionPane.YES_OPTION) {
+                // Generate receipt and navigate to OrderSummaryView
                 orderSummaryPage.generateReceipt();
-                return;
-            } else {
-                return;
+                if (homePage != null) {
+                    homePage.showPanel("OrderSummaryView");
+                    homePage.menuItemWhite("Order Summary");
+                }
             }
+            // For "Place Order Later" or dialog dismissal, return without placing the order
+            return;
         }
 
         double subtotal = 0.00;
-        java.util.List<MainContents.CartItem> toRemove = new java.util.ArrayList<>();
+        List<MainContents.CartItem> toRemove = new ArrayList<>();
         Object[][] selectedData = new Object[selectedRows.length][5];
         String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
 
@@ -368,14 +387,14 @@ public class ShoppingCartPage extends JPanel {
             int row = selectedRows[i];
             if (row >= 0 && row < cartItems.size()) {
                 MainContents.CartItem item = cartItems.get(row);
-                double itemPrice = Double.parseDouble(item.price.replace("₱", "").replace(",", ""));
-                double itemSubtotal = itemPrice * item.quantity;
+                double itemPrice = Double.parseDouble(item.getPrice().replace("₱", "").replace(",", ""));
+                double itemSubtotal = itemPrice * item.getQuantity();
                 subtotal += itemSubtotal;
 
-                selectedData[i][0] = new ImageIcon(new ImageIcon(item.iconPath).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                selectedData[i][1] = String.format("<html>%s<br>Size: %s</html>", item.name, item.size);
-                selectedData[i][2] = item.price;
-                selectedData[i][3] = item.quantity;
+                selectedData[i][0] = new ImageIcon(new ImageIcon(item.getIconPath()).getImage().getScaledInstance(item.getIconWidth(), item.getIconHeight(), Image.SCALE_SMOOTH));
+                selectedData[i][1] = String.format("<html>%s<br>Size: %s</html>", item.getName(), item.getSize());
+                selectedData[i][2] = item.getPrice();
+                selectedData[i][3] = item.getQuantity();
                 selectedData[i][4] = "₱" + String.format("%,.2f", itemSubtotal);
 
                 toRemove.add(item);
@@ -405,9 +424,10 @@ public class ShoppingCartPage extends JPanel {
             }
 
             for (MainContents.CartItem item : toRemove) {
-                mainContents.decreaseStock(item.name, item.quantity);
+                mainContents.decreaseStock(item.getName(), item.getQuantity());
             }
 
+            orderSummaryPage.setOrderedItems(toRemove);
             orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
             ratingsPage.displayOrderSummary(selectedData, columnNames, customFont);
             cartItems.removeAll(toRemove);

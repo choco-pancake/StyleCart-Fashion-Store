@@ -36,7 +36,7 @@ public class BNY extends JPanel {
             titleFont = customFont.deriveFont(35f);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
-            customFont = new Font("Serif", Font.ITALIC, 27);
+            customFont = new Font("SansSerif", Font.PLAIN, 27);
             titleFont = customFont.deriveFont(35f);
         }
 
@@ -217,12 +217,12 @@ public class BNY extends JPanel {
             "images/bnymen13outerwear.png", "images/bnymen15outerwear.png", "images/bnymen22outerwear.png", "images/bnymen29outerwear.png", "images/bnymen30outerwear.png",
             "images/bnymen3bottoms.png", "images/bnymen4bottoms.png", "images/bnymen6activewear.png", "images/bnymen10bottoms.png", "images/bnymen17activewear.png",
             "images/bnymen18activewear.png", "images/bnymen25bottoms.png", "images/bnymen5bottoms.png", "images/bnymen14bottoms.png", "images/bnymen16activewear.png",
-            "images/bnymen20bottoms.png", "images/bnymen21bottoms.png","images/bnymen24bottoms.png",  "images/bnymen26bottoms.png", "images/bnymen27bottoms.png",
+            "images/bnymen20bottoms.png", "images/bnymen21bottoms.png", "images/bnymen24bottoms.png", "images/bnymen26bottoms.png", "images/bnymen27bottoms.png",
 
             "images/bnywomen2tops.png", "images/bnywomen11tops.png", "images/bnywomen15tops.png", "images/bnywomen21tops.png", "images/bnywomen22tops.png",
             "images/bnywomen27tops.png", "images/bnywomen1tops.png", "images/bnywomen13tops.png", "images/bnywomen19tops.png", "images/bnywomen26tops.png",
             "images/bnywomen4dresses.png", "images/bnywomen6dresses.png", "images/bnywomen14dresses.png", "images/bnywomen24dresses.png", "images/bnywomen25dresses.png",
-            "images/bnywomen5outerwear.png","images/bnywomen9outerwear.png", "images/bnywomen16outerwear.png", "images/bnywomen17outerwear.png", "images/bnywomen28outerwear.png",
+            "images/bnywomen5outerwear.png", "images/bnywomen9outerwear.png", "images/bnywomen16outerwear.png", "images/bnywomen17outerwear.png", "images/bnywomen28outerwear.png",
             "images/bnywomen3bottoms.png", "images/bnywomen10activewear.png", "images/bnywomen18bottoms.png", "images/bnywomen20bottoms.png", "images/bnywomen23bottoms.png",
             "images/bnywomen7bottoms.png", "images/bnywomen8bottoms.png", "images/bnywomen12bottoms.png", "images/bnywomen29bottoms.png", "images/bnywomen30bottoms.png"
         };

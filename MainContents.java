@@ -15,7 +15,7 @@ public class MainContents extends JPanel {
     private Image scaledImage;
     private JScrollPane scrollPane;
     private int[] itemsStock;
-    private String[] items; // Added to track item names for stock updates
+    private String[] items;
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
     private Color white = Color.WHITE;
@@ -56,6 +56,14 @@ public class MainContents extends JPanel {
             this.iconWidth = iconWidth;
             this.iconHeight = iconHeight;
         }
+
+        public String getName() { return name; }
+        public String getPrice() { return price; }
+        public String getSize() { return size; }
+        public String getIconPath() { return iconPath; }
+        public int getQuantity() { return quantity; }
+        public int getIconWidth() { return iconWidth; }
+        public int getIconHeight() { return iconHeight; }
     }
 
     public void setOnBrandViewClick(Runnable onClick) {
@@ -122,6 +130,11 @@ public class MainContents extends JPanel {
     }
 
     private void updateSpinnerMaximum(JButton addButton, int maxStock) {
+        String itemName = addButton.getClientProperty("itemName").toString();
+        String price = addButton.getClientProperty("price").toString();
+        String iconPath = addButton.getClientProperty("iconPath").toString();
+        int[] brandSize = getBrandSize(itemName);
+
         addButton.addActionListener(e -> {
             String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
             JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
@@ -156,13 +169,27 @@ public class MainContents extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                String itemName = addButton.getClientProperty("itemName").toString();
-                String price = addButton.getClientProperty("price").toString();
-                String iconPath = addButton.getClientProperty("iconPath").toString();
-                cartItems.add(new CartItem(itemName, price, selectedSize, iconPath, selectedQuantity, 100, 100));
+                cartItems.add(new CartItem(itemName, price, selectedSize, iconPath, selectedQuantity, brandSize[0], brandSize[1]));
                 JOptionPane.showMessageDialog(null, itemName + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });
+    }
+
+    private int[] getBrandSize(String itemName) {
+        switch (itemName) {
+            case "TATA Fashion New Long Sleeve Plain Varsity Jacket":
+                return new int[]{100, 100};
+            case "Wide Leg Pants Fashion High Waist Solid Button":
+                return new int[]{100, 100};
+            case "Flower Style Valentine's Day Casual Polo Dating Shirt":
+                return new int[]{100, 100};
+            case "Small Leather Jacket":
+                return new int[]{100, 100};
+            case "Plain Hoodie Jacket with Zipper":
+                return new int[]{110, 100};
+            default:
+                return new int[]{100, 100};
+        }
     }
 
     public MainContents() {
@@ -174,7 +201,7 @@ public class MainContents extends JPanel {
             dropdownFont = itemFont.deriveFont(16f);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
-            titleFont = new Font("Serif", Font.ITALIC, 40);
+            titleFont = new Font("SansSerif", Font.PLAIN, 40);
             itemFont = titleFont.deriveFont(16f);
             dropdownFont = itemFont.deriveFont(16f);
         }
@@ -465,9 +492,16 @@ public class MainContents extends JPanel {
         String[] itemsTag = {"Trendy", "High quality", "Versatile", "High quality", "High quality"};
         String[] itemsIcon = {"images/bnymen22outerwear.png", "images/bnywomen30bottoms.png", "images/bnymen8tops.png", "images/bnywomen5outerwear.png", "images/bnymen1outerwear.png"};
         itemsStock = new int[]{21364, 45600, 5760, 2, 91};
+        int[][] brandSizes = {
+            {100, 100},
+            {100, 100},
+            {100, 100},
+            {100, 100},
+            {110, 100}
+        };
 
         for (int i = 0; i < items.length; i++) {
-            featuredItemsPanel.add(createFeaturedItem(items[i], itemsPrice[i], itemsTag[i], itemsIcon[i], itemsStock[i], i));
+            featuredItemsPanel.add(createFeaturedItem(items[i], itemsPrice[i], itemsTag[i], itemsIcon[i], itemsStock[i], i, brandSizes[i]));
         }
 
         featuredTitle.add(featuredLabel, BorderLayout.WEST);
@@ -477,7 +511,7 @@ public class MainContents extends JPanel {
         mainPanel.add(featuredPanel);
     }
 
-    private JPanel createFeaturedItem(String item, String price, String tag, String icon, int stock, int index) {
+    private JPanel createFeaturedItem(String item, String price, String tag, String icon, int stock, int index, int[] brandSize) {
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BorderLayout());
         itemPanel.setPreferredSize(new Dimension(230, 300));
@@ -585,7 +619,6 @@ public class MainContents extends JPanel {
 
         addButton.addActionListener(e -> {
             String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
-
             JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
             detailsPanel.setPreferredSize(new Dimension(400, 200));
             detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -618,7 +651,7 @@ public class MainContents extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                cartItems.add(new CartItem(item, price, selectedSize, icon, selectedQuantity, 100, 100));
+                cartItems.add(new CartItem(item, price, selectedSize, icon, selectedQuantity, brandSize[0], brandSize[1]));
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });
@@ -764,7 +797,7 @@ public class MainContents extends JPanel {
                     cardLayout.show(contentPanel, "BenchView");
                     contentPanel.revalidate();
                     contentPanel.repaint();
-                } else if(brandName.equals("Lee")) {
+                } else if (brandName.equals("Lee")) {
                     cardLayout.show(contentPanel, "LeeView");
                     contentPanel.revalidate();
                     contentPanel.repaint();

@@ -16,9 +16,9 @@ public class OrderSummaryPage extends JPanel {
     private DefaultTableCellRenderer headerRenderer, leftRenderer;
     private JScrollPane scrollPane;
     private JButton receiptButton, trackButton, backButton;
-    private List<Object[]> allOrders;
     private LocalDateTime orderPlacedTime;
-    private boolean receiptGenerated = false; // New flag to track receipt generation
+    private boolean receiptGenerated = false;
+    private List<MainContents.CartItem> orderedItems = new ArrayList<>();
 
     private final int circleSize = 20;
     private TrackingAreaPanel trackingAreaPanel;
@@ -30,7 +30,7 @@ public class OrderSummaryPage extends JPanel {
     private boolean isTrackingInitialized = false;
     private boolean isTrackingComplete = false;
     private long animationStartTime, pausedTime;
-    private long[] panelTriggerTimes = new long[7]; 
+    private long[] panelTriggerTimes = new long[7];
 
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
@@ -40,19 +40,19 @@ public class OrderSummaryPage extends JPanel {
     private Color none = new Color(0, 0, 0, 0);
     private Color darkGray = new Color(180, 180, 180);
     private Color black = Color.BLACK;
-    private Color darkerGray = Color.GRAY;
     private Color green = Color.GREEN;
     private Color red = Color.RED;
+    private Color darkerGray = Color.GRAY;
 
     private class TrackingPanel extends JPanel {
         private boolean showCircle = false;
         private boolean timerStarted = false;
-        private Color circleColor = green; 
+        private Color circleColor = green;
 
         public TrackingPanel() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setOpaque(false);
-            setBorder(BorderFactory.createEmptyBorder(20, 40, 0, 0)); 
+            setBorder(BorderFactory.createEmptyBorder(20, 40, 0, 0));
             setAlignmentX(Component.CENTER_ALIGNMENT);
         }
 
@@ -79,8 +79,8 @@ public class OrderSummaryPage extends JPanel {
             super.paintComponent(g);
             if (showCircle) {
                 g.setColor(circleColor);
-                int circleYPos = (getHeight() - circleSize) / 2; 
-                g.fillOval(10, circleYPos, circleSize, circleSize); 
+                int circleYPos = (getHeight() - circleSize) / 2;
+                g.fillOval(10, circleYPos, circleSize, circleSize);
             }
         }
     }
@@ -89,8 +89,8 @@ public class OrderSummaryPage extends JPanel {
         public TrackingAreaPanel() {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBackground(lightGray);
-            setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); 
-            setAlignmentX(Component.CENTER_ALIGNMENT); 
+            setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            setAlignmentX(Component.CENTER_ALIGNMENT);
         }
 
         @Override
@@ -99,10 +99,8 @@ public class OrderSummaryPage extends JPanel {
         }
     }
 
-    public OrderSummaryPage() {
+    public OrderSummaryPage(CardLayout cardLayout, JPanel contentPanel) {
         setLayout(new BorderLayout());
-
-        allOrders = new ArrayList<>();
 
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(40f);
@@ -110,7 +108,7 @@ public class OrderSummaryPage extends JPanel {
             environment.registerFont(customFont);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
-            customFont = new Font("Serif", Font.ITALIC, 40);
+            customFont = new Font("SansSerif", Font.PLAIN, 40);
         }
 
         orderPanel = new JPanel() {
@@ -137,7 +135,7 @@ public class OrderSummaryPage extends JPanel {
         titleLabel.setFont(customFont);
         titleLabel.setForeground(white);
         titleLabel.setOpaque(false);
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 0));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -155,8 +153,8 @@ public class OrderSummaryPage extends JPanel {
                 BorderFactory.createLineBorder(lightGray, 1),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         receiptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        receiptButton.addActionListener(e -> generateReceipt());
         receiptButton.setOpaque(true);
+        receiptButton.addActionListener(e -> generateReceipt());
 
         receiptButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -190,6 +188,7 @@ public class OrderSummaryPage extends JPanel {
                 BorderFactory.createLineBorder(lightGray, 1),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         trackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        trackButton.setOpaque(true);
         trackButton.addActionListener(e -> {
             if (isAnimationPaused && isTrackingInitialized) {
                 isAnimationPaused = false;
@@ -197,14 +196,13 @@ public class OrderSummaryPage extends JPanel {
                 animationStartTime += pausedDuration;
                 timer.start();
                 orderPanel.removeAll();
-                orderPanel.add(trackPanel, BorderLayout.CENTER);
+                orderPanel.add(trackPanel);
                 orderPanel.revalidate();
                 orderPanel.repaint();
             } else {
                 trackOrder();
             }
         });
-        trackButton.setOpaque(true);
 
         trackButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -240,37 +238,30 @@ public class OrderSummaryPage extends JPanel {
     }
 
     public boolean isReceiptGenerated() {
-        return !receiptGenerated && !allOrders.isEmpty();
+        return receiptGenerated && !orderedItems.isEmpty();
     }
 
-    public void displayOrderSummary(Object[][] selectedData, String[] columnNames, Font tableFont) {
-        if (selectedData != null && selectedData.length > 0) {
-            allOrders.clear();
-            orderPlacedTime = LocalDateTime.now();
-            receiptGenerated = false; 
-            resetTrackingState(); 
-            for (Object[] row : selectedData) {
-                allOrders.add(row);
-            }
-        }
+    public List<MainContents.CartItem> getOrderedItems() {
+        return orderedItems;
+    }
 
+    public void setOrderedItems(List<MainContents.CartItem> items) {
+        this.orderedItems = new ArrayList<>(items);
+    }
+
+    public void displayOrderSummary(Object[][] tableData, String[] columnNames, Font tableFont) {
         orderPanel.removeAll();
 
-        if (allOrders.isEmpty()) {
+        if (tableData == null || tableData.length == 0) {
             emptyLabel = new JLabel("No orders placed yet.");
-            emptyLabel.setFont(new Font(null, Font.BOLD, 20));
+            emptyLabel.setFont(new Font(null, Font.BOLD, 25));
             emptyLabel.setForeground(white);
             emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            emptyLabel.add(Box.createVerticalGlue());
+            orderPanel.add(Box.createVerticalGlue());
             orderPanel.add(emptyLabel);
             orderPanel.add(Box.createVerticalGlue());
         } else {
-            Object[][] allOrdersArray = new Object[allOrders.size()][];
-            for (int i = 0; i < allOrders.size(); i++) {
-                allOrdersArray[i] = allOrders.get(i);
-            }
-
-            JTable summaryTable = new JTable(allOrdersArray, columnNames) {
+            JTable summaryTable = new JTable(tableData, columnNames) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
@@ -296,142 +287,104 @@ public class OrderSummaryPage extends JPanel {
 
             leftRenderer = new DefaultTableCellRenderer();
             leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+            summaryTable.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
             summaryTable.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
 
             summaryTable.getColumnModel().getColumn(0).setPreferredWidth(120);
             summaryTable.getColumnModel().getColumn(1).setPreferredWidth(300);
             summaryTable.getColumnModel().getColumn(2).setPreferredWidth(100);
-            summaryTable.getColumnModel().getColumn(3).setPreferredWidth(80);
+            summaryTable.getColumnModel().getColumn(3).setPreferredWidth(100);
             summaryTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
             scrollPane = new JScrollPane(summaryTable);
-            scrollPane.getViewport().setBackground(lightGray);
-
-            orderPanel.add(scrollPane, BorderLayout.CENTER);
+            scrollPane.setOpaque(false);
+            scrollPane.getViewport().setOpaque(false);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            orderPanel.add(scrollPane);
         }
 
-        revalidate();
-        repaint();
-    }
-
-    private void resetTrackingState() {
-        isTrackingInitialized = false;
-        isTrackingComplete = false;
-        isAnimationPaused = false;
-        if (timer != null) {
-            timer.stop();
-        }
-        if (placePanel != null) {
-            placePanel.setTimerStarted(false);
-            placePanel.setShowCircle(false);
-            placeLabel.setForeground(lightGray);
-            placeSublabel.setForeground(lightGray);
-        }
-        if (sortPanel != null) {
-            sortPanel.setTimerStarted(false);
-            sortPanel.setShowCircle(false);
-            sortLabel.setForeground(lightGray);
-            sortSublabel.setForeground(lightGray);
-        }
-        if (courierPanel != null) {
-            courierPanel.setTimerStarted(false);
-            courierPanel.setShowCircle(false);
-            courierLabel.setForeground(lightGray);
-            courierSublabel.setForeground(lightGray);
-        }
-        if (collectPanel != null) {
-            collectPanel.setTimerStarted(false);
-            collectPanel.setShowCircle(false);
-            collectLabel.setForeground(lightGray);
-            collectSublabel.setForeground(lightGray);
-        }
-        if (shipPanel != null) {
-            shipPanel.setTimerStarted(false);
-            shipPanel.setShowCircle(false);
-            shipLabel.setForeground(lightGray);
-            shipSublabel.setForeground(lightGray);
-        }
-        if (deliverPanel != null) {
-            deliverPanel.setTimerStarted(false);
-            deliverPanel.setShowCircle(false);
-            deliverLabel.setForeground(lightGray);
-            deliverSublabel.setForeground(lightGray);
-        }
-        if (receivePanel != null) {
-            receivePanel.setTimerStarted(false);
-            receivePanel.setShowCircle(false);
-            receiveLabel.setForeground(lightGray);
-            receiveSublabel.setForeground(lightGray);
-            receiveSublabel.setText("");
-            receivePanel.setCircleColor(red);
-        }
-        if (trackPanel != null) {
-            orderPanel.remove(trackPanel);
-            trackPanel = null;
-        }
+        orderPanel.revalidate();
+        orderPanel.repaint();
     }
 
     public void generateReceipt() {
-        if (allOrders.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "There are no orders to generate receipt for.", "Cart Empty", JOptionPane.WARNING_MESSAGE);
+        if (orderedItems.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No items in the order to generate a receipt.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        try {
-            String timestamp = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-            String fileName = "StyleCart_Receipt_" + timestamp + ".html";
-
-            FileWriter writer = new FileWriter(fileName);
-            double total = 0.0;
-
-            writer.write("<html><head><style>");
-            writer.write("body { font-family: Arial, sans-serif; margin: 10px; font-size: 12px; width: 300px; text-align: center; }");
-            writer.write("h1 { color: #336699; }");
-            writer.write("p { margin: 2px 0; }");
-            writer.write("table { width: 100%; border-collapse: collapse; }");
-            writer.write("th, td { border: 1px solid #ccc; padding: 5px; text-align: left; white-space: normal; }");
-            writer.write("th { background-color: #f2f2f2; }");
-            writer.write("hr { border: none; border-top: 1px dashed #000; margin: 5px 0; }");
-            writer.write("</style></head><body>");
-
-            writer.write("<h1>StyleCart Fashion Store Receipt</h1>");
-            writer.write("<hr>");
-            writer.write("<p>Date: " + java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("MMMM dd, yyyy - hh:mm a")) + "</p>");
-            writer.write("<table>");
-            writer.write("<tr><th>Product</th><th>Price</th><th>Quantity</th></tr>");
-
-            for (Object[] row : allOrders) {
-                String details = row[1].toString().replaceAll("<[^>]*>", " ").trim();
-                String price = row[2].toString();
-                String qty = row[3].toString();
-                String subtotal = row[4].toString();
-
-                total += Double.parseDouble(subtotal.replace("₱", "").replace(",", ""));
-
-                writer.write("<tr>");
-                writer.write("<td>" + details + "</td>");
-                writer.write("<td>" + price + "</td>");
-                writer.write("<td>" + qty + "</td>");
-                writer.write("</tr>");
+    
+        orderPlacedTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = orderPlacedTime.format(formatter);
+    
+        StringBuilder receiptContent = new StringBuilder();
+        receiptContent.append("StyleCart Receipt\n");
+        receiptContent.append("Order Placed: ").append(formattedDateTime).append("\n");
+        receiptContent.append("----------------------------------------\n");
+        receiptContent.append(String.format("%-30s %-10s %-10s %-10s\n", "Item", "Size", "Quantity", "Subtotal"));
+        receiptContent.append("----------------------------------------\n");
+    
+        double total = 0.0;
+        for (MainContents.CartItem item : orderedItems) {
+            double price = Double.parseDouble(item.getPrice().replace("₱", ""));
+            double subtotal = price * item.getQuantity();
+            total += subtotal;
+            receiptContent.append(String.format("%-30s %-10s %-10d ₱%,.2f\n",
+                    item.getName().length() > 27 ? item.getName().substring(0, 27) + "..." : item.getName(),
+                    item.getSize(),
+                    item.getQuantity(),
+                    subtotal));
+        }
+    
+        receiptContent.append("----------------------------------------\n");
+        receiptContent.append(String.format("Total: ₱%,.2f\n", total));
+        receiptContent.append("----------------------------------------\n");
+        receiptContent.append("Thank you for shopping with StyleCart!\n");
+    
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Receipt");
+        fileChooser.setSelectedFile(new File("StyleCart_Receipt.txt"));
+        int userSelection = fileChooser.showSaveDialog(this);
+    
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            try (PrintWriter writer = new PrintWriter(fileToSave)) {
+                writer.println(receiptContent.toString());
+                receiptGenerated = true;
+                
+                // Show the new message
+                int option = JOptionPane.showConfirmDialog(
+                    this, 
+                    "You will be redirected to your receipt", 
+                    "Receipt Generated", 
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE);
+                
+                // If user clicks OK, open the receipt file
+                if (option == JOptionPane.OK_OPTION) {
+                    try {
+                        if (Desktop.isDesktopSupported()) {
+                            Desktop.getDesktop().open(fileToSave);
+                        } else {
+                            JOptionPane.showMessageDialog(
+                                this, 
+                                "Cannot open receipt automatically. Please open it manually.", 
+                                "Info", 
+                                JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(
+                            this, 
+                            "Error opening receipt: " + ex.getMessage(), 
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error saving receipt.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-            writer.write("</table>");
-            writer.write("<hr>");
-            writer.write("<h3>Total Amount: ₱" + String.format("%,.2f", total) + "</h3>");
-            writer.write("<hr>");
-            writer.write("<p>Thank you for shopping at <strong>StyleCart Fashion Store!</strong></p>");
-            writer.write("</body></html>");
-            writer.close();
-
-            receiptGenerated = true; 
-            JOptionPane.showMessageDialog(orderPanel, "You will be redirected to your receipt.", "Generate Receipt", JOptionPane.INFORMATION_MESSAGE);
-            java.awt.Desktop.getDesktop().browse(new File(fileName).toURI());
-            orderPlacedTime = null;
-            resetTrackingState();
-            displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error generating receipt!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -604,16 +557,22 @@ public class OrderSummaryPage extends JPanel {
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE
             );
-
+    
             if (response == JOptionPane.YES_OPTION) {
                 String receivedTime = orderPlacedTime.plusMinutes(5747).format(DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm a"));
-
+    
                 receiveSublabel.setText(receivedTime);
                 receiveLabel.setForeground(black);
                 receiveSublabel.setForeground(black);
                 receivePanel.setCircleColor(green); 
                 isTrackingComplete = true;
-
+    
+                // Clear the order if receipt was generated and tracking is complete
+                if (canRemoveOrderItems()) {
+                    orderedItems.clear();
+                    displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
+                }
+    
                 JOptionPane.showMessageDialog(orderPanel,
                         "Order received!",
                         "Reception Confirmed",
@@ -629,7 +588,7 @@ public class OrderSummaryPage extends JPanel {
                 receiveLabel.setForeground(lightGray);
                 receiveSublabel.setForeground(lightGray);
                 receiveSublabel.setText("");
-                receivePanel.setCircleColor(red); 
+                receivePanel.setCircleColor(Color.RED); 
 
                 animationStartTime = System.currentTimeMillis();
                 panelTriggerTimes[5] = 2000; 
@@ -711,6 +670,28 @@ public class OrderSummaryPage extends JPanel {
         }
     }
 
+    public boolean canRemoveOrderItems() {
+        return receiptGenerated && isTrackingComplete;
+    }
+
+    private Object[][] convertCartItemsToTableData(List<MainContents.CartItem> items) {
+        if (items == null || items.isEmpty()) {
+            return null;
+        }
+    
+        Object[][] tableData = new Object[items.size()][5];
+        for (int i = 0; i < items.size(); i++) {
+            MainContents.CartItem item = items.get(i);
+            tableData[i][0] = new ImageIcon(new ImageIcon(item.getIconPath()).getImage().getScaledInstance(item.getIconWidth(), item.getIconHeight(), Image.SCALE_SMOOTH));
+            tableData[i][1] = "<html><b>" + item.getName() + "</b><br>Size: " + item.getSize() + "</html>";
+            tableData[i][2] = item.getPrice();
+            tableData[i][3] = item.getQuantity();
+            tableData[i][4] = "₱" + String.format("%.2f", 
+                Double.parseDouble(item.getPrice().replace("₱", "")) * item.getQuantity());
+        }
+        return tableData;
+    }
+
     private JButton createBackButton() {
         backButton = new JButton("←") {
             @Override
@@ -767,9 +748,17 @@ public class OrderSummaryPage extends JPanel {
                 pausedTime = System.currentTimeMillis();
             }
             orderPanel.remove(trackPanel);
-            displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
+            
+            // Only show empty table if both conditions are met
+            if (canRemoveOrderItems()) {
+                displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
+            } else {
+                // Re-display the current order items
+                Object[][] tableData = convertCartItemsToTableData(orderedItems);
+                displayOrderSummary(tableData, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
+            }
         });
-
+    
         return backButton;
     }
 }
