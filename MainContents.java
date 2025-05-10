@@ -238,6 +238,9 @@ public class MainContents extends JPanel {
         Lee leePanel = new Lee(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(leePanel, "LeeView");
 
+        Memo memoPanel = new Memo(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        contentPanel.add(memoPanel, "MemoView");
+
         createGreeting();
         createCategory();
         createFeaturedItems();
@@ -799,6 +802,10 @@ public class MainContents extends JPanel {
                     contentPanel.repaint();
                 } else if (brandName.equals("Lee")) {
                     cardLayout.show(contentPanel, "LeeView");
+                    contentPanel.revalidate();
+                    contentPanel.repaint();
+                } else if (brandName.equals("Memo")) {
+                    cardLayout.show(contentPanel, "MemoView");
                     contentPanel.revalidate();
                     contentPanel.repaint();
                 }
