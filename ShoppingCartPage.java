@@ -25,6 +25,7 @@ public class ShoppingCartPage extends JPanel {
     private Color white = Color.WHITE;
     private Color lightGray = new Color(211, 211, 211);
     private Color mediumBlue = new Color(125, 125, 200);
+    private Color darkerGray = Color.GRAY;
 
     public ShoppingCartPage(HomePage homePage, MainContents mainContents, Runnable onAddToCartRedirect, OrderSummaryPage orderSummaryPage, RatingsPage ratingsPage, Font font) {
         setLayout(new BorderLayout());
@@ -214,6 +215,10 @@ public class ShoppingCartPage extends JPanel {
             orderPanel.add(emptyLabel);
             orderPanel.add(Box.createVerticalGlue());
         } else {
+            JPanel tableContainer = new JPanel(new BorderLayout());
+            tableContainer.setOpaque(false);
+            tableContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
             String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
             Object[][] data = new Object[currentItems.size()][5];
 
@@ -259,13 +264,18 @@ public class ShoppingCartPage extends JPanel {
             cartTable.getColumnModel().getColumn(0).setPreferredWidth(120);
             cartTable.getColumnModel().getColumn(1).setPreferredWidth(300);
             cartTable.getColumnModel().getColumn(2).setPreferredWidth(100);
-            cartTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+            cartTable.getColumnModel().getColumn(3).setPreferredWidth(80);
             cartTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
             tablePane = new JScrollPane(cartTable);
+            tablePane.setOpaque(false);
             tablePane.getViewport().setBackground(lightGray);
-            tablePane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            orderPanel.add(tablePane);
+            tablePane.setBorder(BorderFactory.createLineBorder(darkerGray, 1));
+            tablePane.setColumnHeaderView(cartTable.getTableHeader());
+            tablePane.setViewportBorder(BorderFactory.createEmptyBorder());
+
+            tableContainer.add(tablePane, BorderLayout.CENTER);
+            orderPanel.add(tableContainer);
         }
 
         orderPanel.revalidate();

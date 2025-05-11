@@ -185,8 +185,16 @@ public class Memo extends JPanel {
             "Regular Fit Rib Knit Striped Polo", "Regular Fit Textured T-Shirt", "Slim Fit Polo with Textured Collar (White)", "Slim Fit Polo with Textured Collar (Green)", "T-Shirt With Contrast Piping",
             "Textured Knit T-Shirt", "Textured Open Collar Knit Polo Sleeve Shirt", "Textured Open Collar Polo (Midnight Navy)", "Textured Relaxed Fit Short Sleeve Shirt", "Textured Ringer Striped T-Shirt",
             "Ultimate Basics Comfort T-Shirt", "Ultimate Basics Premium Flat Knit Polo", "Wide Stripe Collared Pullover (Taupe)", "Zip-Up Polo Shirt with Tipping", "Color Block Collared Pullover (Black)",
-            "Soft Touch Flat Knit Pullover with Contrast Tipping", "Striped Flat Knit Pullover with Collar and Zip Detail (Heather Gray)", "Ultimate Basics Classic Bomber Jacket (Black)", "Ultimate Basics Easy Fit Long Sleeve Shirt", "Wide Stripe Collared Pullover (Taupe)"
+            "Soft Touch Flat Knit Pullover with Contrast Tipping", "Striped Flat Knit Pullover with Collar and Zip Detail (Heather Gray)", "Ultimate Basics Classic Bomber Jacket (Black)", "Ultimate Basics Easy Fit Long Sleeve Shirt", "Wide Stripe Collared Pullover (Taupe)",
+
+            "Collared Shirt for Women", "Extended Sleeve Textured T-Shirt", "New Ultimate Basic T-Shirt", "Ruched Front T-Shirt", "Textured Tee for Women",
+            "Textured Horizontal Striped Polo", "Ultimate Basics Knit Tee", "Denim Zip Up Vest", "Linen Top for Women", "Slash Neck Top",
+            "Sleeveless Top with Tipping", "Striped Knit Top", "Textured Striped Sleeveless Top", "Sleeveless Top (Cream)", "Zip Up Pullover",
+            "Jumpsuit for Women", "Maxi Dress for Women", "Puff Sleeve Jumpsuit", "Textured Collared Dress", "A-Line Skirt with Pockets",
+            "Denim Midi Skirt", "Overlap Skort for Women", "Skirt With Front Slit", "Suede Skort for Women", "Pleated Trousers for Women",
+            "Pull Up Trousers", "Slim 4-Way Stretch Trousers", "Straight Leg Trousers with Contrast", "Trousers With Button Detail", "Trousers With Elastic Waistband"
         };
+
     
         String[] prices = {
             "₱399", "₱399", "₱719", "₱989", "₱899",
@@ -194,7 +202,14 @@ public class Memo extends JPanel {
             "₱849", "₱699", "₱749", "₱749", "₱399",
             "₱499", "₱989", "₱989", "₱699", "₱799",
             "₱499", "₱749", "₱659", "₱899", "₱939",
-            "₱989", "₱759", "₱899", "₱989", "₱659"
+            "₱989", "₱759", "₱899", "₱989", "₱659",
+
+            "₱899", "₱429", "₱699", "₱710", "₱699",
+            "₱989", "₱439", "₱899", "₱809", "₱287",
+            "₱890", "₱749", "₱699", "₱890", "₱899",
+            "₱699", "₱849", "₱749", "₱659", "₱749",
+            "₱679", "₱849", "₱739", "₱659", "₱963",
+            "₱899", "₱699", "₱699", "₱759", "₱599"
         };
 
         String[] icons = {
@@ -204,6 +219,12 @@ public class Memo extends JPanel {
             "images/memomen19tops.png", "images/memomen20tops.png", "images/memomen21tops.png", "images/memomen22tops.png", "images/memomen23tops.png",
             "images/memomen25tops.png", "images/memomen27tops.png", "images/memomen28tops.png", "images/memomen30tops.png", "images/memomen5outerwear.png", 
             "images/memomen16outerwear.png", "images/memomen17outerwear.png", "images/memomen24outerwear.png", "images/memomen26tops.png", "images/memomen29outerwear.png",
+
+            "images/memowomen2tops.png", "images/memowomen5tops.png", "images/memowomen9tops.png", "images/memowomen14tops.png", "images/memowomen24tops.png",
+            "images/memowomen25tops.png", "images/memowomen28tops.png", "images/memowomen4tops.png", "images/memowomen7tops.png", "images/memowomen16tops.png",
+            "images/memowomen17tops.png", "images/memowomen20tops.png", "images/memowomen23tops.png", "images/memowomen30tops.png", "images/memowomen29outerwear.png",
+            "images/memowomen6dresses.png", "images/memowomen8dresses.png", "images/memowomen12dresses.png", "images/memowomen22dresses.png", "images/memowomen1bottoms.png",
+            "images/memowomen3bottoms.png", "images/memowomen10bottoms.png", "images/memowomen15bottoms.png", "images/memowomen21bottoms.png", "images/memowomen11bottoms.png",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "images/memowomen13bottoms.png", "images/memowomen18bottoms.png", "images/memowomen19bottoms.png", "images/memowomen26bottoms.png", "images/memowomen27bottoms.png"
         };
 
         int[][] brandSize = {
@@ -212,7 +233,14 @@ public class Memo extends JPanel {
             {90, 100}, {80, 100}, {90, 100}, {80, 100}, {90, 100},
             {80, 100}, {90, 100}, {90, 100}, {80, 100}, {90, 100},
             {90, 100}, {90, 100}, {90, 100}, {80, 100}, {90, 100},
-            {100, 100}, {90, 100}, {90, 100}, {80, 100}, {70, 100}
+            {100, 100}, {90, 100}, {90, 100}, {80, 100}, {70, 100},
+
+            {90, 100}, {90, 100}, {120, 100}, {100, 100}, {100, 100},
+            {90, 100}, {100, 100}, {100, 100}, {80, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {80, 100},
+            {40, 100}, {40, 100}, {50, 100}, {50, 100}, {60, 100},
+            {60, 100}, {100, 100}, {80, 100}, {80, 100}, {50, 100},
+            {60, 100}, {60, 100}, {60, 100}, {60, 100}, {60, 100}
         };
  
         for (int i = 0; i < items.length; i++) {

@@ -261,6 +261,10 @@ public class OrderSummaryPage extends JPanel {
             orderPanel.add(emptyLabel);
             orderPanel.add(Box.createVerticalGlue());
         } else {
+            JPanel tableContainer = new JPanel(new BorderLayout());
+            tableContainer.setOpaque(false);
+            tableContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
             JTable summaryTable = new JTable(tableData, columnNames) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
@@ -293,14 +297,18 @@ public class OrderSummaryPage extends JPanel {
             summaryTable.getColumnModel().getColumn(0).setPreferredWidth(120);
             summaryTable.getColumnModel().getColumn(1).setPreferredWidth(300);
             summaryTable.getColumnModel().getColumn(2).setPreferredWidth(100);
-            summaryTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+            summaryTable.getColumnModel().getColumn(3).setPreferredWidth(80);
             summaryTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
             scrollPane = new JScrollPane(summaryTable);
             scrollPane.setOpaque(false);
-            scrollPane.getViewport().setOpaque(false);
-            scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            orderPanel.add(scrollPane);
+            scrollPane.getViewport().setBackground(lightGray);
+            scrollPane.setBorder(BorderFactory.createLineBorder(darkerGray, 1));
+            scrollPane.setColumnHeaderView(summaryTable.getTableHeader());
+            scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
+
+            tableContainer.add(scrollPane, BorderLayout.CENTER);
+            orderPanel.add(tableContainer);
         }
 
         orderPanel.revalidate();
