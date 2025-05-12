@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BNY extends JPanel {
     private CardLayout cardLayout;
@@ -14,6 +16,87 @@ public class BNY extends JPanel {
     private JButton backButton;
     private JLabel titleLabel, menLabel, womenLabel;
     private JScrollPane scrollPane;
+
+    private String[] items = {
+        "Kaiki White Color Street Trendy Versace Shirt", "Flower Style Valentine's Day Casual Polo Dating Shirt", "Fiaunt Fashions Oversized Retro Classic T-Shirt", "High Quality Shortsleeve Casual Polo Shirt", "Korean Vintage Loose Short-Sleeved T-Shirt",
+        "New WESTERN Summer Casual Pure Color Short Sleeved Shirt", "Korean Style Loose Fit Oversize Shirt Mens Silk Polo Shirt", "Plain Polo Shirt with 2 Lines", "Plain Hoodie Jacket with Zipper", "Korean New York Jacket with Zipper",
+        "LSB# Super Hot CEC Men's Tide Brand Trend Lightweight Jacket", "Bomber with Zipper Jacket", "TATA Fashion New Long Sleeve Plain Varsity Jacket", "New York Printed Design Hoodie Jacket", "TATA Fashion New Casual Baseball Jacket",
+        "Chinos 4-Pockets above-Knee Plain Garter Short", "Cod Men's Casual Sweat Jogger Sport Short", "Fashion Taslan Short", "HK Fashion Plain Short (with Belt)", "Street Style Short",
+        "New DUKE Dri-Fit Men's Sport Short Casual Basketball Shorts", "Above-Knee Casual Garter Beach Short", "Ezra Black Regular Fit Boys Dress Pants", "Wild Cargo Pants", "Taslan Loose Casual Pants",
+        "Rope Workwear with Pocket Loose Wide Leg Ankle Banded Pants", "Smart Stretch Pleat Slacks Beige", "Baggy Straight Cut Slacks", "Sweatpant Wide Leg Baggy Loose Straight Cut", "Business Formal Pants",
+        "Casual Plain Color Block Embroidery Zipper T-Shirt", "Short Letter Pattern Slim Fit Printed T-Shirt", "Summer Square Neck Short Sleeve Slim Bottoming Knit Top", "Elegant Plain Split T-Shirt", "Sporty Plain Contrast Binding Crop T-Shirt",
+        "Slubs V-Neck T-Shirt with Bunny Embro", "Sleeveless Tank Vest Solid Top", "Solid Ribbed Knit Tube Basic Crop Top", "Casual Pleated Crop Tank Top", "Flower Tube Top with Pads",
+        "Hepburn Style Dress Summer Fashion Loose Slimmer", "Green Floral Strappy Dress", "Spring Autumn Sweater Dress", "Summer New Style Polo Color Short Sleeved Dress", "Heavy Industry Three-Dimensional Bow Knot Letter Diamond Dress",
+        "Small Leather Jacket", "Fried Street Yellow Floral Jacket", "Western Style Jacket New French Light Luxury", "Western Style Jacket European Station Spring Autumn", "Black Jacket",
+        "Fashion Trendy Plain Trouser Shorts", "New Taslan Short", "Casual Plain Button Short", "Casual Stripped Lace Up Zipper Short", "High Waisted Loose Fit Slim Stretchable Shorts Bermuda Short",
+        "Mid-waist Relaxed Pants", "Highwaist Pants Denim Ripped Jeans", "Full Length High Rise Wide Leg Jeans", "Highwaist Pants with Belt", "Wide Leg Pants Fashion High Waist Solid Button"
+    };
+
+    private int[] initialItemsStock = {
+        0, 5760, 1500, 3200, 500,
+        7800, 12000, 300, 91, 91,
+        600, 25000, 21364, 21364, 9000,
+        3000, 400, 6700, 200, 3500,
+        8000, 1000, 15000, 2800, 5000,
+        6000, 7500, 2000, 3000, 4000,
+
+        10000, 2000, 500, 700, 2500,
+        800, 3000, 4500, 6000, 1500,
+        2000, 1000, 5000, 3000, 4000,
+        2, 2, 7000, 8000, 9000,
+        1000, 2000, 1500, 3000, 4000,
+        5000, 6000, 7000, 8000, 45600
+    };
+
+    private String[] itemsPrice = {
+        "₱176", // Prices for the first 5 items
+        "₱259", "₱144", "₱188", "₱199",
+        "₱174", "₱170", "₱142", "₱145", "₱277",
+        "₱189", "₱145", "₱323", "₱143", "₱422",
+        "₱169", "₱156", "₱355", "₱199", "₱169",
+        "₱294", "₱248", "₱401", "₱246", "₱169",
+        "₱345", "₱350", "₱159", "₱149", "₱400",
+        "₱282", "₱200", "₱129", "₱330", "₱549",
+        "₱211", "₱159", "₱179", "₱177", "₱109",
+        "₱930", "₱262", "₱700", "₱900", "₱824",
+        "₱398", "₱443", "₱700", "₱668", "₱890",
+        "₱105", "₱128", "₱283", "₱273", "₱281",
+        "₱400", "₱458", "₱389", "₱500", "₱458"
+    };
+
+    private String[] itemsIcon = {
+        "images/bnymen2tops.png", "images/bnymen8tops.png", "images/bnymen7tops.png", "images/bnymen9tops.png", "images/bnymen12tops.png",
+        "images/bnymen19tops.png", "images/bnymen23tops.png", "images/bnymen28tops.png", "images/bnymen1outerwear.png", "images/bnymen11outerwear.png",
+        "images/bnymen13outerwear.png", "images/bnymen15outerwear.png", "images/bnymen22outerwear.png", "images/bnymen29outerwear.png", "images/bnymen30outerwear.png",
+        "images/bnymen3bottoms.png", "images/bnymen4bottoms.png", "images/bnymen6activewear.png", "images/bnymen10bottoms.png", "images/bnymen17activewear.png",
+        "images/bnymen18activewear.png", "images/bnymen25bottoms.png", "images/bnymen5bottoms.png", "images/bnymen14bottoms.png", "images/bnymen16activewear.png",
+        "images/bnymen20bottoms.png", "images/bnymen21bottoms.png", "images/bnymen24bottoms.png", "images/bnymen26bottoms.png", "images/bnymen27bottoms.png",
+        "images/bnywomen2tops.png", "images/bnywomen11tops.png", "images/bnywomen15tops.png", "images/bnywomen21tops.png", "images/bnywomen22tops.png",
+        "images/bnywomen27tops.png", "images/bnywomen1tops.png", "images/bnywomen13tops.png", "images/bnywomen19tops.png", "images/bnywomen26tops.png",
+        "images/bnywomen4dresses.png", "images/bnywomen6dresses.png", "images/bnywomen14dresses.png", "images/bnywomen24dresses.png", "images/bnywomen25dresses.png",
+        "images/bnywomen5outerwear.png", "images/bnywomen9outerwear.png", "images/bnywomen16outerwear.png", "images/bnywomen17outerwear.png", "images/bnywomen28outerwear.png",
+        "images/bnywomen3bottoms.png", "images/bnywomen10activewear.png", "images/bnywomen18bottoms.png", "images/bnywomen20bottoms.png", "images/bnywomen23bottoms.png",
+        "images/bnywomen7bottoms.png", "images/bnywomen8bottoms.png", "images/bnywomen12bottoms.png", "images/bnywomen29bottoms.png", "images/bnywomen30bottoms.png"
+    };
+
+    private int[][] brandSizes = {
+        {110, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {110, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {70, 100}, {50, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
+    };
+
+    // Map to track current stock dynamically
+    private Map<String, Integer> currentStock;
 
     public BNY(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white, Color darkerBlue, Color black, Color lightGray, Color darkGray, 
                Color none, Font itemFont, Font dropdownFont) {
@@ -28,6 +111,12 @@ public class BNY extends JPanel {
         this.dropdownFont = dropdownFont;
         this.darkBlue = new Color(75, 75, 150);
         this.none = none;
+
+        // Initialize current stock map
+        currentStock = new HashMap<>();
+        for (int i = 0; i < items.length; i++) {
+            currentStock.put(items[i], initialItemsStock[i]);
+        }
 
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(27f);
@@ -179,75 +268,11 @@ public class BNY extends JPanel {
         womenPanel.setOpaque(false);
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
-        String[] items = {
-            "Kaiki White Color Street Trendy Versace Shirt", "Fiaunt Fashions Oversized Retro Classic T-Shirt", "Flower Style Valentine's Day Casual Polo Dating Shirt", "High Quality Shortsleeve Casual Polo Shirt", "Korean Vintage Loose Short-Sleeved T-Shirt",
-            "New WESTERN Summer Casual Pure Color Short Sleeved Shirt", "Korean Style Loose Fit Oversize Shirt Mens Silk Polo Shirt", "Plain Polo Shirt with 2 Lines", "Plain Hoodie Jacket with Zipper", "Korean New York Jacket with Zipper",
-            "LSB# Super Hot CEC Men's Tide Brand Trend Lightweight Jacket", "Bomber with Zipper Jacket", "TATA Fashion New Long Sleeve Plain Varsity Jacket", "New York Printed Design Hoodie Jacket", "TATA Fashion New Casual Baseball Jacket",
-            "Chinos 4-Pockets above-Knee Plain Garter Short", "Cod Men's Casual Sweat Jogger Sport Short", "Fashion Taslan Short", "HK Fashion Plain Short (with Belt)", "Street Style Short",
-            "New DUKE Dri-Fit Men's Sport Short Casual Basketball Shorts", "Above-Knee Casual Garter Beach Short", "Ezra Black Regular Fit Boys Dress Pants", "Wild Cargo Pants", "Taslan Loose Casual Pants",
-            "Rope Workwear with Pocket Loose Wide Leg Ankle Banded Pants", "Smart Stretch Pleat Slacks Beige", "Baggy Straight Cut Slacks", "Sweatpant Wide Leg Baggy Loose Straight Cut", "Business Formal Pants",
-            
-            "Casual Plain Color Block Embroidery Zipper T-Shirt", "Short Letter Pattern Slim Fit Printed T-Shirt", "Summer Square Neck Short Sleeve Slim Bottoming Knit Top", "Elegant Plain Split T-Shirt", "Sporty Plain Contrast Binding Crop T-Shirt",
-            "Slubs V-Neck T-Shirt with Bunny Embro", "Sleeveless Tank Vest Solid Top", "Solid Ribbed Knit Tube Basic Crop Top", "Casual Pleated Crop Tank Top", "Flower Tube Top with Pads",
-            "Hepburn Style Dress Summer Fashion Loose Slimmer", "Green Floral Strappy Dress", "Spring Autumn Sweater Dress", "Summer New Style Polo Color Short Sleeved Dress", "Heavy Industry Three-Dimensional Bow Knot Letter Diamond Dress",
-            "Small Leather Jacket", "Fried Street Yellow Floral Jacket", "Western Style Jacket New French Light Luxury", "Western Style Jacket European Station Spring Autumn", "Black Jacket",
-            "Fashion Trendy Plain Trouser Shorts", "New Taslan Short", "Casual Plain Button Short", "Casual Stripped Lace Up Zipper Short", "High Waisted Loose Fit Slim Stretchable Shorts Bermuda Short",
-            "Mid-waist Relaxed Pants", "Highwaist Pants Denim Ripped Jeans", "Full Length High Rise Wide Leg Jeans", "Highwaist Pants with Belt", "Wide Leg Pants Fashion High Waist Solid Button"
-        };
-    
-        String[] prices = {
-            "₱259", "₱144", "₱176", "₱188", "₱199",
-            "₱174", "₱170", "₱142", "₱145", "₱277",
-            "₱189", "₱145", "₱323", "₱143", "₱422",
-            "₱169", "₱156", "₱355", "₱199", "₱169",
-            "₱294", "₱248", "₱401", "₱246", "₱169",
-            "₱345", "₱350", "₱159", "₱149", "₱400",
-
-            "₱282", "₱200", "₱129", "₱330", "₱549",
-            "₱211", "₱159", "₱179", "₱177", "₱109",
-            "₱930", "₱262", "₱700", "₱900", "₱824",
-            "₱398", "₱443", "₱700", "₱668", "₱890",
-            "₱105", "₱128", "₱283", "₱273", "₱281",
-            "₱400", "₱458", "₱389", "₱500", "₱458"
-        };
-    
-        String[] icons = {
-            "images/bnymen2tops.png", "images/bnymen7tops.png", "images/bnymen8tops.png", "images/bnymen9tops.png", "images/bnymen12tops.png",
-            "images/bnymen19tops.png", "images/bnymen23tops.png", "images/bnymen28tops.png", "images/bnymen1outerwear.png", "images/bnymen11outerwear.png",
-            "images/bnymen13outerwear.png", "images/bnymen15outerwear.png", "images/bnymen22outerwear.png", "images/bnymen29outerwear.png", "images/bnymen30outerwear.png",
-            "images/bnymen3bottoms.png", "images/bnymen4bottoms.png", "images/bnymen6activewear.png", "images/bnymen10bottoms.png", "images/bnymen17activewear.png",
-            "images/bnymen18activewear.png", "images/bnymen25bottoms.png", "images/bnymen5bottoms.png", "images/bnymen14bottoms.png", "images/bnymen16activewear.png",
-            "images/bnymen20bottoms.png", "images/bnymen21bottoms.png", "images/bnymen24bottoms.png", "images/bnymen26bottoms.png", "images/bnymen27bottoms.png",
-
-            "images/bnywomen2tops.png", "images/bnywomen11tops.png", "images/bnywomen15tops.png", "images/bnywomen21tops.png", "images/bnywomen22tops.png",
-            "images/bnywomen27tops.png", "images/bnywomen1tops.png", "images/bnywomen13tops.png", "images/bnywomen19tops.png", "images/bnywomen26tops.png",
-            "images/bnywomen4dresses.png", "images/bnywomen6dresses.png", "images/bnywomen14dresses.png", "images/bnywomen24dresses.png", "images/bnywomen25dresses.png",
-            "images/bnywomen5outerwear.png", "images/bnywomen9outerwear.png", "images/bnywomen16outerwear.png", "images/bnywomen17outerwear.png", "images/bnywomen28outerwear.png",
-            "images/bnywomen3bottoms.png", "images/bnywomen10activewear.png", "images/bnywomen18bottoms.png", "images/bnywomen20bottoms.png", "images/bnywomen23bottoms.png",
-            "images/bnywomen7bottoms.png", "images/bnywomen8bottoms.png", "images/bnywomen12bottoms.png", "images/bnywomen29bottoms.png", "images/bnywomen30bottoms.png"
-        };
-
-        int[][] brandSize = {
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {70, 100}, {50, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
-        };
-
         for (int i = 0; i < items.length; i++) {
             if (i < 30) {
-                menPanel.add(createBNYItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                menPanel.add(createBNYItem(items[i], itemsPrice[i], itemsIcon[i], initialItemsStock[i], brandSizes[i][0], brandSizes[i][1]));
             } else {
-                womenPanel.add(createBNYItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                womenPanel.add(createBNYItem(items[i], itemsPrice[i], itemsIcon[i], initialItemsStock[i], brandSizes[i][0], brandSizes[i][1]));
             }
         }
 
@@ -264,16 +289,16 @@ public class BNY extends JPanel {
         mainPanel.add(sectionContainer, BorderLayout.CENTER);
     }
 
-    private JPanel createBNYItem(String item, String price, String icon, int width, int height) {
+    private JPanel createBNYItem(String item, String price, String icon, int initialStock, int width, int height) {
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BorderLayout());
-        itemPanel.setPreferredSize(new Dimension(230, 270));
+        itemPanel.setPreferredSize(new Dimension(230, 300));
         itemPanel.setBackground(lightBlue);
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));  
 
-        JPanel itemDetailsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        JPanel itemDetailsPanel = new JPanel();
         itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
         itemDetailsPanel.setOpaque(false);
 
@@ -317,6 +342,22 @@ public class BNY extends JPanel {
         priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         priceLabel.setPreferredSize(new Dimension(100, 20));
 
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setOpaque(false);
+
+        int currentStockValue = currentStock.getOrDefault(item, initialStock);
+        JLabel stockLabel = new JLabel("Stocks: " + currentStockValue);
+        stockLabel.setFont(itemFont.deriveFont(13f));
+        stockLabel.setForeground(black);
+        stockLabel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
+
+        JPanel stockContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        stockContainer.setOpaque(false);
+        stockContainer.add(stockLabel);
+
+        headerPanel.add(stockContainer, BorderLayout.EAST);
+        itemPanel.add(headerPanel, BorderLayout.NORTH);
+
         JButton addButton = new JButton("🛒");
         addButton.setForeground(black);
         addButton.setBackground(lightGray);
@@ -330,6 +371,12 @@ public class BNY extends JPanel {
         addButton.setMaximumSize(new Dimension(40, 30));
 
         addButton.addActionListener(e -> {
+            int availableStock = currentStock.getOrDefault(item, initialStock);
+            if (availableStock <= 0) {
+                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
 
             JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
@@ -349,7 +396,7 @@ public class BNY extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, availableStock, 1);
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
@@ -364,6 +411,15 @@ public class BNY extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
+                if (selectedQuantity > availableStock) {
+                    JOptionPane.showMessageDialog(null, "Requested quantity exceeds available stock for " + item + " (Requested: " + selectedQuantity + ", Available: " + availableStock + ")", "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                // Deduct the quantity from stock
+                int newStock = availableStock - selectedQuantity;
+                currentStock.put(item, newStock);
+                stockLabel.setText("Stocks: " + newStock);
+
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
@@ -413,7 +469,7 @@ public class BNY extends JPanel {
         itemDetailsPanel.add(namePane);
         itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         itemDetailsPanel.add(pricePanel);
-        itemPanel.add(itemDetailsPanel, BorderLayout.NORTH);
+        itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
 
         return itemPanel;
     }

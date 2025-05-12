@@ -28,7 +28,6 @@ public class RatingsPage extends JPanel {
     private Color mediumBlue = new Color(125, 125, 200);
     private Color gold = new Color(220, 200, 0);
     private Color black = Color.BLACK;
-    private Color darkerGray = Color.GRAY;
 
     public RatingsPage() {
         setLayout(new BorderLayout());
@@ -217,9 +216,13 @@ public class RatingsPage extends JPanel {
 
             tableScrollPane = new JScrollPane(orderTable);
             tableScrollPane.getViewport().setBackground(lightGray);
-            tableScrollPane.setBorder(BorderFactory.createLineBorder(darkerGray, 1));
             tableScrollPane.setColumnHeaderView(orderTable.getTableHeader());
             tableScrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
+            tableScrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, new JPanel() {
+                {
+                    setBackground(white);
+                }
+            });
 
             tableContainer.add(tableScrollPane, BorderLayout.CENTER);
             ratingPanel.add(tableContainer, BorderLayout.CENTER);

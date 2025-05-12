@@ -14,8 +14,8 @@ public class MainContents extends JPanel {
     private ImageIcon icon;
     private Image scaledImage;
     private JScrollPane scrollPane;
-    private int[] itemsStock;
-    private String[] items;
+    private JLabel[] stockLabels;
+    private JSpinner[] quantitySpinners;
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
     private Color white = Color.WHITE;
@@ -33,6 +33,24 @@ public class MainContents extends JPanel {
     private static List<CartItem> cartItems = new ArrayList<>();
     private Runnable onBrandViewClick;
     private Runnable onViewCartClick;
+    private ViewAll viewAllPanel;
+    private BNY bnyPanel; // Added field to store BNY instance
+
+    private String[] items = {
+        "TATA Fashion New Long Sleeve Plain Varsity Jacket", "Wide Leg Pants Fashion High Waist Solid Button", "Flower Style Valentine's Day Casual Polo Dating Shirt", "Small Leather Jacket", "Plain Hoodie Jacket with Zipper"
+    };
+
+    private int[] itemsStock = {21364, 45600, 5760, 2, 91};
+    private String[] itemsPrice = {"₱323", "₱458", "₱259", "₱398", "₱145"};
+    private String[] itemsTag = {"Trendy", "High quality", "Versatile", "High quality", "High quality"};
+
+    private String[] itemsIcon = {
+        "images/bnymen22outerwear.png", "images/bnywomen30bottoms.png", "images/bnymen8tops.png", "images/bnywomen5outerwear.png", "images/bnymen1outerwear.png"
+    };
+
+    private int[][] brandSizes = {
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100}
+    };
 
     public static List<CartItem> getCartItems() {
         return cartItems;
@@ -77,119 +95,34 @@ public class MainContents extends JPanel {
     public void decreaseStock(String itemName, int quantity) {
         for (int i = 0; i < items.length; i++) {
             if (items[i].equals(itemName)) {
-                itemsStock[i] -= quantity;
-                Component[] components = featuredItemsPanel.getComponents();
-                if (i < components.length) {
-                    JPanel itemPanel = (JPanel) components[i];
-                    JLabel stockLabel = findStockLabel(itemPanel);
-                    if (stockLabel != null) {
-                        stockLabel.setText("Stocks: " + itemsStock[i]);
-                    }
-                    JButton addButton = findAddButton(itemPanel);
-                    if (addButton != null) {
-                        updateSpinnerMaximum(addButton, itemsStock[i]);
-                    }
+                itemsStock[i] = Math.max(0, itemsStock[i] - quantity);
+                if (stockLabels[i] != null) {
+                    stockLabels[i].setText("Stocks: " + itemsStock[i]);
+                }
+                if (quantitySpinners[i] != null) {
+                    SpinnerNumberModel model = (SpinnerNumberModel) quantitySpinners[i].getModel();
+                    model.setMaximum(itemsStock[i]);
+                }
+                if (viewAllPanel != null) {
+                    viewAllPanel.updateStock(itemName, itemsStock[i]);
                 }
                 break;
             }
         }
     }
 
-    private JLabel findStockLabel(JPanel itemPanel) {
-        for (Component comp : itemPanel.getComponents()) {
-            if (comp instanceof JPanel) {
-                for (Component subComp : ((JPanel) comp).getComponents()) {
-                    if (subComp instanceof JPanel) {
-                        for (Component subSubComp : ((JPanel) subComp).getComponents()) {
-                            if (subSubComp instanceof JLabel && ((JLabel) subSubComp).getText().startsWith("Stocks: ")) {
-                                return (JLabel) subSubComp;
-                            }
-                        }
-                    }
-                }
+    public int getStock(String itemName) {
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].equals(itemName)) {
+                return itemsStock[i];
             }
         }
-        return null;
+        return 0;
     }
 
-    private JButton findAddButton(JPanel itemPanel) {
-        for (Component comp : itemPanel.getComponents()) {
-            if (comp instanceof JPanel) {
-                for (Component subComp : ((JPanel) comp).getComponents()) {
-                    if (subComp instanceof JPanel) {
-                        for (Component subSubComp : ((JPanel) subComp).getComponents()) {
-                            if (subSubComp instanceof JButton && ((JButton) subSubComp).getText().equals("🛒")) {
-                                return (JButton) subSubComp;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private void updateSpinnerMaximum(JButton addButton, int maxStock) {
-        String itemName = addButton.getClientProperty("itemName").toString();
-        String price = addButton.getClientProperty("price").toString();
-        String iconPath = addButton.getClientProperty("iconPath").toString();
-        int[] brandSize = getBrandSize(itemName);
-
-        addButton.addActionListener(e -> {
-            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
-            JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-            detailsPanel.setPreferredSize(new Dimension(400, 200));
-            detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-            detailsPanel.setFocusable(false);
-
-            JLabel sizeLabel = new JLabel("Select Size:");
-            sizeLabel.setFont(itemFont);
-            sizeLabel.setFocusable(false);
-
-            JComboBox<String> sizeBox = new JComboBox<>(sizes);
-            sizeBox.setFont(dropdownFont);
-            sizeBox.setFocusable(false);
-
-            JLabel quantityLabel = new JLabel("Quantity:");
-            quantityLabel.setFont(itemFont);
-            quantityLabel.setFocusable(false);
-
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, maxStock, 1);
-            JSpinner quantitySpinner = new JSpinner(spinnerModel);
-            quantitySpinner.setFont(dropdownFont);
-            quantitySpinner.setFocusable(false);
-
-            detailsPanel.add(sizeLabel);
-            detailsPanel.add(sizeBox);
-            detailsPanel.add(quantityLabel);
-            detailsPanel.add(quantitySpinner);
-
-            int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-            if (result == JOptionPane.OK_OPTION) {
-                String selectedSize = (String) sizeBox.getSelectedItem();
-                int selectedQuantity = (Integer) quantitySpinner.getValue();
-                cartItems.add(new CartItem(itemName, price, selectedSize, iconPath, selectedQuantity, brandSize[0], brandSize[1]));
-                JOptionPane.showMessageDialog(null, itemName + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
-            }
-        });
-    }
-
-    private int[] getBrandSize(String itemName) {
-        switch (itemName) {
-            case "TATA Fashion New Long Sleeve Plain Varsity Jacket":
-                return new int[]{100, 100};
-            case "Wide Leg Pants Fashion High Waist Solid Button":
-                return new int[]{100, 100};
-            case "Flower Style Valentine's Day Casual Polo Dating Shirt":
-                return new int[]{100, 100};
-            case "Small Leather Jacket":
-                return new int[]{100, 100};
-            case "Plain Hoodie Jacket with Zipper":
-                return new int[]{110, 100};
-            default:
-                return new int[]{100, 100};
-        }
+    // Added getter for BNY instance
+    public BNY getBNYInstance() {
+        return bnyPanel;
     }
 
     public MainContents() {
@@ -221,6 +154,9 @@ public class MainContents extends JPanel {
         mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(null);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -229,7 +165,7 @@ public class MainContents extends JPanel {
         contentPanel = new JPanel(cardLayout);
         contentPanel.add(scrollPane, "MainView");
 
-        BNY bnyPanel = new BNY(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        bnyPanel = new BNY(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont); // Store BNY instance
         contentPanel.add(bnyPanel, "BNYView");
 
         Bench benchPanel = new Bench(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
@@ -240,6 +176,9 @@ public class MainContents extends JPanel {
 
         Memo memoPanel = new Memo(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(memoPanel, "MemoView");
+
+        viewAllPanel = new ViewAll(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont, this);
+        contentPanel.add(viewAllPanel, "ViewAllView");
 
         createGreeting();
         createCategory();
@@ -290,10 +229,17 @@ public class MainContents extends JPanel {
         greetLabel.setFont(titleFont);
         greetLabel.setForeground(white);
 
-        icon = new ImageIcon("images/pfp.png");
-        scaledImage = icon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+        try {
+            icon = new ImageIcon("images/pfp.png");
+            scaledImage = icon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+        } catch (Exception e) {
+            System.err.println("Error loading profile image: " + e.getMessage());
+            icon = new ImageIcon();
+            scaledImage = null;
+        }
         pfpLabel = new JLabel(new ImageIcon(scaledImage));
         pfpLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        pfpLabel.setToolTipText("View Profile");
 
         pfpLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -301,10 +247,16 @@ public class MainContents extends JPanel {
                 JPanel profilePanel = new JPanel();
                 profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
                 profilePanel.setOpaque(false);
+                profilePanel.setPreferredSize(new Dimension(400, 300));
 
-                ImageIcon profileIcon = new ImageIcon("images/pfp.png");
+                ImageIcon profileIcon;
+                try {
+                    profileIcon = new ImageIcon("images/pfp.png");
+                } catch (Exception ex) {
+                    System.err.println("Error loading profile icon: " + ex.getMessage());
+                    profileIcon = new ImageIcon();
+                }
                 Image fullProfileIcon = profileIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-
                 JLabel imageLabel = new JLabel(new ImageIcon(fullProfileIcon));
                 imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -322,7 +274,13 @@ public class MainContents extends JPanel {
                 phonePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
                 phonePanel.setOpaque(false);
 
-                ImageIcon phoneIcon = new ImageIcon("images/phone.png");
+                ImageIcon phoneIcon;
+                try {
+                    phoneIcon = new ImageIcon("images/phone.png");
+                } catch (Exception ex) {
+                    System.err.println("Error loading phone icon: " + ex.getMessage());
+                    phoneIcon = new ImageIcon();
+                }
                 Image fullPhoneIcon = phoneIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                 JLabel imageLabel2 = new JLabel(new ImageIcon(fullPhoneIcon));
                 JLabel phoneLabel = new JLabel("+63 9 135-7924");
@@ -332,7 +290,13 @@ public class MainContents extends JPanel {
                 homePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
                 homePanel.setOpaque(false);
 
-                ImageIcon homeIcon = new ImageIcon("images/address.png");
+                ImageIcon homeIcon;
+                try {
+                    homeIcon = new ImageIcon("images/address.png");
+                } catch (Exception ex) {
+                    System.err.println("Error loading address icon: " + ex.getMessage());
+                    homeIcon = new ImageIcon();
+                }
                 Image fullHomeIcon = homeIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                 JLabel imageLabel3 = new JLabel(new ImageIcon(fullHomeIcon));
                 JLabel homeLabel = new JLabel("Valenzuela City, Metro Manila, Philippines");
@@ -401,10 +365,16 @@ public class MainContents extends JPanel {
                 BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 0, 10)));
         itemPanel.setPreferredSize(new Dimension(230, 130));
+        itemPanel.setToolTipText(itemName.trim());
 
-        ImageIcon icon = new ImageIcon(itemIcon);
+        ImageIcon icon;
+        try {
+            icon = new ImageIcon(itemIcon);
+        } catch (Exception e) {
+            System.err.println("Error loading category icon " + itemIcon + ": " + e.getMessage());
+            icon = new ImageIcon();
+        }
         Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-
         JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
 
         JLabel nameLabel = new JLabel(itemName);
@@ -463,6 +433,7 @@ public class MainContents extends JPanel {
         featuredView = new JLabel("View All >");
         featuredView.setFont(new Font("SansSerif", Font.PLAIN, 17));
         featuredView.setForeground(white);
+        featuredView.setToolTipText("View all featured items");
 
         featuredView.addMouseListener(new MouseAdapter() {
             @Override
@@ -484,24 +455,17 @@ public class MainContents extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
                 featuredView.setForeground(darkerBlue);
+                cardLayout.show(contentPanel, "ViewAllView");
+                contentPanel.revalidate();
+                contentPanel.repaint();
             }
         });
 
         featuredItemsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         featuredItemsPanel.setOpaque(false);
 
-        items = new String[]{"TATA Fashion New Long Sleeve Plain Varsity Jacket", "Wide Leg Pants Fashion High Waist Solid Button", "Flower Style Valentine's Day Casual Polo Dating Shirt", "Small Leather Jacket", "Plain Hoodie Jacket with Zipper"};
-        String[] itemsPrice = {"₱40.00", "₱50.00", "₱39.00", "₱165.00", "₱135.00"};
-        String[] itemsTag = {"Trendy", "High quality", "Versatile", "High quality", "High quality"};
-        String[] itemsIcon = {"images/bnymen22outerwear.png", "images/bnywomen30bottoms.png", "images/bnymen8tops.png", "images/bnywomen5outerwear.png", "images/bnymen1outerwear.png"};
-        itemsStock = new int[]{21364, 45600, 5760, 2, 91};
-        int[][] brandSizes = {
-            {100, 100},
-            {100, 100},
-            {100, 100},
-            {100, 100},
-            {110, 100}
-        };
+        stockLabels = new JLabel[items.length];
+        quantitySpinners = new JSpinner[items.length];
 
         for (int i = 0; i < items.length; i++) {
             featuredItemsPanel.add(createFeaturedItem(items[i], itemsPrice[i], itemsTag[i], itemsIcon[i], itemsStock[i], i, brandSizes[i]));
@@ -522,14 +486,20 @@ public class MainContents extends JPanel {
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        itemPanel.setToolTipText(item);
 
         JPanel itemDetailsPanel = new JPanel();
         itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
         itemDetailsPanel.setOpaque(false);
 
-        ImageIcon itemIcon = new ImageIcon(icon);
+        ImageIcon itemIcon;
+        try {
+            itemIcon = new ImageIcon(icon);
+        } catch (Exception e) {
+            System.err.println("Error loading item icon " + icon + ": " + e.getMessage());
+            itemIcon = new ImageIcon();
+        }
         Image scaledImage = itemIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-
         JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -565,6 +535,7 @@ public class MainContents extends JPanel {
         priceLabel.setForeground(black);
         priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        priceLabel.setPreferredSize(new Dimension(80, 20)); // Increased width to fit full price text
 
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setOpaque(false);
@@ -592,14 +563,14 @@ public class MainContents extends JPanel {
             headerPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.WEST);
         }
 
-        JLabel stockLabel = new JLabel("Stocks: " + stock);
-        stockLabel.setFont(itemFont.deriveFont(13f));
-        stockLabel.setForeground(black);
-        stockLabel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
+        stockLabels[index] = new JLabel("Stocks: " + stock);
+        stockLabels[index].setFont(itemFont.deriveFont(13f));
+        stockLabels[index].setForeground(black);
+        stockLabels[index].setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
 
         JPanel stockContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         stockContainer.setOpaque(false);
-        stockContainer.add(stockLabel);
+        stockContainer.add(stockLabels[index]);
 
         headerPanel.add(stockContainer, BorderLayout.EAST);
         itemPanel.add(headerPanel, BorderLayout.NORTH);
@@ -615,15 +586,22 @@ public class MainContents extends JPanel {
         addButton.setFocusable(false);
         addButton.setPreferredSize(new Dimension(40, 30));
         addButton.setMaximumSize(new Dimension(40, 30));
+        addButton.setToolTipText("Add " + item + " to cart");
 
         addButton.putClientProperty("itemName", item);
         addButton.putClientProperty("price", price);
         addButton.putClientProperty("iconPath", icon);
 
+        quantitySpinners[index] = new JSpinner();
         addButton.addActionListener(e -> {
+            if (itemsStock[index] <= 0) {
+                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
             JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-            detailsPanel.setPreferredSize(new Dimension(400, 200));
+            detailsPanel.setPreferredSize(new Dimension(400, 150));
             detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
             detailsPanel.setFocusable(false);
 
@@ -640,20 +618,24 @@ public class MainContents extends JPanel {
             quantityLabel.setFocusable(false);
 
             SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, itemsStock[index], 1);
-            JSpinner quantitySpinner = new JSpinner(spinnerModel);
-            quantitySpinner.setFont(dropdownFont);
-            quantitySpinner.setFocusable(false);
+            quantitySpinners[index].setModel(spinnerModel);
+            quantitySpinners[index].setFont(dropdownFont);
+            quantitySpinners[index].setFocusable(false);
 
             detailsPanel.add(sizeLabel);
             detailsPanel.add(sizeBox);
             detailsPanel.add(quantityLabel);
-            detailsPanel.add(quantitySpinner);
+            detailsPanel.add(quantitySpinners[index]);
 
             int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
-                int selectedQuantity = (Integer) quantitySpinner.getValue();
+                int selectedQuantity = (Integer) quantitySpinners[index].getValue();
+                if (selectedQuantity > itemsStock[index]) {
+                    JOptionPane.showMessageDialog(null, "Requested quantity exceeds available stock for " + item, "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 cartItems.add(new CartItem(item, price, selectedSize, icon, selectedQuantity, brandSize[0], brandSize[1]));
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
@@ -747,6 +729,7 @@ public class MainContents extends JPanel {
                 BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 5, 10)));
         itemPanel.setPreferredSize(new Dimension(188, 150));
+        itemPanel.setToolTipText(brandName);
 
         JPanel logoPanel = new JPanel();
         logoPanel.setLayout(new GridBagLayout());
@@ -754,7 +737,13 @@ public class MainContents extends JPanel {
         logoPanel.setPreferredSize(new Dimension(200, 110));
         logoPanel.setMaximumSize(new Dimension(200, 110));
 
-        ImageIcon icon = new ImageIcon(brandIcon);
+        ImageIcon icon;
+        try {
+            icon = new ImageIcon(brandIcon);
+        } catch (Exception e) {
+            System.err.println("Error loading brand icon " + brandIcon + ": " + e.getMessage());
+            icon = new ImageIcon();
+        }
         Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
 
@@ -771,7 +760,6 @@ public class MainContents extends JPanel {
 
         itemPanel.add(logoPanel, BorderLayout.CENTER);
         itemPanel.add(nameLabel, BorderLayout.SOUTH);
-
         itemPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         itemPanel.addMouseListener(new MouseAdapter() {

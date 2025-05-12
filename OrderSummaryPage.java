@@ -238,7 +238,7 @@ public class OrderSummaryPage extends JPanel {
     }
 
     public boolean isReceiptGenerated() {
-        return receiptGenerated && !orderedItems.isEmpty();
+        return receiptGenerated;
     }
 
     public List<MainContents.CartItem> getOrderedItems() {
@@ -247,6 +247,8 @@ public class OrderSummaryPage extends JPanel {
 
     public void setOrderedItems(List<MainContents.CartItem> items) {
         this.orderedItems = new ArrayList<>(items);
+        this.receiptGenerated = false; // Reset receipt status for new order
+        this.isTrackingComplete = false; // Reset tracking status for new order
     }
 
     public void displayOrderSummary(Object[][] tableData, String[] columnNames, Font tableFont) {
@@ -263,7 +265,7 @@ public class OrderSummaryPage extends JPanel {
         } else {
             JPanel tableContainer = new JPanel(new BorderLayout());
             tableContainer.setOpaque(false);
-            tableContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+            tableContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
             JTable summaryTable = new JTable(tableData, columnNames) {
                 @Override
@@ -301,11 +303,14 @@ public class OrderSummaryPage extends JPanel {
             summaryTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
             scrollPane = new JScrollPane(summaryTable);
-            scrollPane.setOpaque(false);
             scrollPane.getViewport().setBackground(lightGray);
-            scrollPane.setBorder(BorderFactory.createLineBorder(darkerGray, 1));
             scrollPane.setColumnHeaderView(summaryTable.getTableHeader());
             scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
+            scrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, new JPanel() {
+                {
+                    setBackground(white);
+                }
+            });
 
             tableContainer.add(scrollPane, BorderLayout.CENTER);
             orderPanel.add(tableContainer);
@@ -360,7 +365,6 @@ public class OrderSummaryPage extends JPanel {
                 writer.println(receiptContent.toString());
                 receiptGenerated = true;
                 
-                // Show the new message
                 int option = JOptionPane.showConfirmDialog(
                     this, 
                     "You will be redirected to your receipt", 
@@ -368,7 +372,6 @@ public class OrderSummaryPage extends JPanel {
                     JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
                 
-                // If user clicks OK, open the receipt file
                 if (option == JOptionPane.OK_OPTION) {
                     try {
                         if (Desktop.isDesktopSupported()) {
@@ -397,6 +400,14 @@ public class OrderSummaryPage extends JPanel {
     }
 
     public void trackOrder() {
+        if (orderedItems.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "<html><div style='width: 500px; font-size: 12px; font-family: SansSerif'>No orders to track.</div></html>", 
+                "No Orders", 
+                JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
         if (isTrackingInitialized || isTrackingComplete) {
             orderPanel.removeAll();
             orderPanel.add(trackPanel, BorderLayout.CENTER);
@@ -405,9 +416,7 @@ public class OrderSummaryPage extends JPanel {
             return;
         }
 
-        if (scrollPane != null) {
-            orderPanel.remove(scrollPane);
-        }
+        orderPanel.removeAll(); // Clear all components to remove table headers
 
         trackPanel = new JPanel();
         BorderLayout borderLayout = new BorderLayout(0, 0);
@@ -575,7 +584,6 @@ public class OrderSummaryPage extends JPanel {
                 receivePanel.setCircleColor(green); 
                 isTrackingComplete = true;
     
-                // Clear the order if receipt was generated and tracking is complete
                 if (canRemoveOrderItems()) {
                     orderedItems.clear();
                     displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
@@ -757,11 +765,9 @@ public class OrderSummaryPage extends JPanel {
             }
             orderPanel.remove(trackPanel);
             
-            // Only show empty table if both conditions are met
             if (canRemoveOrderItems()) {
                 displayOrderSummary(null, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
             } else {
-                // Re-display the current order items
                 Object[][] tableData = convertCartItemsToTableData(orderedItems);
                 displayOrderSummary(tableData, new String[]{"Product", "Details", "Price", "Quantity", "Subtotal"}, customFont);
             }

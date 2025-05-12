@@ -25,7 +25,6 @@ public class ShoppingCartPage extends JPanel {
     private Color white = Color.WHITE;
     private Color lightGray = new Color(211, 211, 211);
     private Color mediumBlue = new Color(125, 125, 200);
-    private Color darkerGray = Color.GRAY;
 
     public ShoppingCartPage(HomePage homePage, MainContents mainContents, Runnable onAddToCartRedirect, OrderSummaryPage orderSummaryPage, RatingsPage ratingsPage, Font font) {
         setLayout(new BorderLayout());
@@ -79,6 +78,8 @@ public class ShoppingCartPage extends JPanel {
         orderPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         orderPane.getVerticalScrollBar().setUnitIncrement(16);
         orderPane.setBorder(BorderFactory.createEmptyBorder());
+        orderPane.setOpaque(false);
+        orderPane.getViewport().setOpaque(false);
 
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -95,8 +96,9 @@ public class ShoppingCartPage extends JPanel {
                 BorderFactory.createLineBorder(lightGray, 1),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        addButton.addActionListener(e -> addToCart());
         addButton.setOpaque(true);
+        addButton.setToolTipText("Add more items to cart");
+        addButton.addActionListener(e -> addToCart());
 
         addButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -130,8 +132,9 @@ public class ShoppingCartPage extends JPanel {
                 BorderFactory.createLineBorder(lightGray, 1),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         removeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        removeButton.addActionListener(e -> removeFromCart());
         removeButton.setOpaque(true);
+        removeButton.setToolTipText("Remove selected items from cart");
+        removeButton.addActionListener(e -> removeFromCart());
 
         removeButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -165,8 +168,9 @@ public class ShoppingCartPage extends JPanel {
                 BorderFactory.createLineBorder(lightGray, 1),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         placeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        placeButton.addActionListener(e -> confirmOrder());
         placeButton.setOpaque(true);
+        placeButton.setToolTipText("Place order for selected items");
+        placeButton.addActionListener(e -> confirmOrder());
 
         placeButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -208,7 +212,7 @@ public class ShoppingCartPage extends JPanel {
 
         if (currentItems.isEmpty()) {
             emptyLabel = new JLabel("Your cart is empty.");
-            emptyLabel.setFont(new Font(null, Font.BOLD, 25));
+            emptyLabel.setFont(new Font("SansSerif", Font.BOLD, 25));
             emptyLabel.setForeground(white);
             emptyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             orderPanel.add(Box.createVerticalGlue());
@@ -217,14 +221,20 @@ public class ShoppingCartPage extends JPanel {
         } else {
             JPanel tableContainer = new JPanel(new BorderLayout());
             tableContainer.setOpaque(false);
-            tableContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+            tableContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
             String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
             Object[][] data = new Object[currentItems.size()][5];
 
             for (int i = 0; i < currentItems.size(); i++) {
                 MainContents.CartItem item = currentItems.get(i);
-                ImageIcon itemIcon = new ImageIcon(new ImageIcon(item.getIconPath()).getImage().getScaledInstance(item.getIconWidth(), item.getIconHeight(), Image.SCALE_SMOOTH));
+                ImageIcon itemIcon;
+                try {
+                    itemIcon = new ImageIcon(new ImageIcon(item.getIconPath()).getImage().getScaledInstance(item.getIconWidth(), item.getIconHeight(), Image.SCALE_SMOOTH));
+                } catch (Exception e) {
+                    System.err.println("Error loading cart item icon " + item.getIconPath() + ": " + e.getMessage());
+                    itemIcon = new ImageIcon();
+                }
                 data[i][0] = itemIcon;
                 data[i][1] = String.format("<html>%s<br>Size: %s</html>", item.getName(), item.getSize());
                 data[i][2] = item.getPrice();
@@ -268,11 +278,14 @@ public class ShoppingCartPage extends JPanel {
             cartTable.getColumnModel().getColumn(4).setPreferredWidth(100);
 
             tablePane = new JScrollPane(cartTable);
-            tablePane.setOpaque(false);
             tablePane.getViewport().setBackground(lightGray);
-            tablePane.setBorder(BorderFactory.createLineBorder(darkerGray, 1));
             tablePane.setColumnHeaderView(cartTable.getTableHeader());
             tablePane.setViewportBorder(BorderFactory.createEmptyBorder());
+            tablePane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, new JPanel() {
+                {
+                    setBackground(white);
+                }
+            });
 
             tableContainer.add(tablePane, BorderLayout.CENTER);
             orderPanel.add(tableContainer);
@@ -326,7 +339,7 @@ public class ShoppingCartPage extends JPanel {
 
         builder.setLength(builder.length() - 2);
 
-        JLabel label = new JLabel("<html><div style='width: 500px; font-size: 12px; font-family: SansSerif'>Are you sure you want to remove " + builder.toString() + " from your cart?</div></html>");
+        JLabel label = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>Are you sure you want to remove " + builder.toString() + " from your cart?</div></html>");
         int confirm = JOptionPane.showConfirmDialog(
                 this,
                 label,
@@ -338,16 +351,21 @@ public class ShoppingCartPage extends JPanel {
             refreshCartItems();
 
             if (cartItems.isEmpty()) {
-                JLabel emptyLabel = new JLabel("<html><div style='width: 500px; font-size: 12px; font-family: SansSerif'>Your cart is now empty.</div></html>");
+                JLabel emptyLabel = new JLabel("<html><div style='font-size: 9px; font-family: SansSerif'>Your cart is now empty.</div></html>");
                 JOptionPane.showMessageDialog(this, emptyLabel, "Cart Empty", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JLabel removedLabel = new JLabel("<html><div style='width: 500px; font-size: 12px; font-family: SansSerif'>" + builder.toString() + " removed from cart.</div></html>");
+                JLabel removedLabel = new JLabel("<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>" + builder.toString() + " removed from cart.</div></html>");
                 JOptionPane.showMessageDialog(this, removedLabel, "Items Removed", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
 
     private void confirmOrder() {
+        if (mainContents == null) {
+            JOptionPane.showMessageDialog(this, "Internal error: Main contents not initialized.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         List<MainContents.CartItem> cartItems = MainContents.getCartItems();
 
         if (cartItems.isEmpty()) {
@@ -361,9 +379,8 @@ public class ShoppingCartPage extends JPanel {
             return;
         }
 
-        // Check if there is a pending order without a generated receipt
         if (!orderSummaryPage.isReceiptGenerated() && !orderSummaryPage.getOrderedItems().isEmpty()) {
-            String message = "You haven't generated a receipt for the previous order yet.";
+            String message = "<html><div style='font-size: 9px; font-family: SansSerif'>You haven't generated a receipt for the previous order yet.</div></html>";
             String title = "Pending Receipt";
             String[] options = {"Generate Receipt", "Place Order Later"};
             int response = JOptionPane.showOptionDialog(
@@ -377,14 +394,12 @@ public class ShoppingCartPage extends JPanel {
                     options[0]);
 
             if (response == JOptionPane.YES_OPTION) {
-                // Generate receipt and navigate to OrderSummaryView
                 orderSummaryPage.generateReceipt();
                 if (homePage != null) {
                     homePage.showPanel("OrderSummaryView");
                     homePage.menuItemWhite("Order Summary");
                 }
             }
-            // For "Place Order Later" or dialog dismissal, return without placing the order
             return;
         }
 
@@ -392,6 +407,26 @@ public class ShoppingCartPage extends JPanel {
         List<MainContents.CartItem> toRemove = new ArrayList<>();
         Object[][] selectedData = new Object[selectedRows.length][5];
         String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
+        StringBuilder insufficientStock = new StringBuilder();
+
+        for (int i = 0; i < selectedRows.length; i++) {
+            int row = selectedRows[i];
+            if (row >= 0 && row < cartItems.size()) {
+                MainContents.CartItem item = cartItems.get(row);
+                int availableStock = mainContents.getStock(item.getName());
+                if (item.getQuantity() > availableStock) {
+                    insufficientStock.append(String.format("%s (Requested: %d, Available: %d)\n", item.getName(), item.getQuantity(), availableStock));
+                }
+            }
+        }
+
+        if (!insufficientStock.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>Insufficient stock for the following items:<br>" + insufficientStock.toString().replace("\n", "<br>") + "</div></html>",
+                    "Insufficient Stock",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         for (int i = 0; i < selectedRows.length; i++) {
             int row = selectedRows[i];
@@ -413,17 +448,20 @@ public class ShoppingCartPage extends JPanel {
 
         double remainingBalance = currentBalance - subtotal;
         if (remainingBalance < 0) {
-            JOptionPane.showMessageDialog(this, "Not enough balance!", "Insufficient Funds", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "<html><div style='font-size: 9px; font-family: SansSerif'>Not enough balance! Current balance: ₱" + String.format("%,.2f", currentBalance) + "</div></html>",
+                    "Insufficient Funds",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        String infoMessage = String.format("""
-                Current Balance: ₱%,.2f
-                Item Subtotal: ₱%,.2f
-                After Purchase: ₱%,.2f
-
-                Do you want to place this order?
-                """, currentBalance, subtotal, remainingBalance);
+        String infoMessage = String.format(
+                "<html><div style='font-size: 9px; font-family: SansSerif'>" +
+                "Current Balance: ₱%,.2f<br>" +
+                "Item Subtotal: ₱%,.2f<br>" +
+                "After Purchase: ₱%,.2f<br><br>" +
+                "Do you want to place this order?</div></html>",
+                currentBalance, subtotal, remainingBalance);
 
         int choice = JOptionPane.showConfirmDialog(this, infoMessage, "Order Details", JOptionPane.OK_CANCEL_OPTION);
 
@@ -442,7 +480,10 @@ public class ShoppingCartPage extends JPanel {
             ratingsPage.displayOrderSummary(selectedData, columnNames, customFont);
             cartItems.removeAll(toRemove);
             refreshCartItems();
-            JOptionPane.showMessageDialog(this, "Order placed!", "Order Placed", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "<html><div style='font-size: 9px; font-family: SansSerif'>Order placed successfully!</div></html>",
+                    "Order Placed",
+                    JOptionPane.INFORMATION_MESSAGE);
 
             if (homePage != null) {
                 homePage.showPanel("OrderSummaryView");
