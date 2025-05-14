@@ -34,7 +34,8 @@ public class MainContents extends JPanel {
     private Runnable onBrandViewClick;
     private Runnable onViewCartClick;
     private ViewAll viewAllPanel;
-    private BNY bnyPanel; // Added field to store BNY instance
+    private BNY bnyPanel;
+    private Bench benchPanel;
 
     private String[] items = {
         "TATA Fashion New Long Sleeve Plain Varsity Jacket", "Wide Leg Pants Fashion High Waist Solid Button", "Flower Style Valentine's Day Casual Polo Dating Shirt", "Small Leather Jacket", "Plain Hoodie Jacket with Zipper"
@@ -93,20 +94,38 @@ public class MainContents extends JPanel {
     }
 
     public void decreaseStock(String itemName, int quantity) {
+        boolean isFeaturedItem = false;
+        int index = -1;
         for (int i = 0; i < items.length; i++) {
             if (items[i].equals(itemName)) {
-                itemsStock[i] = Math.max(0, itemsStock[i] - quantity);
-                if (stockLabels[i] != null) {
-                    stockLabels[i].setText("Stocks: " + itemsStock[i]);
-                }
-                if (quantitySpinners[i] != null) {
-                    SpinnerNumberModel model = (SpinnerNumberModel) quantitySpinners[i].getModel();
-                    model.setMaximum(itemsStock[i]);
-                }
-                if (viewAllPanel != null) {
-                    viewAllPanel.updateStock(itemName, itemsStock[i]);
-                }
+                isFeaturedItem = true;
+                index = i;
                 break;
+            }
+        }
+
+        if (isFeaturedItem) {
+            itemsStock[index] = Math.max(0, itemsStock[index] - quantity);
+            if (stockLabels[index] != null) {
+                stockLabels[index].setText("Stocks: " + itemsStock[index]);
+            }
+            if (quantitySpinners[index] != null) {
+                SpinnerNumberModel model = (SpinnerNumberModel) quantitySpinners[index].getModel();
+                model.setMaximum(itemsStock[index]);
+            }
+            if (viewAllPanel != null) {
+                viewAllPanel.updateStock(itemName, itemsStock[index]);
+            }
+            if (bnyPanel != null && bnyPanel.getStock(itemName) > 0) {
+                bnyPanel.decreaseStock(itemName, quantity);
+            }
+        } else {
+            if (bnyPanel != null && bnyPanel.getStock(itemName) > 0) {
+                bnyPanel.decreaseStock(itemName, quantity);
+            }
+
+            if (benchPanel != null && benchPanel.getStock(itemName) > 0) {
+                benchPanel.decreaseStock(itemName, quantity);
             }
         }
     }
@@ -114,13 +133,22 @@ public class MainContents extends JPanel {
     public int getStock(String itemName) {
         for (int i = 0; i < items.length; i++) {
             if (items[i].equals(itemName)) {
-                return itemsStock[i];
+                int bnyStock = (bnyPanel != null) ? bnyPanel.getStock(itemName) : itemsStock[i];
+                return Math.min(itemsStock[i], bnyStock);
             }
         }
+
+        if (bnyPanel != null && bnyPanel.getStock(itemName) > 0) {
+            return benchPanel.getStock(itemName);
+        }
+
+        if (benchPanel != null && benchPanel.getStock(itemName) > 0) {
+            return benchPanel.getStock(itemName);
+        }
+
         return 0;
     }
 
-    // Added getter for BNY instance
     public BNY getBNYInstance() {
         return bnyPanel;
     }
@@ -165,10 +193,10 @@ public class MainContents extends JPanel {
         contentPanel = new JPanel(cardLayout);
         contentPanel.add(scrollPane, "MainView");
 
-        bnyPanel = new BNY(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont); // Store BNY instance
+        bnyPanel = new BNY(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(bnyPanel, "BNYView");
 
-        Bench benchPanel = new Bench(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        benchPanel = new Bench(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(benchPanel, "BenchView");
 
         Lee leePanel = new Lee(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
@@ -176,6 +204,9 @@ public class MainContents extends JPanel {
 
         Memo memoPanel = new Memo(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(memoPanel, "MemoView");
+
+        Penshoppe penshoppePanel = new Penshoppe(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        contentPanel.add(penshoppePanel, "PenshoppeView");
 
         viewAllPanel = new ViewAll(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont, this);
         contentPanel.add(viewAllPanel, "ViewAllView");
@@ -535,7 +566,7 @@ public class MainContents extends JPanel {
         priceLabel.setForeground(black);
         priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        priceLabel.setPreferredSize(new Dimension(80, 20)); // Increased width to fit full price text
+        priceLabel.setPreferredSize(new Dimension(80, 20));
 
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setOpaque(false);
@@ -794,6 +825,10 @@ public class MainContents extends JPanel {
                     contentPanel.repaint();
                 } else if (brandName.equals("Memo")) {
                     cardLayout.show(contentPanel, "MemoView");
+                    contentPanel.revalidate();
+                    contentPanel.repaint();
+                } else if (brandName.equals("Penshoppe")) {
+                    cardLayout.show(contentPanel, "PenshoppeView");
                     contentPanel.revalidate();
                     contentPanel.repaint();
                 }

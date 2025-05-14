@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.io.*;
+import java.util.HashMap;
 
 public class Bench extends JPanel {
     private CardLayout cardLayout;
@@ -14,6 +15,8 @@ public class Bench extends JPanel {
     private JButton backButton;
     private JLabel titleLabel, menLabel, womenLabel;
     private JScrollPane scrollPane;
+    private HashMap<String, Integer> currentStock;
+    private HashMap<String, JLabel> stockLabels;
 
     public Bench(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white, Color darkerBlue, Color black, Color lightGray, Color darkGray, 
                  Color none, Font itemFont, Font dropdownFont) {
@@ -40,6 +43,11 @@ public class Bench extends JPanel {
             titleFont = customFont.deriveFont(35f);
         }
 
+        // Initialize stock and stock labels
+        currentStock = new HashMap<>();
+        stockLabels = new HashMap<>();
+        initializeStock();
+
         titlePanel();
         mainPanel();
 
@@ -54,6 +62,55 @@ public class Bench extends JPanel {
         setOpaque(false);
         add(topPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private void initializeStock() {
+        String[] items = {
+            "Bench Everyday’s Pullover Top", "Bench x Baekhyun Logo Tee", "Men's Statement Tee", "Men's Boxy Tee", "Men's Classic Tee",
+            "Men's Embriodered Tee", "Flat Knit Polo Shirt", "Men's Graphic Tee", "Heritage Oversized T-Shirt", "Heritage Polo Shirt",
+            "Men's Logo Tee", "Men's Polo Shirt", "Men's Round Neck Tee", "Round Neck Tee", "Men's Short Printed Shirt",
+            "Short Sleeved Polo", "Striped Polo Shirt", "Stripped Short Sleeve Polo", "Men's Printed Muscle Tee", "Men's Ribbed Racer Back T-Shirt",
+            "Sleeveless Pullover Top", "Baekhyun Pullover Top", "Everyday Men’s Pullover Top", "Men's Long Sleeved Shirt", "Pokemon Men's Pullover",
+            "Men's Jogging Shorts", "Men's Walking Shorts", "Men's Jogging Pants", "Men's Twill Pants", "SB19 Men's Twill Pants",
+            "Better Made Graphic Shirt", "Pokemon Graphic Tee", "Cropped Plaid Resort Polo", "Oversized Graphic Tee", "Peasant Crop Top",
+            "Puff Sleeve Top", "Boxy Resort Shirt", "Collared Top", "Plain Oversized Tee", "Cool Touch Crew Neck Short-sleeved T-Shirt",
+            "Women's Crop Top", "Cropped Logo Tee", "Denim Boxy Cropped Shirt", "Women's Graphic T-Shirt", "Women’s K-Heart T-Shirt",
+            "Oversized Polo Shirt", "Women's Plain Tee", "Women's Polo Shirt", "Women's Statement Tee", "Stripped Short Sleeve Polo",
+            "Women's Woven Top", "Sleeveless Top White", "Scoop Neck Tank Top", "Women's Sleeveless Top", "Women's Hoodie Jacket",
+            "Women's Shift Dress", "Denim Pants", "Everyday Baggy Pants", "Baggy Pants", "Denim Carpenter Pants"
+        };
+        int[] stocks = {
+            1500, 1200, 800, 900, 1000,
+            700, 600, 850, 950, 1100,
+            1300, 750, 880, 920, 670,
+            780, 890, 910, 560, 450,
+            680, 720, 830, 940, 1050,
+            770, 860, 990, 1150, 1250,
+            1400, 1100, 650, 870, 930,
+            760, 820, 960, 1080, 1120,
+            790, 840, 900, 970, 1030,
+            880, 950, 1000, 1070, 660,
+            730, 800, 850, 920, 980,
+            1040, 1090, 1140, 1190, 1240
+        };
+
+        for (int i = 0; i < items.length; i++) {
+            currentStock.put(items[i], stocks[i]);
+        }
+    }
+
+    public int getStock(String itemName) {
+        return currentStock.getOrDefault(itemName, 0);
+    }
+
+    public void decreaseStock(String itemName, int quantity) {
+        int current = currentStock.getOrDefault(itemName, 0);
+        int newStock = Math.max(0, current - quantity);
+        currentStock.put(itemName, newStock);
+        JLabel stockLabel = stockLabels.get(itemName);
+        if (stockLabel != null) {
+            stockLabel.setText("Stocks: " + newStock);
+        }
     }
 
     @Override
@@ -186,7 +243,6 @@ public class Bench extends JPanel {
             "Short Sleeved Polo", "Striped Polo Shirt", "Stripped Short Sleeve Polo", "Men's Printed Muscle Tee", "Men's Ribbed Racer Back T-Shirt",
             "Sleeveless Pullover Top", "Baekhyun Pullover Top", "Everyday Men’s Pullover Top", "Men's Long Sleeved Shirt", "Pokemon Men's Pullover",
             "Men's Jogging Shorts", "Men's Walking Shorts", "Men's Jogging Pants", "Men's Twill Pants", "SB19 Men's Twill Pants",
-            
             "Better Made Graphic Shirt", "Pokemon Graphic Tee", "Cropped Plaid Resort Polo", "Oversized Graphic Tee", "Peasant Crop Top",
             "Puff Sleeve Top", "Boxy Resort Shirt", "Collared Top", "Plain Oversized Tee", "Cool Touch Crew Neck Short-sleeved T-Shirt",
             "Women's Crop Top", "Cropped Logo Tee", "Denim Boxy Cropped Shirt", "Women's Graphic T-Shirt", "Women’s K-Heart T-Shirt",
@@ -202,7 +258,6 @@ public class Bench extends JPanel {
             "₱899", "₱499", "₱899", "₱279", "₱167",
             "₱599", "₱599", "₱599", "₱499", "₱448",
             "₱499", "₱699", "₱499", "₱899", "₱899",
-
             "₱321", "₱349", "₱699", "₱349", "₱699",
             "₱999", "₱899", "₱419", "₱230", "₱230",
             "₱279", "₱265", "₱899", "₱349", "₱349",
@@ -218,7 +273,6 @@ public class Bench extends JPanel {
            "images/benchmen23tops.png", "images/benchmen25tops.png", "images/benchmen26tops.png", "images/benchmen18tops.png", "images/benchmen19tops.png",
            "images/benchmen24outerwear.png", "images/benchmen1tops.png", "images/benchmen8outerwear.png", "images/benchmen16outerwear.png", "images/benchmen29outerwear.png",
            "images/benchmen14activewear.png", "images/benchmen28bottoms.png", "images/benchmen13activewear.png", "images/benchmen27bottoms.png", "images/benchmen30bottoms.png",
-
            "images/benchwomen2tops.png", "images/benchwomen4tops.png", "images/benchwomen6tops.png", "images/benchwomen7tops.png", "images/benchwomen8tops.png",
            "images/benchwomen9tops.png", "images/benchwomen12tops.png", "images/benchwomen13tops.png", "images/benchwomen14tops.png", "images/benchwomen15tops.png",
            "images/benchwomen16tops.png", "images/benchwomen17tops.png", "images/benchwomen18tops.png", "images/benchwomen20tops.png", "images/benchwomen21tops.png",
@@ -234,7 +288,6 @@ public class Bench extends JPanel {
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
@@ -244,10 +297,11 @@ public class Bench extends JPanel {
         };
  
         for (int i = 0; i < items.length; i++) {
+            JPanel itemPanel = createBenchItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1], currentStock.get(items[i]));
             if (i < 30) {
-                menPanel.add(createBenchItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                menPanel.add(itemPanel);
             } else {
-                womenPanel.add(createBenchItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                womenPanel.add(itemPanel);
             }
         }
 
@@ -264,22 +318,21 @@ public class Bench extends JPanel {
         mainPanel.add(sectionContainer, BorderLayout.CENTER);
     }
 
-    private JPanel createBenchItem(String item, String price, String icon, int width, int height) {
+    private JPanel createBenchItem(String item, String price, String icon, int width, int height, int stock) {
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BorderLayout());
-        itemPanel.setPreferredSize(new Dimension(230, 270));
+        itemPanel.setPreferredSize(new Dimension(230, 300));
         itemPanel.setBackground(lightBlue);
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));  
 
-        JPanel itemDetailsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        JPanel itemDetailsPanel = new JPanel();
         itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
         itemDetailsPanel.setOpaque(false);
 
         ImageIcon itemIcon = new ImageIcon(icon);
         Image scaledImage = itemIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
         JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -317,6 +370,21 @@ public class Bench extends JPanel {
         priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         priceLabel.setPreferredSize(new Dimension(100, 20));
 
+        JLabel stockLabel = new JLabel("Stocks: " + stock);
+        stockLabel.setFont(itemFont.deriveFont(13f));
+        stockLabel.setForeground(black);
+        stockLabel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
+        stockLabels.put(item, stockLabel);
+
+        JPanel stockContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        stockContainer.setOpaque(false);
+        stockContainer.add(stockLabel);
+
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setOpaque(false);
+        headerPanel.add(stockContainer, BorderLayout.EAST);
+        itemPanel.add(headerPanel, BorderLayout.NORTH);
+
         JButton addButton = new JButton("🛒");
         addButton.setForeground(black);
         addButton.setBackground(lightGray);
@@ -328,10 +396,15 @@ public class Bench extends JPanel {
         addButton.setFocusable(false);
         addButton.setPreferredSize(new Dimension(40, 30));
         addButton.setMaximumSize(new Dimension(40, 30));
+        addButton.setToolTipText("Add " + item + " to cart");
 
         addButton.addActionListener(e -> {
-            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
+            if (currentStock.get(item) <= 0) {
+                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
+            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
             JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
             detailsPanel.setPreferredSize(new Dimension(400, 150));
             detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -349,7 +422,13 @@ public class Bench extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(
+                (int)1, 
+                (int)1, 
+                (int)currentStock.get(item), 
+                (int)1
+            );
+
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
@@ -364,6 +443,10 @@ public class Bench extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
+                if (selectedQuantity > currentStock.get(item)) {
+                    JOptionPane.showMessageDialog(null, "Requested quantity exceeds available stock for " + item, "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
@@ -413,7 +496,7 @@ public class Bench extends JPanel {
         itemDetailsPanel.add(namePane);
         itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         itemDetailsPanel.add(pricePanel);
-        itemPanel.add(itemDetailsPanel, BorderLayout.NORTH);
+        itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
 
         return itemPanel;
     }

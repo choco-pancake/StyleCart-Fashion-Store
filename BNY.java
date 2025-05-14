@@ -39,7 +39,6 @@ public class BNY extends JPanel {
         3000, 400, 6700, 200, 3500,
         8000, 1000, 15000, 2800, 5000,
         6000, 7500, 2000, 3000, 4000,
-
         10000, 2000, 500, 700, 2500,
         800, 3000, 4500, 6000, 1500,
         2000, 1000, 5000, 3000, 4000,
@@ -49,8 +48,7 @@ public class BNY extends JPanel {
     };
 
     private String[] itemsPrice = {
-        "₱176", // Prices for the first 5 items
-        "₱259", "₱144", "₱188", "₱199",
+        "₱176", "₱259", "₱144", "₱188", "₱199",
         "₱174", "₱170", "₱142", "₱145", "₱277",
         "₱189", "₱145", "₱323", "₱143", "₱422",
         "₱169", "₱156", "₱355", "₱199", "₱169",
@@ -95,7 +93,6 @@ public class BNY extends JPanel {
         {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
     };
 
-    // Map to track current stock dynamically
     private Map<String, Integer> currentStock;
 
     public BNY(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white, Color darkerBlue, Color black, Color lightGray, Color darkGray, 
@@ -112,7 +109,6 @@ public class BNY extends JPanel {
         this.darkBlue = new Color(75, 75, 150);
         this.none = none;
 
-        // Initialize current stock map
         currentStock = new HashMap<>();
         for (int i = 0; i < items.length; i++) {
             currentStock.put(items[i], initialItemsStock[i]);
@@ -415,14 +411,12 @@ public class BNY extends JPanel {
                     JOptionPane.showMessageDialog(null, "Requested quantity exceeds available stock for " + item + " (Requested: " + selectedQuantity + ", Available: " + availableStock + ")", "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                // Deduct the quantity from stock
-                int newStock = availableStock - selectedQuantity;
-                currentStock.put(item, newStock);
-                stockLabel.setText("Stocks: " + newStock);
 
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
-                JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+                JOptionPane.showMessageDialog(null, item + " added to cart!\nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+                // Stock is not decreased here; it will be handled in ShoppingCartPage
+                stockLabel.setText("Stocks: " + availableStock);
             }
         });
 
@@ -472,5 +466,77 @@ public class BNY extends JPanel {
         itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
 
         return itemPanel;
+    }
+
+    // Method to get current stock for an item
+    public int getStock(String itemName) {
+        return currentStock.getOrDefault(itemName, 0);
+    }
+
+    // Method to decrease stock for an item
+    public void decreaseStock(String itemName, int quantity) {
+        int current = currentStock.getOrDefault(itemName, 0);
+        if (current >= quantity) {
+            currentStock.put(itemName, current - quantity);
+            // Update UI for the item if needed
+            refreshItemStock(itemName);
+        }
+    }
+
+    // Method to refresh stock display for an item
+    private void refreshItemStock(String itemName) {
+        for (Component comp : menPanel.getComponents()) {
+            if (comp instanceof JPanel) {
+                updateStockLabel((JPanel) comp, itemName);
+            }
+        }
+        for (Component comp : womenPanel.getComponents()) {
+            if (comp instanceof JPanel) {
+                updateStockLabel((JPanel) comp, itemName);
+            }
+        }
+    }
+
+    // Helper method to update stock label in item panel
+    private void updateStockLabel(JPanel itemPanel, String itemName) {
+        JTextPane namePane = findNamePane(itemPanel);
+        if (namePane != null && namePane.getText().equals(itemName)) {
+            JLabel stockLabel = findStockLabel(itemPanel);
+            if (stockLabel != null) {
+                int stock = currentStock.getOrDefault(itemName, 0);
+                stockLabel.setText("Stocks: " + stock);
+            }
+        }
+    }
+
+    // Helper method to find JTextPane in item panel
+    private JTextPane findNamePane(JPanel itemPanel) {
+        for (Component comp : itemPanel.getComponents()) {
+            if (comp instanceof JPanel) {
+                for (Component subComp : ((JPanel) comp).getComponents()) {
+                    if (subComp instanceof JTextPane) {
+                        return (JTextPane) subComp;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    // Helper method to find stock label in item panel
+    private JLabel findStockLabel(JPanel itemPanel) {
+        for (Component comp : itemPanel.getComponents()) {
+            if (comp instanceof JPanel && ((JPanel) comp).getComponentCount() > 0) {
+                Component subComp = ((JPanel) comp).getComponent(0);
+                if (subComp instanceof JPanel) {
+                    for (Component labelComp : ((JPanel) subComp).getComponents()) {
+                        if (labelComp instanceof JLabel && ((JLabel) labelComp).getText().startsWith("Stocks:")) {
+                            return (JLabel) labelComp;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

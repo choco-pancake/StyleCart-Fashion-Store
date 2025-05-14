@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.io.*;
+import java.util.HashMap;
 
 public class Lee extends JPanel {
     private CardLayout cardLayout;
@@ -14,6 +15,8 @@ public class Lee extends JPanel {
     private JButton backButton;
     private JLabel titleLabel, menLabel, womenLabel;
     private JScrollPane scrollPane;
+    private HashMap<String, Integer> currentStock;
+    private HashMap<String, JLabel> stockLabels;
 
     public Lee(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white, Color darkerBlue, Color black, Color lightGray, Color darkGray, 
                Color none, Font itemFont, Font dropdownFont) {
@@ -40,6 +43,11 @@ public class Lee extends JPanel {
             titleFont = customFont.deriveFont(35f);
         }
 
+        // Initialize stock and stock labels
+        currentStock = new HashMap<>();
+        stockLabels = new HashMap<>();
+        initializeStock();
+
         titlePanel();
         mainPanel();
 
@@ -54,6 +62,55 @@ public class Lee extends JPanel {
         setOpaque(false);
         add(topPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private void initializeStock() {
+        String[] items = {
+            "Button Down Polo", "Cut and Sew T-Shirt", "Embossed Logo T-Shirt Euro Fit", "Embossed Logo T-Shirt (Black)", "Euro Fit Logo T-Shirt (Beige)",
+            "Euro Fit T-Shirt", "Fits 'Em All Yarn Dyed Stripes Tee", "Graphic T-Shirt (Rust)", "Graphic T-Shirt (Stretchable Fabric)", "Graphic Tee for Men",
+            "Graphic X-line T-Shirt", "Logo T-Shirt for Men", "Embossed Logo T-Shirt (Navy Blue)", "Oversized T-Shirt (Embroidered Logo)", "Oversized T-Shirt (Shitake)",
+            "Polo Shirt Short Sleeve", "Polo Shirt Stripe Euro Fit", "Polo Shirt Stripes (Black and Yellow)", "Polo Shirt Stripes (Black and White)", "Regular Fit Raglan T-Shirt",
+            "Small Logo T-Shirt (Gray Ridge)", "Small Logo T-Shirt (Indigo)", "Stripes with Jacquard T-Shirt", "Tie dye T-Shirt", "Xline Graphic O-Neck T-Shirt",
+            "Fits 'Em All French Terry Vest", "Loose Fits 'Em All Sweatshirt Hoodie", "Colored Shorts for Men", "Fits 'Em All Logo Sweat Short (Oxford Blue)", "Fits 'Em All Logo Sweat Short (White)",
+            "Basic Tee for Women", "Contrast Combination Printed Logo Top", "Embossed Logo Tee Roundneck", "Embroidered Logo Tee", "Fits 'Em All Oversized Polo Shirt",
+            "Logo Tee for Women", "Logo T-Shirt for Women", "Modified Woven Blouse", "Modified Woven Blouse (Twill)", "Oversized Warm Beige Xline Graphic Tee",
+            "Rhinestone Logo Tee", "Small Logo Tee", "T-Crop Blouse Round-neck", "Xline Cropped Tee", "Xline Croptop",
+            "Fits 'Em All French Terry Vest", "High Neck Sleeveless Tops", "Woven Polo White", "Cargo Shorts", "Easy Shorts (Sea Green)",
+            "Easy Shorts (Waffle Fabric)", "Fits 'Em All Logo Sweat Short", "High Waist Shorts", "Wide Leg Jeans", "Trouser for Women (Arona)",
+            "Trousers for Women", "Wide Leg Pants", "Wide Leg Straight Pants", "Wide Leg Straight Pants for Women", "Xline Wide Leg Ultimate High Waist Gray Pants"
+        };
+        int[] stocks = {
+            1600, 1400, 900, 850, 950,
+            1000, 700, 800, 750, 1100,
+            1200, 1300, 880, 920, 670,
+            780, 890, 910, 860, 940,
+            1050, 770, 820, 960, 1080,
+            1120, 790, 840, 900, 970,
+            1030, 880, 950, 1000, 1070,
+            660, 730, 800, 850, 920,
+            980, 1040, 1090, 1140, 1190,
+            1240, 1290, 1340, 1390, 1440,
+            1490, 1540, 1590, 400, 450,
+            500, 550, 600, 650, 700
+        };
+
+        for (int i = 0; i < items.length; i++) {
+            currentStock.put(items[i], stocks[i]);
+        }
+    }
+
+    public int getStock(String itemName) {
+        return currentStock.getOrDefault(itemName, 0);
+    }
+
+    public void decreaseStock(String itemName, int quantity) {
+        int current = currentStock.getOrDefault(itemName, 0);
+        int newStock = Math.max(0, current - quantity);
+        currentStock.put(itemName, newStock);
+        JLabel stockLabel = stockLabels.get(itemName);
+        if (stockLabel != null) {
+            stockLabel.setText("Stocks: " + newStock);
+        }
     }
 
     @Override
@@ -186,13 +243,12 @@ public class Lee extends JPanel {
             "Polo Shirt Short Sleeve", "Polo Shirt Stripe Euro Fit", "Polo Shirt Stripes (Black and Yellow)", "Polo Shirt Stripes (Black and White)", "Regular Fit Raglan T-Shirt",
             "Small Logo T-Shirt (Gray Ridge)", "Small Logo T-Shirt (Indigo)", "Stripes with Jacquard T-Shirt", "Tie dye T-Shirt", "Xline Graphic O-Neck T-Shirt",
             "Fits 'Em All French Terry Vest", "Loose Fits 'Em All Sweatshirt Hoodie", "Colored Shorts for Men", "Fits 'Em All Logo Sweat Short (Oxford Blue)", "Fits 'Em All Logo Sweat Short (White)",
-            
-	        "Basic Tee for Women", "Contrast Combination Printed Logo Top", "Embossed Logo Tee Roundneck", "Embroidered Logo Tee", "Fits 'Em All Oversized Polo Shirt",
-	        "Logo Tee for Women", "Logo T-Shirt for Women", "Modified Woven Blouse", "Modified Woven Blouse (Twill)", "Oversized Warm Beige Xline Graphic Tee",
-	        "Rhinestone Logo Tee", "Small Logo Tee", "T-Crop Blouse Round-neck", "Xline Cropped Tee", "Xline Croptop",
-	        "Fits 'Em All French Terry Vest", "High Neck Sleeveless Tops", "Woven Polo White", "Cargo Shorts", "Easy Shorts (Sea Green)",
-	        "Easy Shorts (Waffle Fabric)", "Fits 'Em All Logo Sweat Short", "High Waist Shorts", "Wide Leg Jeans", "Trouser for Women (Arona)",
-	        "Trousers for Women", "Wide Leg Pants", "Wide Leg Straight Pants", "Wide Leg Straight Pants for Women", "Xline Wide Leg Ultimate High Waist Gray Pants"
+            "Basic Tee for Women", "Contrast Combination Printed Logo Top", "Embossed Logo Tee Roundneck", "Embroidered Logo Tee", "Fits 'Em All Oversized Polo Shirt",
+            "Logo Tee for Women", "Logo T-Shirt for Women", "Modified Woven Blouse", "Modified Woven Blouse (Twill)", "Oversized Warm Beige Xline Graphic Tee",
+            "Rhinestone Logo Tee", "Small Logo Tee", "T-Crop Blouse Round-neck", "Xline Cropped Tee", "Xline Croptop",
+            "Fits 'Em All French Terry Vest", "High Neck Sleeveless Tops", "Woven Polo White", "Cargo Shorts", "Easy Shorts (Sea Green)",
+            "Easy Shorts (Waffle Fabric)", "Fits 'Em All Logo Sweat Short", "High Waist Shorts", "Wide Leg Jeans", "Trouser for Women (Arona)",
+            "Trousers for Women", "Wide Leg Pants", "Wide Leg Straight Pants", "Wide Leg Straight Pants for Women", "Xline Wide Leg Ultimate High Waist Gray Pants"
         };
     
         String[] prices = {
@@ -202,7 +258,6 @@ public class Lee extends JPanel {
             "₱499", "₱490", "₱799", "₱900", "₱990",
             "₱990", "₱990", "₱990", "₱790", "₱550",
             "₱855", "₱799", "₱900", "₱950", "₱723",
-
             "₱690", "₱790", "₱790", "₱690", "₱877",
             "₱690", "₱790", "₱890", "₱890", "₱690",
             "₱690", "₱690", "₱645", "₱350", "₱350",
@@ -218,12 +273,11 @@ public class Lee extends JPanel {
             "images/leemen21tops.png", "images/leemen22tops.png", "images/leemen23tops.png", "images/leemen24tops.png", "images/leemen25tops.png",
             "images/leemen26tops.png", "images/leemen27tops.png", "images/leemen28tops.png", "images/leemen29tops.png", "images/leemen30tops.png",
             "images/leemen8tops.png", "images/leemen17outerwear.png", "images/leemen2bottoms.png", "images/leemen9bottoms.png", "images/leemen10activewear.png",
-
             "images/leewomen2tops.png", "images/leewomen4tops.png", "images/leewomen7tops.png", "images/leewomen8tops.png", "images/leewomen11tops.png", 
             "images/leewomen14tops.png", "images/leewomen15tops.png", "images/leewomen16tops.png", "images/leewomen17tops.png", "images/leewomen18tops.png",
             "images/leewomen19tops.png", "images/leewomen20tops.png", "images/leewomen21tops.png", "images/leewomen28tops.png", "images/leewomen29tops.png",
             "images/leewomen9tops.png", "images/leewomen12tops.png", "images/leewomen27tops.png", "images/leewomen3bottoms.png", "images/leewomen5activewear.png",
-            "images/leewomen6activewear.png", "images/leewomen10bottoms.png", "images/leewomen13bottoms.png", "images/leewomen1bottoms.png", "images/leewomen22bottoms.png.",
+            "images/leewomen6activewear.png", "images/leewomen10bottoms.png", "images/leewomen13bottoms.png", "images/leewomen1bottoms.png", "images/leewomen22bottoms.png",
             "images/leewomen23bottoms.png", "images/leewomen24bottoms.png", "images/leewomen25bottoms.png", "images/leewomen26bottoms.png", "images/leewomen30bottoms.png"
         };
 
@@ -234,7 +288,6 @@ public class Lee extends JPanel {
             {80, 100}, {80, 100}, {80, 100}, {80, 100}, {80, 100},
             {80, 100}, {80, 100}, {80, 100}, {80, 100}, {100, 100},
             {80, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-
             {80, 100}, {80, 100}, {80, 100}, {100, 100}, {100, 100},
             {90, 100}, {90, 100}, {80, 100}, {80, 100}, {100, 100},
             {90, 100}, {90, 100}, {90, 100}, {100, 100}, {100, 100},
@@ -244,10 +297,11 @@ public class Lee extends JPanel {
         };
  
         for (int i = 0; i < items.length; i++) {
+            JPanel itemPanel = createLeeItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1], currentStock.get(items[i]));
             if (i < 30) {
-                menPanel.add(createLeeItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                menPanel.add(itemPanel);
             } else {
-                womenPanel.add(createLeeItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                womenPanel.add(itemPanel);
             }
         }
 
@@ -264,22 +318,21 @@ public class Lee extends JPanel {
         mainPanel.add(sectionContainer, BorderLayout.CENTER);
     }
 
-    private JPanel createLeeItem(String item, String price, String icon, int width, int height) {
+    private JPanel createLeeItem(String item, String price, String icon, int width, int height, int stock) {
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BorderLayout());
-        itemPanel.setPreferredSize(new Dimension(230, 270));
+        itemPanel.setPreferredSize(new Dimension(230, 300));
         itemPanel.setBackground(lightBlue);
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));  
 
-        JPanel itemDetailsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        JPanel itemDetailsPanel = new JPanel();
         itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
         itemDetailsPanel.setOpaque(false);
 
         ImageIcon itemIcon = new ImageIcon(icon);
         Image scaledImage = itemIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
         JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -317,6 +370,21 @@ public class Lee extends JPanel {
         priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         priceLabel.setPreferredSize(new Dimension(100, 20));
 
+        JLabel stockLabel = new JLabel("Stocks: " + stock);
+        stockLabel.setFont(itemFont.deriveFont(13f));
+        stockLabel.setForeground(black);
+        stockLabel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
+        stockLabels.put(item, stockLabel);
+
+        JPanel stockContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        stockContainer.setOpaque(false);
+        stockContainer.add(stockLabel);
+
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setOpaque(false);
+        headerPanel.add(stockContainer, BorderLayout.EAST);
+        itemPanel.add(headerPanel, BorderLayout.NORTH);
+
         JButton addButton = new JButton("🛒");
         addButton.setForeground(black);
         addButton.setBackground(lightGray);
@@ -328,10 +396,15 @@ public class Lee extends JPanel {
         addButton.setFocusable(false);
         addButton.setPreferredSize(new Dimension(40, 30));
         addButton.setMaximumSize(new Dimension(40, 30));
+        addButton.setToolTipText("Add " + item + " to cart");
 
         addButton.addActionListener(e -> {
-            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
+            if (stock <= 0) {
+                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
+            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
             JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
             detailsPanel.setPreferredSize(new Dimension(400, 150));
             detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -349,7 +422,7 @@ public class Lee extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, stock, 1);
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
@@ -364,6 +437,10 @@ public class Lee extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
+                if (selectedQuantity > stock) {
+                    JOptionPane.showMessageDialog(null, "Requested quantity exceeds available stock for " + item, "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
@@ -413,7 +490,7 @@ public class Lee extends JPanel {
         itemDetailsPanel.add(namePane);
         itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         itemDetailsPanel.add(pricePanel);
-        itemPanel.add(itemDetailsPanel, BorderLayout.NORTH);
+        itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
 
         return itemPanel;
     }
