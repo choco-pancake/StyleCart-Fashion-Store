@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActiveWearPanel extends JPanel {
     private CardLayout cardLayout;
@@ -186,48 +188,42 @@ public class ActiveWearPanel extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         String[] items = {
-            "Own the Run Running T-Shirt", "Essentials 3-Stripes Hoodie", "Aeroimpact Training Light-Support Bra", "Ultimate365 Tapered Golf Pants", "Future Icons 3-Stripes Tee",
-            "Run It Shorts", "Essentials 3-Stripes Joggers", "Hyperglam Training Techfit Medium-Support Bra", "Marathon 20 Running Shorts", "Essentials 3-Stripes Full-Zip Hoodie",
-            "Ultimate365 Polo Shirt", "Essentials 3-Stripes Tee", "Aeroimpact Luxe Training Light-Support Bra", "Run Fast Running Shorts", "Essentials 3-Stripes Tank Top",
-            "Essentials 3-Stripes Leggings", "Essentials 3-Stripes Cropped Hoodie", "Run It Tee", "Optime Training Leggings", "Essentials 3-Stripes Shorts",
-            "Powerimpact Training Medium-Support Bra", "Ultimate365 8.5-Inch Golf Shorts", "Essentials 3-Stripes Polo Shirt", "Run Fast Two-in-One Shorts", "Essentials 3-Stripes Track Pants"
+            "Fashion Taslan Short", "Taslan Loose Casual Pants", "Street Style Short", "New DUKE Dri-Fit Men's Sport Short Casual Basketball Shorts", "Fried Street Yellow Floral Jacket",
+            "Men's Jogging PantS", "Men's Jogging Shorts", "Fits 'Em All Logo Sweat Short (White)", "Easy Shorts (Sea Green)", "Easy Shorts (Waffle Fabric)",
+            "23 Relaxed Fit Football Jersey", "Modern Fit Nylon Sports Shorts (Light Khaki)", "Nylon Pull-On Cargo Shorts (Light Gray)", "Relaxed Fit Brushed Terry Shorts (Navy Blue)", "Racing Relaxed Fit Graphic Polo",
+            "Staple Twill Shorts for Men "
         };
 
         String[] prices = {
-            "₱40.00", "₱39.00", "₱45.00", "₱80.00", "₱35.00",
-            "₱30.00", "₱45.00", "₱50.00", "₱35.00", "₱55.00",
-            "₱50.00", "₱30.00", "₱50.00", "₱35.00", "₱30.00",
-            "₱40.00", "₱45.00", "₱30.00", "₱50.00", "₱35.00",
-            "₱45.00", "₱65.00", "₱50.00", "₱40.00", "₱45.00"
+            "₱", "₱", "₱", "₱", "₱",
+            "₱", "₱", "₱", "₱", "₱",
+            "₱", "₱", "₱", "₱", "₱",
+            "₱"
         };
 
         String[] tags = {
-            "Top rated", "Top rated", "", "", "",
-            "", "", "Top rated", "", "",
-            "", "", "Top rated", "", "",
             "", "", "", "", "",
-            "Top rated", "", "", "", ""
+            "", "", "", "", "",
+            "", "", "", "", "",
+            ""
         };
 
         String[] icons = {
-            "", "", "", "", "",
-            "", "", "", "", "",
-            "", "", "", "", "",
-            "", "", "", "", "",
-            "", "", "", "", "",
-            "", "", "", "", ""
+            "images/bnymen6activewear.png", "images/bnymen16activewear.png", "images/bnymen17activewear.png", "images/bnymen18activewear.png", "images/bnywomen10activewear.png",
+            "images/benchmen13activewear.png", "images/benchmen14activewear.png", "images/leemen10activewear.png", "images/leewomen5activewear.png", "images/leewomen6activewear.png",
+            "images/penshoppemen1activewear.png", "images/penshoppemen11activewear.png", "images/penshoppemen13activewear.png", "images/penshoppemen15activewear.png", "images/penshoppemen20activewear.png",
+            "images/penshoppemen30activewear.png"
         };
 
         int[][] brandSize = {
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
+            {100, 100}
         };
 
         for (int i = 0; i < items.length; i++) {
-            if (i < 12) {
+            if (i < 16) {
                 menPanel.add(createActiveWearItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));
             } else {
                 womenPanel.add(createActiveWearItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));

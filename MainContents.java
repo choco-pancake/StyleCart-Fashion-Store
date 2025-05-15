@@ -193,6 +193,9 @@ public class MainContents extends JPanel {
         contentPanel = new JPanel(cardLayout);
         contentPanel.add(scrollPane, "MainView");
 
+        JPanel activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        contentPanel.add(activeWearPanel, "ActiveWearView");
+
         bnyPanel = new BNY(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(bnyPanel, "BNYView");
 
@@ -291,12 +294,12 @@ public class MainContents extends JPanel {
                 JLabel imageLabel = new JLabel(new ImageIcon(fullProfileIcon));
                 imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                JLabel nameLabel = new JLabel("anonymous_shopper101");
+                JLabel nameLabel = new JLabel("SyntaxSquad_2025");
                 nameLabel.setFont(titleFont.deriveFont(25f));
                 nameLabel.setForeground(black);
                 nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                JLabel emailLabel = new JLabel("@anonymousshopper@gmail.com");
+                JLabel emailLabel = new JLabel("@syntaxsquad2025@gmail.com");
                 emailLabel.setFont(itemFont);
                 emailLabel.setForeground(gray);
                 emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -338,11 +341,11 @@ public class MainContents extends JPanel {
                 profilePanel.add(nameLabel);
                 profilePanel.add(Box.createVerticalStrut(8));
                 profilePanel.add(emailLabel);
-                profilePanel.add(Box.createVerticalStrut(8));
+                profilePanel.add(Box.createVerticalStrut(30));
                 phonePanel.add(imageLabel2);
                 phonePanel.add(phoneLabel);
                 profilePanel.add(phonePanel);
-                profilePanel.add(Box.createVerticalStrut(8));
+                profilePanel.add(Box.createVerticalStrut(0));
                 homePanel.add(imageLabel3);
                 homePanel.add(homeLabel);
                 profilePanel.add(homePanel);
@@ -372,7 +375,7 @@ public class MainContents extends JPanel {
         categoryLabel.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 10));
 
         String[] category = {"Active Wear", "        Tops", "     Bottoms", "  Dresses", "  Outerwear"};
-        String[] categoryIcon = {"images/activewear.png", "images/tops.png", "images/bottoms.png", "images/dresses.png", "images/outerwear.png"};
+        String[] categoryIcon = {"images/bnymen18activewear.png", "images/bnywomen19tops.png", "images/penshoppewomen30bottoms.png", "images/bnywomen24dresses.png", "images/bnymen13outerwear.png"};
 
         JPanel categoryItemsPanel = new JPanel();
         categoryItemsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -435,8 +438,6 @@ public class MainContents extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (itemName.trim().equals("Active Wear")) {
-                    JPanel activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
-                    contentPanel.add(activeWearPanel, "ActiveWearView");
                     cardLayout.show(contentPanel, "ActiveWearView");
                     contentPanel.revalidate();
                     contentPanel.repaint();
@@ -734,9 +735,9 @@ public class MainContents extends JPanel {
         brandLabel.setForeground(white);
         brandLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
-        String[] brand = {"BNY", "Bench", "Lee", "Memo", "Mossimo", "Penshoppe"};
-        String[] brandIcon = {"images/bny.png", "images/bench.png", "images/lee.png", "images/memo.jpg", "images/mossimo.png", "images/penshoppe.png"};
-        int[][] brandSize = {{140, 70}, {150, 40}, {105, 90}, {110, 100}, {170, 80}, {160, 30}};
+        String[] brand = {"BNY", "Bench", "Lee", "Memo", "Penshoppe"};
+        String[] brandIcon = {"images/bny.png", "images/bench.png", "images/lee.png", "images/memo.jpg", "images/penshoppe.png"};
+        int[][] brandSize = {{140, 70}, {150, 40}, {105, 90}, {110, 100}, {160, 30}};
 
         JPanel brandItemsPanel = new JPanel();
         brandItemsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -759,7 +760,7 @@ public class MainContents extends JPanel {
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 5, 10)));
-        itemPanel.setPreferredSize(new Dimension(188, 150));
+        itemPanel.setPreferredSize(new Dimension(227, 150));
         itemPanel.setToolTipText(brandName);
 
         JPanel logoPanel = new JPanel();
