@@ -8,7 +8,7 @@ import javax.swing.text.*;
 
 public class MainContents extends JPanel {
     private Font titleFont, itemFont, dropdownFont;
-    private JPanel mainPanel, topPanel, categoryPanel, featuredPanel, brandPanel;
+    private JPanel mainPanel, topPanel, categoryPanel, featuredPanel, brandPanel, activeWearPanel, topsPanel, bottomsPanel, dressesPanel, outerwearPanel;
     private JPanel categoryTitle, featuredTitle, brandTitle, featuredItemsPanel;
     private JLabel greetLabel, pfpLabel, categoryLabel, featuredLabel, featuredView, brandLabel;
     private ImageIcon icon;
@@ -36,6 +36,9 @@ public class MainContents extends JPanel {
     private ViewAll viewAllPanel;
     private BNY bnyPanel;
     private Bench benchPanel;
+    private Lee leePanel;
+    private Memo memoPanel;
+    private Penshoppe penshoppePanel;
 
     private String[] items = {
         "TATA Fashion New Long Sleeve Plain Varsity Jacket", "Wide Leg Pants Fashion High Waist Solid Button", "Flower Style Valentine's Day Casual Polo Dating Shirt", "Small Leather Jacket", "Plain Hoodie Jacket with Zipper"
@@ -193,8 +196,20 @@ public class MainContents extends JPanel {
         contentPanel = new JPanel(cardLayout);
         contentPanel.add(scrollPane, "MainView");
 
-        JPanel activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(activeWearPanel, "ActiveWearView");
+
+        topsPanel = new TopsPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        contentPanel.add(topsPanel, "TopsView");
+
+        bottomsPanel = new BottomsPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        contentPanel.add(bottomsPanel, "BottomsView");
+
+        dressesPanel = new DressesPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        contentPanel.add(dressesPanel, "DressesView");
+
+        outerwearPanel = new OuterwearPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        contentPanel.add(outerwearPanel, "OuterwearView");
 
         bnyPanel = new BNY(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(bnyPanel, "BNYView");
@@ -202,13 +217,13 @@ public class MainContents extends JPanel {
         benchPanel = new Bench(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(benchPanel, "BenchView");
 
-        Lee leePanel = new Lee(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        leePanel = new Lee(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(leePanel, "LeeView");
 
-        Memo memoPanel = new Memo(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        memoPanel = new Memo(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(memoPanel, "MemoView");
 
-        Penshoppe penshoppePanel = new Penshoppe(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
+        penshoppePanel = new Penshoppe(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(penshoppePanel, "PenshoppeView");
 
         viewAllPanel = new ViewAll(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont, this);
@@ -437,11 +452,27 @@ public class MainContents extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (itemName.trim().equals("Active Wear")) {
-                    cardLayout.show(contentPanel, "ActiveWearView");
+                String trimmedName = itemName.trim();
+
+                switch(trimmedName) {
+                    case "Active Wear":
+                        cardLayout.show(contentPanel, "ActiveWearView");
+                        break;
+                    case "Tops":
+                        cardLayout.show(contentPanel, "TopsView");
+                        break;
+                    case "Bottoms":
+                        cardLayout.show(contentPanel, "BottomsView");
+                        break;
+                    case "Dresses":
+                        cardLayout.show(contentPanel, "DressesView");
+                        break;
+                    case "Outerwear":
+                        cardLayout.show(contentPanel, "OuterwearView");
+                        break;
+                }
                     contentPanel.revalidate();
                     contentPanel.repaint();
-                }
             }
         });
 

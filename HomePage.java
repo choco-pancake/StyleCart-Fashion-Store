@@ -186,7 +186,8 @@ public class HomePage extends JFrame {
         menuItemWhite("Home");
         cardLayout.show(contentPanel, "MainView");
 
-        setVisible(true);
+        // Moved setVisible to the end after all components are initialized
+        SwingUtilities.invokeLater(() -> setVisible(true));
     }
 
     class RoundedPanel extends JPanel {

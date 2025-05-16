@@ -188,31 +188,31 @@ public class ActiveWearPanel extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         String[] items = {
-            "Fashion Taslan Short", "Taslan Loose Casual Pants", "Street Style Short", "New DUKE Dri-Fit Men's Sport Short Casual Basketball Shorts", "Fried Street Yellow Floral Jacket",
-            "Men's Jogging PantS", "Men's Jogging Shorts", "Fits 'Em All Logo Sweat Short (White)", "Easy Shorts (Sea Green)", "Easy Shorts (Waffle Fabric)",
-            "23 Relaxed Fit Football Jersey", "Modern Fit Nylon Sports Shorts (Light Khaki)", "Nylon Pull-On Cargo Shorts (Light Gray)", "Relaxed Fit Brushed Terry Shorts (Navy Blue)", "Racing Relaxed Fit Graphic Polo",
-            "Staple Twill Shorts for Men "
+            "23 Relaxed Fit Football Jersey", "Racing Relaxed Fit Graphic Polo", "Fashion Taslan Short", "Street Style Short", "New DUKE Dri-Fit Men's Sport Short Casual Basketball Shorts",
+            "Men's Jogging Shorts", "Fits 'Em All Logo Sweat Short (White)", "Modern Fit Nylon Sports Shorts (Light Khaki)", "Nylon Pull-On Cargo Shorts (Light Gray)", "Relaxed Fit Brushed Terry Shorts (Navy Blue)",
+            "Staple Twill Shorts for Men", "Taslan Loose Casual Pants", "Men's Jogging Pants", "New Taslan Short", "Easy Shorts (Sea Green)",
+            "Easy Shorts (Waffle Fabric)"
         };
 
         String[] prices = {
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱",
-            "₱"
+            "₱699", "₱899", "₱355", "₱148", "₱294",
+            "₱499", "₱723", "₱505", "₱468", "₱231",
+            "₱599", "₱169", "₱699", "₱128", "₱890",
+            "₱790"
         };
 
         String[] tags = {
-            "", "", "", "", "",
-            "", "", "", "", "",
-            "", "", "", "", "",
-            ""
+            "Penshoppe", "Penshoppe", "BNY", "BNY", "BNY",
+            "Bench", "Lee", "Penshoppe", "Penshoppe", "Penshoppe",
+            "Penshoppe", "BNY", "BNY", "Bench", "Lee",
+            "Lee"
         };
 
         String[] icons = {
-            "images/bnymen6activewear.png", "images/bnymen16activewear.png", "images/bnymen17activewear.png", "images/bnymen18activewear.png", "images/bnywomen10activewear.png",
-            "images/benchmen13activewear.png", "images/benchmen14activewear.png", "images/leemen10activewear.png", "images/leewomen5activewear.png", "images/leewomen6activewear.png",
-            "images/penshoppemen1activewear.png", "images/penshoppemen11activewear.png", "images/penshoppemen13activewear.png", "images/penshoppemen15activewear.png", "images/penshoppemen20activewear.png",
-            "images/penshoppemen30activewear.png"
+            "images/penshoppemen1activewear.png", "images/penshoppemen20activewear.png", "images/bnymen6activewear.png", "images/bnymen17activewear.png", "images/bnymen18activewear.png",
+            "images/benchmen14activewear.png", "images/leemen10activewear.png", "images/penshoppemen11activewear.png", "images/penshoppemen13activewear.png", "images/penshoppemen15activewear.png",
+            "images/penshoppemen30activewear.png", "images/bnymen16activewear.png", "images/benchmen13activewear.png", "images/bnywomen10activewear.png", "images/leewomen5activewear.png",
+            "images/leewomen6activewear.png"
         };
 
         int[][] brandSize = {
@@ -223,7 +223,7 @@ public class ActiveWearPanel extends JPanel {
         };
 
         for (int i = 0; i < items.length; i++) {
-            if (i < 16) {
+            if (i < 13) {
                 menPanel.add(createActiveWearItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));
             } else {
                 womenPanel.add(createActiveWearItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));

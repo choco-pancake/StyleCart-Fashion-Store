@@ -113,10 +113,10 @@ public class HelpPage extends JPanel {
         q2Panel.setLayout(new BoxLayout(q2Panel, BoxLayout.Y_AXIS));
         q2Panel.setOpaque(false);
 
-        q2question = new JLabel("2. Are there only 6 available brands with clothes to choose from?");
+        q2question = new JLabel("2. Are there only 5 available brands with clothes to choose from?");
         q2question.setFont(customFont.deriveFont(Font.BOLD, 15f));
         
-        q2answer = new JLabel("Yes, there are only 6 available brands in our store. We considered these brands carefully as the clothing collections are in trend.");
+        q2answer = new JLabel("Yes, there are only 5 available brands in our store. We considered these brands carefully as the clothing collections are in trend.");
         q2answer.setFont(customFont.deriveFont(15f));
 
         q3Panel = new JPanel();

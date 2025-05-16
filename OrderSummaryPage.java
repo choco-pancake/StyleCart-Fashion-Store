@@ -367,7 +367,7 @@ public class OrderSummaryPage extends JPanel {
                 
                 int option = JOptionPane.showConfirmDialog(
                     this, 
-                    "You will be redirected to your receipt", 
+                    "You will be redirected to your receipt.", 
                     "Receipt Generated", 
                     JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
@@ -402,7 +402,7 @@ public class OrderSummaryPage extends JPanel {
     public void trackOrder() {
         if (orderedItems.isEmpty()) {
             JOptionPane.showMessageDialog(this, 
-                "<html><div style='width: 500px; font-size: 12px; font-family: SansSerif'>No orders to track.</div></html>", 
+                "No orders to track.", 
                 "No Orders", 
                 JOptionPane.INFORMATION_MESSAGE);
             return;
