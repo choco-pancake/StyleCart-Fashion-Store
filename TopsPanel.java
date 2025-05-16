@@ -193,82 +193,86 @@ public class TopsPanel extends JPanel {
             "Men's Statement Tee", "Men's Boxy Tee", "Men's Classic Tee", "Men's Embroidered Tee", "Flat Knit Polo Shirt",
             "Men's Graphic Tee", "Heritage Oversized T-Shirt", "Heritage Polo Shirt", "Men's Logo Tee", "Men's Polo Shirt",
             "Men's Round Neck Tee", "Round Neck Tee", "Men's Short Printed Shirt", "Short Sleeved Polo", "Sleeveless Pullover Top",
-
             "Striped Polo Shirt", "Stripped Short Sleeve Polo", "Button Down Polo", "Cut and Sew T-Shirt", "Embossed Logo T-Shirt Euro Fit",
             "Embossed Logo T-Shirt (Black)", "Euro Fit Logo T-Shirt (Beige)", "Euro Fit T-Shirt", "Fits 'Em All Yarn Dyed Stripes Tee", "Graphic T-Shirt (Rust)",
             "Graphic T-Shirt (Stretchable Fabric)", "Graphic Tee for Men", "Graphic X-line T-Shirt", "Logo T-Shirt for Men", "Embossed Logo T-Shirt",
             "Oversized T-Shirt (Embroidered Logo)", "Oversized T-Shirt (Shitake)", "Polo Shirt Short Sleeve", "Polo Shirt Stripe Euro Fit", "Polo Shirt Stripes (Black and Yellow)",
             "Polo Shirt Stripes (Black and White)", "Regular Fit Raglan T-Shirt", "Small Logo T-Shirt (Gray Ridge)", "Small Logo T-Shirt (Indigo)", "Stripes with Jacquard T-Shirt",
-
             "Tie Dye T-Shirt", "Xline Graphic O-Neck T-Shirt", "Basic Crew Neck T-Shirt", "Basic Crew Neck Tee", "Boxy Fit Striped Flat Knit Top (Choco Brown)",
             "Boxy Knit Oversized with Zip Closure", "Essential Polo for Men", "O.O.O Textured Polo Shirt", "O.O.O. Textured T-Shirt", "Pleated Short Sleeve Shirt",
             "Regular Fit Polo with Contrast Tipping", "Regular Fit Rib Knit Striped Polo", "Regular Fit Textured T-Shirt", "Slim Fit Polo with Textured Collar (White)", "Slim Fit Polo with Textured Collar (Green)",
             "Soft Touch Flat Knit Pullover with Contrast Tipping (Light Blue)", "T-Shirt With Contrast Piping", "Textured Knit T-Shirt", "Textured Open Collar Knit Polo Sleeve Shirt", "Textured Open Collar Polo (Midnight Navy)",
             "Textured Relaxed Fit Short Sleeve Shirt", "Textured Ringer Striped T-Shirt", "Ultimate Basics Comfort T-Shirt", "Ultimate Basics Owl Polo", "Ultimate Basics Premium Flat Knit Polo",
-
             "Zip-Up Polo Shirt with Tipping", "Basic Easy Iron Short Sleeve Shirt", "Boxy Fit Plaid Short Sleeve Shirt", "Game Over Regular Fit Graphic T-Shirt", "Good Times Regular Fit Graphic T-Shirt",
             "Icon Relaxed Fit Graphic T-Shirt", "Chill Spot Central Relaxed Fit Graphic T-Shirt (Off White)", "Driven by Adrenaline Regular Fit Graphic T-Shirt (Black)", "Easy Days Regular Fit T-Shirt (Light Blue)", "Need Cash Not Advice Regular Fit T-Shirt (Evening Sand)",
             "Regular Fit Crew Neck T-Shirt (Banana)", "Relaxed Fit Raglan T-Shirt with Embroidery (Black)", "Relaxed Fit T-Shirt with Branding Print (Off White)", "Relaxed Fit T-Shirt with PS Embroidery (Black)", "Relaxed Fit Short Sleeves Resort Shirt with All-Over Embroidery",
             "Relaxed Fit Short Sleeves Resort Shirt with Embroidery", "Relaxed Fit Striped Polo", "Tie Dye Resort Shirt", "Easy Iron Short Sleeve Shirt (Brown)", "Underground Relaxed Fit Graphic T-Shirt (Black)",
             "Men's Printed Muscle Tee", "Men's Ribbed Racer Back T-Shirt", "Fits 'Em All French Terry Vest", "Baekhyun Pullover Top", "Ultimate Basics Easy Fit Long Sleeve Shirt",
+            "Relaxed Fit Long Sleeves Striped Shirt", "Dress Code Striped Long Sleeves Shirt (Seafoam Green)",
 
-            "Relaxed Fit Long Sleeves Striped Shirt", "Dress Code Striped Long Sleeves Shirt (Seafoam Green)"
+            "Casual Plain Color Block Embroidery Zipper T-Shirt", "Short Letter Pattern Slim Fit Printed T-Shirt", "Summer Square Neck Short Sleeve Slim Bottoming Knit Top", "Elegant Plain Split T-Shirt", "Sporty Plain Contrast Binding Crop T-Shirt",
+            "Slubs V-Neck T-Shirt with Bunny Embro", "Better Made Graphic Shirt", "Pokemon Graphic Tee", "Cropped Plaid Resort Polo", "Oversized Graphic Tee",
+            "Peasant Crop Top", "Puff Sleeve Top", "Boxy Resort Shirt", "Collared Top", "Plain Oversized Tee",
+            "Cool Touch Crew Neck Short-Sleeved T-Shirt", "Women's Crop Top", "Cropped Logo Tee", "Denim Boxy Cropped Shirt", "Women's Graphic T-Shirt",
+            "Women’s K-Heart T-Shirt", "Oversized Polo Shirt", "Women's Plain Tee", "Women's Polo Shirt", "Women's Statement Tee",
+            "Stripped Short Sleeve Polo", "Women's Woven Top", "Basic Tee for Women", "Contrast Combination Printed Logo Top", "Embossed Logo Tee Roundneck",
+            "Embroidered Logo Tee", "Fits 'Em All Oversized Polo Shirt", "Logo Tee for Women", "Logo T-Shirt for Women", "Modified Woven Blouse",
+            "Modified Woven Blouse (Twill)", "Oversized Warm Beige Xline Graphic Tee", "Rhinestone Logo Tee", "Small Logo Tee", "T-Crop Blouse Round-Neck",
+            "Xline Cropped Tee", "Xline Croptop", "Collared Shirt for Women", "Extended Sleeve Textured T-Shirt", "New Ultimate Basic T-Shirt",
+            "Ruched Front T-Shirt", "Textured Tee for Women", "Textured Horizontal Striped Polo", "Ultimate Basics Knit Tee", "Cherry All-Over Printed Henley Regular Fit Top",
+            "Jacquard Knit Regular Fit Polo", "If You Break It Slim Fit Graphic T-Shirt", "Regular Fit Waffle Knit Polo", "Vintage Summer Striped Relaxed Fit T-Shirt", "Relaxed Fit Stripes T-Shirt with Branding",
+            "Ribbed Top", "Short Sleeve Regular Fit Baby Doll Top", "Slim Fit Polo with Contrast Tipping", "Slim Fit Textured Top", "Unleash Your Speed Loose Fit Graphic T-Shirt",
+            "Sleeveless Tank Vest Solid Top", "Solid Ribbed Knit Tube Basic Crop Top", "Casual Pleated Crop Tank Top", "Flower Tube Top with Pads", "Sleeveless Top White",
+            "Scoop Neck Tank Top", "Women's Sleeveless Top", "Fits 'Em All French Terry Vest", "High Neck Sleeveless Tops", "Denim Zip Up Vest",
+            "Linen Top for Women", "Sleeveless Top with Tipping", "Textured Striped Sleeveless Top", "Ribbed Knit Slim Fit Tank Top", "Short Sleeves Top with Drawstring",
+            "Sleeveless Stripes Peplum Top", "Woven Polo White", "Striped Long Sleeves Button Down Top with Heart Embroidery"
+
         };
 
         String[] prices = {
-            "₱259", "₱144", "₱176", "₱188", "₱199",
-            "₱174", "₱170", "₱142", "₱599", "₱377",
-            "₱349", "₱349", "₱349", "₱377", "₱699",
-            "₱349", "₱384", "₱447", "₱349", "₱499",
-            "₱447", "₱419", "₱899", "₱899", "₱599",
+            "₱259", "₱144", "₱176", "₱188", "₱199", "₱174", "₱170", "₱142", "₱599", "₱377",
+            "₱349", "₱349", "₱349", "₱377", "₱699", "₱349", "₱384", "₱447", "₱349", "₱499",
+            "₱447", "₱419", "₱899", "₱899", "₱599", "₱499", "₱899", "₱951", "₱890", "₱890",
+            "₱890", "₱890", "₱890", "₱532", "₱890", "₱790", "₱890", "₱600", "₱890", "₱890",
+            "₱700", "₱990", "₱499", "₱490", "₱1000", "₱900", "₱990", "₱990", "₱990", "₱990",
+            "₱790", "₱550", "₱399", "₱399", "₱719", "₱989", "₱899", "₱799", "₱599", "₱899",
+            "₱989", "₱849", "₱699", "₱749", "₱749", "₱759", "₱399", "₱499", "₱989", "₱989",
+            "₱699", "₱799", "₱499", "₱899", "₱749", "₱899", "₱499", "₱899", "₱249", "₱379",
+            "₱499", "₱398", "₱231", "₱252", "₱185", "₱218", "₱364", "₱331", "₱315", "₱999",
+            "₱899", "₱799", "₱299", "₱278", "₱464", "₱279", "₱167", "₱855", "₱599", "₱989",
+            "₱699", "₱729",
 
-            "₱499", "₱899", "₱951", "₱890", "₱890",
-            "₱890", "₱890", "₱890", "₱532", "₱890",
-            "₱790", "₱890", "₱600", "₱890", "₱890",
-            "₱700", "₱990", "₱499", "₱490", "₱1000",
-            "₱900", "₱990", "₱990", "₱990", "₱990",
-
-            "₱790", "₱550", "₱399", "₱399", "₱719",
-            "₱989", "₱899", "₱799", "₱599", "₱899",
-            "₱989", "₱849", "₱699", "₱749", "₱749",
-            "₱759", "₱399", "₱499", "₱989", "₱989",
-            "₱699", "₱799", "₱499", "₱899", "₱749",
-
-            "₱899", "₱499", "₱899", "₱249", "₱379",
-            "₱499", "₱398", "₱231", "₱252", "₱185",
-            "₱218", "₱364", "₱331", "₱315", "₱999",
-            "₱899", "₱799", "₱299", "₱278", "₱464",
-            "₱279", "₱167", "₱855", "₱599", "₱989",
-
-            "₱699", "₱729"
+            "₱282", "₱200", "₱129", "₱330", "₱549", "₱211", "₱321", "₱349", "₱699", "₱349",
+            "₱699", "₱699", "₱899", "₱419", "₱230", "₱230", "₱279", "₱265", "₱899", "₱349",
+            "₱349", "₱321", "₱244", "₱349", "₱307", "₱699", "₱799", "₱690", "₱790", "₱790",
+            "₱690", "₱877", "₱690", "₱790", "₱890", "₱890", "₱690", "₱690", "₱690", "₱345",
+            "₱350", "₱350", "₱899", "₱429", "₱699", "₱710", "₱699", "₱989", "₱439", "₱599",
+            "₱699", "₱185", "₱366", "₱398", "₱499", "₱399", "₱899", "₱599", "₱349", "₱599",
+            "₱159", "₱179", "₱177", "₱109", "₱160", "₱104", "₱160", "₱900", "₱590", "₱749",
+            "₱809", "₱890", "₱699", "₱349", "₱899", "₱899", "₱990", "₱849"
         };
 
         String[] tags = {
-            "BNY", "BNY", "BNY", "BNY", "BNY",
-            "BNY", "BNY", "BNY", "Bench", "Bench",
-            "Bench", "Bench", "Bench", "Bench", "Bench",
-            "Bench", "Bench", "Bench", "Bench", "Bench",
-            "Bench", "Bench", "Bench", "Bench", "Bench",
+            "BNY", "BNY", "BNY", "BNY", "BNY","BNY", "BNY", "BNY", "Bench", "Bench",
+            "Bench", "Bench", "Bench", "Bench", "Bench","Bench", "Bench", "Bench", "Bench", "Bench",
+            "Bench", "Bench", "Bench", "Bench", "Bench","Bench", "Bench", "Lee", "Lee", "Lee",
+            "Lee", "Lee", "Lee", "Lee", "Lee","Lee", "Lee", "Lee", "Lee", "Lee",
+            "Lee", "Lee", "Lee", "Lee", "Lee","Lee", "Lee", "Lee", "Lee", "Lee",
+            "Lee", "Lee", "Memo", "Memo", "Memo","Memo", "Memo", "Memo", "Memo", "Memo",
+            "Memo", "Memo", "Memo", "Memo", "Memo","Memo", "Memo", "Memo", "Memo", "Memo",
+            "Memo", "Memo", "Memo", "Memo", "Memo","Memo", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe",
+            "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe","Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe",
+            "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe","Bench", "Bench", "Lee", "Bench", "Memo",
+            "Penshoppe", "Penshoppe",
 
-            "Bench", "Bench", "Lee", "Lee", "Lee",
-            "Lee", "Lee", "Lee", "Lee", "Lee",
-            "Lee", "Lee", "Lee", "Lee", "Lee",
-            "Lee", "Lee", "Lee", "Lee", "Lee",
-            "Lee", "Lee", "Lee", "Lee", "Lee",
-
-            "Lee", "Lee", "Memo", "Memo", "Memo",
-            "Memo", "Memo", "Memo", "Memo", "Memo",
-            "Memo", "Memo", "Memo", "Memo", "Memo",
-            "Memo", "Memo", "Memo", "Memo", "Memo",
-            "Memo", "Memo", "Memo", "Memo", "Memo",
-
-            "Memo", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe",
-            "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe",
-            "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe",
-            "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe",
-            "Bench", "Bench", "Lee", "Bench", "Memo",
-
-            "Penshoppe", "Penshoppe"
+            "BNY", "BNY", "BNY", "BNY", "BNY", "BNY", "BNY", "BNY", "BNY", "BNY",
+            "Bench", "Bench", "Bench", "Bench", "Bench", "Bench", "Bench", "Bench", "Bench", "Bench",
+            "Bench", "Bench", "Bench", "Bench", "Bench", "Bench", "Bench", "Bench", "Bench", "Bench",
+            "Bench", "Bench", "Bench", "Bench", "Lee", "Lee", "Lee", "Lee", "Lee", "Lee",
+            "Lee", "Lee", "Lee", "Lee", "Lee", "Lee", "Lee", "Lee", "Lee", "Lee",
+            "Lee", "Lee", "Memo", "Memo", "Memo", "Memo", "Memo", "Memo", "Memo", "Memo",
+            "Memo", "Memo", "Memo", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe",
+            "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe"
         };
 
         String[] icons = {
@@ -277,50 +281,65 @@ public class TopsPanel extends JPanel {
             "images/benchmen4tops.png", "images/benchmen5tops.png", "images/benchmen6tops.png", "images/benchmen7tops.png", "images/benchmen9tops.png",
             "images/benchmen10tops.png", "images/benchmen11tops.png", "images/benchmen12tops.png", "images/benchmen15tops.png", "images/benchmen17tops.png",
             "images/benchmen20tops.png", "images/benchmen21tops.png", "images/benchmen22tops.png", "images/benchmen23tops.png", "images/benchmen24tops.png",
-
             "images/benchmen25tops.png", "images/benchmen26tops.png", "images/leemen1tops.png", "images/leemen3tops.png", "images/leemen4tops.png",
             "images/leemen5tops.png", "images/leemen6tops.png", "images/leemen7tops.png", "images/leemen11tops.png", "images/leemen12tops.png",
             "images/leemen13tops.png", "images/leemen14tops.png", "images/leemen15tops.png", "images/leemen16tops.png", "images/leemen18tops.png",
             "images/leemen19tops.png", "images/leemen20tops.png", "images/leemen21tops.png", "images/leemen22tops.png", "images/leemen23tops.png",
             "images/leemen24tops.png", "images/leemen25tops.png", "images/leemen26tops.png", "images/leemen27tops.png", "images/leemen28tops.png",
-
             "images/leemen29tops.png", "images/leemen30tops.png", "images/memomen1tops.png", "images/memomen2tops.png", "images/memomen3tops.png",
             "images/memomen4tops.png", "images/memomen6tops.png", "images/memomen7tops.png", "images/memomen8tops.png", "images/memomen9tops.png",
             "images/memomen10tops.png", "images/memomen11tops.png", "images/memomen12tops.png", "images/memomen13tops.png", "images/memomen14tops.png",
             "images/memomen15tops.png", "images/memomen18tops.png", "images/memomen19tops.png", "images/memomen20tops.png", "images/memomen21tops.png",
             "images/memomen22tops.png", "images/memomen23tops.png", "images/memomen25tops.png", "images/memomen27tops.png", "images/memomen28tops.png",
-
             "images/memomen30tops.png", "images/penshoppemen2tops.png", "images/penshoppemen3tops.png", "images/penshoppemen4tops.png", "images/penshoppemen5tops.png",
             "images/penshoppemen6tops.png", "images/penshoppemen7tops.png", "images/penshoppemen9tops.png", "images/penshoppemen10tops.png", "images/penshoppemen12tops.png",
             "images/penshoppemen14tops.png", "images/penshoppemen16tops.png", "images/penshoppemen17tops.png", "images/penshoppemen18tops.png", "images/penshoppemen23tops.png",
             "images/penshoppemen24tops.png", "images/penshoppemen25tops.png", "images/penshoppemen26tops.png", "images/penshoppemen28tops.png", "images/penshoppemen29tops.png",
             "images/benchmen18tops.png", "images/benchmen19tops.png", "images/leemen8tops.png", "images/benchmen1tops.png", "images/memomen26tops.png",
+            "images/penshoppemen21tops.png", "images/penshoppemen27tops.png",
 
-            "images/penshoppemen21tops.png", "images/penshoppemen27tops.png"
+            "images/bnywomen2tops.png", "images/bnywomen11tops.png", "images/bnywomen15tops.png", "images/bnywomen21tops.png", "images/bnywomen22tops.png",
+            "images/bnywomen27tops.png", "images/benchwomen2tops.png", "images/benchwomen4tops.png", "images/benchwomen6tops.png", "images/benchwomen7tops.png",
+            "images/benchwomen8tops.png", "images/benchwomen9tops.png", "images/benchwomen12tops.png", "images/benchwomen13tops.png", "images/benchwomen14tops.png",
+            "images/benchwomen15tops.png", "images/benchwomen16tops.png", "images/benchwomen17tops.png", "images/benchwomen18tops.png", "images/benchwomen20tops.png",
+            "images/benchwomen21tops.png", "images/benchwomen23tops.png", "images/benchwomen24tops.png", "images/benchwomen25tops.png", "images/benchwomen28tops.png",
+
+            "images/benchwomen29tops.png", "images/benchwomen30tops.png", "images/leewomen2tops.png", "images/leewomen4tops.png", "images/leewomen7tops.png",
+            "images/leewomen8tops.png", "images/leewomen11tops.png", "images/leewomen14tops.png", "images/leewomen15tops.png", "images/leewomen16tops.png",
+            "images/leewomen17tops.png", "images/leewomen18tops.png", "images/leewomen19tops.png", "images/leewomen20tops.png", "images/leewomen21tops.png",
+            "images/leewomen28tops.png", "images/leewomen29tops.png", "images/memowomen2tops.png", "images/memowomen5tops.png", "images/memowomen9tops.png",
+            "images/memowomen14tops.png", "images/memowomen24tops.png", "images/memowomen25tops.png", "images/memowomen28tops.png", "images/penshoppewomen2tops.png",
+
+            "images/penshoppewomen3tops.png", "images/penshoppewomen8tops.png", "images/penshoppewomen11tops.png", "images/penshoppewomen14tops.png", "images/penshoppewomen16tops.png",
+            "images/penshoppewomen18tops.png", "images/penshoppewomen19tops.png", "images/penshoppewomen22tops.png", "images/penshoppewomen23tops.png", "images/penshoppewomen27tops.png",
+            "images/bnywomen1tops.png", "images/bnywomen13tops.png", "images/bnywomen19tops.png", "images/bnywomen26tops.png", "images/benchwomen5tops.png",
+            "images/benchwomen10tops.png", "images/benchwomen27tops.png", "images/leewomen9tops.png", "images/leewomen12tops.png", "images/memowomen4tops.png",
+            "images/memowomen7tops.png", "images/memowomen17tops.png", "images/memowomen23tops.png", "images/penshoppewomen17tops.png", "images/penshoppewomen20tops.png",
+
+            "images/penshoppewomen21tops.png", "images/leewomen27tops.png", "images/penshoppewomen26tops.png"
         };
 
         int[][] brandSize = {
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100}, {110, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {90, 100}, {80, 100}, {80, 100},
+            {80, 100}, {80, 100}, {100, 100}, {90, 100}, {80, 100}, {80, 100}, {80, 100}, {80, 100}, {100, 100}, {80, 100},
+            {80, 100}, {80, 100}, {80, 100}, {80, 100}, {90, 100}, {80, 100}, {80, 100}, {80, 100}, {80, 100}, {80, 100},
+            {80, 100}, {100, 100}, {100, 100}, {80, 100}, {80, 100}, {90, 100}, {80, 100}, {80, 100}, {80, 100}, {90, 100},
+            {100, 100}, {100, 100}, {100, 100}, {80, 100}, {100, 100}, {80, 100}, {100, 100}, {100, 100}, {90, 100}, {100, 100},
+            {100, 100}, {100, 100}, {80, 100}, {100, 100}, {100, 100}, {80, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {80, 100}, {100, 100}, {80, 100},
+            {100, 100}, {100, 100},
+
+            {110, 100}, {100, 100}, {110, 100}, {110, 100}, {110, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {80, 100}, {80, 100}, {80, 100},
+            {100, 100}, {100, 100}, {80, 100}, {100, 100}, {80, 100}, {80, 100}, {100, 100}, {80, 100}, {90, 100}, {80, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100}, {100, 100}, {80, 100}, {100, 100}, {100, 100},
+            {100, 100}, {110, 100}, {110, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {80, 100}, {100, 100}, {100, 100}, {90, 100}, {90, 100}, {100, 100}, {80, 100}, {100, 100}
         };
 
         for (int i = 0; i < items.length; i++) {

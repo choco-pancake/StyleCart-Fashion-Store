@@ -223,7 +223,7 @@ public class Penshoppe extends JPanel {
            "images/penshoppewomen16tops.png", "images/penshoppewomen18tops.png", "images/penshoppewomen22tops.png", "images/penshoppewomen23tops.png", "images/penshoppewomen27tops.png",
            "images/penshoppewomen17tops.png", "images/penshoppewomen19tops.png", "images/penshoppewomen20tops.png", "images/penshoppewomen21tops.png", "images/penshoppewomen12outerwear.png",
            "images/penshoppewomen26tops.png", "images/penshoppewomen1bottoms.png", "images/penshoppewomen25bottoms.png", "images/penshoppewomen5bottoms.png", "images/penshoppewomen6bottoms.png",
-           "images/penshoppewomen9bottoms.png", "images/penshoppewomen10bottoms.png", "images/penshoppewomen13bottoms.png", "images/penshoppewomen24bottoms.png", "images/penshoppewomen28tops.png",
+           "images/penshoppewomen9bottoms.png", "images/penshoppewomen10bottoms.png", "images/penshoppewomen13bottoms.png", "images/penshoppewomen24bottoms.png", "images/penshoppewomen28bottoms.png",
            "images/penshoppewomen4bottoms.png", "images/penshoppewomen7bottoms.png", "images/penshoppewomen15bottoms.png", "images/penshoppewomen29bottoms.png", "images/penshoppewomen30bottoms.png"
         };
 
