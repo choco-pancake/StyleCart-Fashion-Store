@@ -188,42 +188,76 @@ public class BottomsPanel extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         String[] items = {
-            "Fashion Taslan Short", "Taslan Loose Casual Pants", "Street Style Short", "New DUKE Dri-Fit Men's Sport Short Casual Basketball Shorts", "New Taslan Short",
-            "Men's Jogging PantS", "Men's Jogging Shorts", "Fits 'Em All Logo Sweat Short (White)", "Easy Shorts (Sea Green)", "Easy Shorts (Waffle Fabric)",
-            "23 Relaxed Fit Football Jersey", "Modern Fit Nylon Sports Shorts (Light Khaki)", "Nylon Pull-On Cargo Shorts (Light Gray)", "Relaxed Fit Brushed Terry Shorts (Navy Blue)", "Racing Relaxed Fit Graphic Polo",
-            "Staple Twill Shorts for Men"
+            "Chinos 4-Pockets above-Knee Plain Garter Short", "Cod Men's Casual Sweat Jogger Sport Short", "HK Fashion Plain Short for Men (with Belt)", "Above-Knee Casual Garter Beach Short", "Men's Walking Shorts",
+            "Colored Shorts for Men", "Fits 'Em All Logo Sweat Short (Oxford Blue)", "Ezra Black Regular Fit Boys Dress Pants", "Wild Cargo Pants", "Rope Workwear with Pocket Loose Wide Leg Ankle Banded Pants",
+            "Smart Stretch Pleat Slacks Beige", "Baggy Straight Cut Slacks", "Sweatpant Wide Leg Baggy Loose Straight Cut", "Business Formal Pants", "Men's Twill Pants",
+            "SB19 Men's Twill Pants", "Dapper Fit Ankle Length Pull-On Trousers", "Slim Fit Staple Nylon Pants (Black)",
+
+            "Fashion Trendy Plain Trouser Shorts", "Mid-waist Relaxed Pants", "Highwaist Pants Denim Ripped Jeans", "Full Length High Rise Wide Leg Jeans", "Casual Plain Button Short",
+            "Casual Stripped Lace Up Zipper Short", "High Waisted Loose Fit Slim Stretchable Shorts Bermuda Short", "Highwaist Pants with Belt", "Wide Leg Pants Fashion High Waist Solid Button", "Denim Pants",
+            "Everyday Baggy Pants", "Baggy Pants", "Denim Carpenter Pants", "Wide Leg Jeans", "Cargo Shorts",
+            "Fits 'Em All Logo Sweat Short", "High Waist Shorts", "Trouser for Women (Arona)", "Trousers for Women", "Wide Leg Pants",
+            "Wide Leg Straight Pants", "Wide Leg Straight Pants for Women", "Xline Wide Leg Ultimate High Waist Gray Pants", "A-Line Skirt with Pockets", "Denim Midi Skirt",
+            "Overlap Skort for Women", "Pleated Trousers for Women", "Pull Up Trousers", "Skirt With Front Slit", "Slim 4-Way Stretch Trousers",
+            "Straight Leg Trousers with Contrast", "Suede Skort for Women", "Trousers With Button Detail", "Trousers With Elastic Waistband", "Bermuda Denim Shorts",
+            "Cropped Wide Leg Trousers", "Denim Cargo Skirt", "Denim Midi Skirt", "Dress Code Wide Leg Pleated Trousers", "Patch Pocket Denim Skirt",
+            "Plaid Skort for Women", "Tiered Midi Skirt", "Striped Denim Shorts (Beige)", "Striped Denim Shorts (Striped)", "Waffle Knit Skort",
+            "Wide Leg Cargo Denim Jeans", "Wide Leg Cargo Pants (Pink)"
         };
 
         String[] prices = {
-            "₱355", "₱169", "₱148", "₱294", "₱128",
-            "₱699", "₱499", "₱723", "₱890", "₱790",
-            "₱699", "₱505", "₱468", "₱231", "₱899",
-            "₱599"
+            "₱169", "₱156", "₱199", "₱248", "₱699", "₱900", "₱950", "₱401", "₱246", "₱345",
+            "₱350", "₱159", "₱149", "₱400", "₱899", "₱899", "₱398", "₱915",
+
+            "₱105", "₱400", "₱458", "₱389", "₱283", "₱273", "₱281", "₱500", "₱458", "₱699",
+            "₱799", "₱699", "₱899", "₱880", "₱623", "₱723", "₱990", "₱810", "₱810", "₱973",
+            "₱900", "₱700", "₱800", "₱749", "₱679", "₱849", "₱963", "₱899", "₱739", "₱699",
+            "₱699", "₱659", "₱759", "₱599", "₱899", "₱654", "₱654", "₱524", "₱645", "₱371",
+            "₱358", "₱522", "₱799", "₱799", "₱699", "₱899", "₱799"
         };
 
         String[] tags = {
-            "", "", "", "", "",
-            "", "", "", "", "",
-            "", "", "", "", "",
-            ""
+            "BNY", "BNY", "BNY", "BNY", "Bench", "Lee", "Lee", "BNY", "BNY", "BNY",
+            "BNY", "BNY", "BNY", "BNY", "Bench", "Bench", "Penshoppe", "Penshoppe",
+
+            "BNY", "BNY", "BNY", "BNY", "BNY", "BNY", "BNY", "BNY", "BNY", "Bench",
+            "Bench", "Bench", "Bench", "Lee", "Lee", "Lee", "Lee", "Lee", "Lee", "Lee",
+            "Lee", "Lee", "Lee", "Memo", "Memo", "Memo", "Memo", "Memo", "Memo", "Memo",
+            "Memo", "Memo", "Memo", "Memo", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe",
+            "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe"
         };
 
         String[] icons = {
-            "images/bnymen6activewear.png", "images/bnymen16activewear.png", "images/bnymen17activewear.png", "images/bnymen18activewear.png", "images/bnywomen10activewear.png",
-            "images/benchmen13activewear.png", "images/benchmen14activewear.png", "images/leemen10activewear.png", "images/leewomen5activewear.png", "images/leewomen6activewear.png",
-            "images/penshoppemen1activewear.png", "images/penshoppemen11activewear.png", "images/penshoppemen13activewear.png", "images/penshoppemen15activewear.png", "images/penshoppemen20activewear.png",
-            "images/penshoppemen30activewear.png"
+            "images/bnymen3bottoms.png", "images/bnymen4bottoms.png", "images/bnymen10bottoms.png", "images/bnymen25bottoms.png", "images/benchmen28bottoms.png",
+            "images/leemen2bottoms.png", "images/leemen9bottoms.png", "images/bnymen5bottoms.png", "images/bnymen14bottoms.png", "images/bnymen20bottoms.png",
+            "images/bnymen21bottoms.png", "images/bnymen24bottoms.png", "images/bnymen26bottoms.png", "images/bnymen27bottoms.png", "images/benchmen27bottoms.png",
+            "images/benchmen30bottoms.png", "images/penshoppemen8bottoms.png", "images/penshoppemen19bottoms.png",
+
+            "images/bnywomen3bottoms.png", "images/bnywomen7bottoms.png", "images/bnywomen8bottoms.png", "images/bnywomen12bottoms.png", "images/bnywomen18bottoms.png",
+            "images/bnywomen20bottoms.png", "images/bnywomen23bottoms.png", "images/bnywomen29bottoms.png", "images/bnywomen30bottoms.png", "images/benchwomen1bottoms.png",
+            "images/benchwomen3bottoms.png", "images/benchwomen11bottoms.png", "images/benchwomen19bottoms.png", "images/leewomen1bottoms.png", "images/leewomen3bottoms.png",
+            "images/leewomen10bottoms.png", "images/leewomen13bottoms.png", "images/leewomen22bottoms.png",  "images/leewomen23bottoms.png", "images/leewomen24bottoms.png",
+            "images/leewomen25bottoms.png", "images/leewomen26bottoms.png", "images/leewomen30bottoms.png", "images/memowomen1bottoms.png", "images/memowomen3bottoms.png",
+            "images/memowomen10bottoms.png", "images/memowomen11bottoms.png", "images/memowomen13bottoms.png", "images/memowomen15bottoms.png", "images/memowomen18bottoms.png",
+            "images/memowomen19bottoms.png", "images/memowomen21bottoms.png", "images/memowomen26bottoms.png", "images/memowomen27bottoms.png", "images/penshoppewomen1bottoms.png",
+            "images/penshoppewomen4bottoms.png", "images/penshoppewomen5bottoms.png", "images/penshoppewomen6bottoms.png", "images/penshoppewomen7bottoms.png", "images/penshoppewomen9bottoms.png",
+            "images/penshoppewomen10bottoms.png", "images/penshoppewomen13bottoms.png", "images/penshoppewomen24bottoms.png", "images/penshoppewomen25bottoms.png", "images/penshoppewomen28bottoms.png",
+            "images/penshoppewomen29bottoms.png", "images/penshoppewomen30bottoms.png"
         };
 
         int[][] brandSize = {
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {70, 100}, {100, 100},
+            {100, 100}, {120, 100}, {120, 100}, {100, 100}, {100, 100}, {90, 100}, {90, 100}, {70, 100},
+
+            {100, 100}, {90, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {80, 100}, {100, 100},
+            {80, 100}, {90, 100}, {90, 100}, {80, 100}, {100, 100}, {100, 100}, {100, 100}, {80, 100}, {80, 100}, {70, 100},
+            {80, 100}, {80, 100}, {80, 100}, {80, 100}, {80, 100}, {100, 100}, {70, 100}, {80, 100}, {90, 100}, {70, 100},
+            {80, 100}, {100, 100}, {80, 100}, {70, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {90, 100}, {100, 100}
         };
 
         for (int i = 0; i < items.length; i++) {
-            if (i < 16) {
+            if (i < 18) {
                 menPanel.add(createBottomsItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));
             } else {
                 womenPanel.add(createBottomsItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));

@@ -389,8 +389,8 @@ public class MainContents extends JPanel {
         categoryLabel.setForeground(white);
         categoryLabel.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 10));
 
-        String[] category = {"Active Wear", "        Tops", "     Bottoms", "  Dresses", "  Outerwear"};
-        String[] categoryIcon = {"images/bnymen18activewear.png", "images/bnywomen19tops.png", "images/penshoppewomen30bottoms.png", "images/bnywomen24dresses.png", "images/bnymen13outerwear.png"};
+        String[] category = {"        Tops", "     Bottoms", "Active Wear", "  Dresses", "  Outerwear"};
+        String[] categoryIcon = {"images/bnywomen19tops.png", "images/penshoppewomen30bottoms.png", "images/bnymen18activewear.png", "images/bnywomen24dresses.png", "images/bnymen13outerwear.png"};
 
         JPanel categoryItemsPanel = new JPanel();
         categoryItemsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
