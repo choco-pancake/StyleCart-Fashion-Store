@@ -20,49 +20,52 @@ public class ViewAll extends JPanel {
     private JSpinner[] quantitySpinners;
 
     private String[] items = {
-            "TATA Fashion New Long Sleeve Plain Varsity Jacket", "Flower Style Valentine's Day Casual Polo Dating Shirt", "Plain Hoodie Jacket with Zipper", "Men's Graphic Tee", "Stripped Short Sleeve Polo",
-            "Pokemon Men's Pullover", "Cut and Sew T-Shirt", "Oversized T-Shirt (Embroidered Logo)", "Oversized T-Shirt (Shitake)", "Textured Relaxed Fit Short Sleeve Shirt",
-            "Ultimate Basics Classic Bomber Jacket (Black)", "Ultimate Basics Easy Fit Long Sleeve Shirt", "Relaxed Fit T-Shirt with Branding Print (Off White)", "Relaxed Fit Long Sleeves Striped Shirt", "Relaxed Fit Striped Polo",
-            
-            "Wide Leg Pants Fashion High Waist Solid Button", "Small Leather Jacket", "Summer New Style Polo Color Short Sleeved Dress", "Better Made Graphic Shirt", "Sleeveless Top White",
-            "Denim Carpenter Pants", "Wide Leg Jeans", "Fits 'Em All Oversized Polo Shirt", "Woven Polo White", "A-Line Skirt with Pockets",
-            "Pleated Trousers for Women", "Striped Knit Top", "Slim Fit Polo with Contrast Tipping", "Striped Denim Shorts (Beige)", "Striped Long Sleeves Button Down Top with Heart Embroidery"
+            "Flower Style Valentine's Day Casual Polo Dating Shirt", "Men's Graphic Tee", "Stripped Short Sleeve Polo", "Cut and Sew T-Shirt", "Oversized T-Shirt (Embroidered Logo)",
+            "Oversized T-Shirt (Shitake)", "Textured Relaxed Fit Short Sleeve Shirt", "Relaxed Fit T-Shirt with Branding Print (Off White)", "Relaxed Fit Striped Polo", "TATA Fashion New Long Sleeve Plain Varsity Jacket",
+            "Plain Hoodie Jacket with Zipper", "Pokemon Men's Pullover", "Ultimate Basics Classic Bomber Jacket (Black)", "Ultimate Basics Easy Fit Long Sleeve Shirt", "Relaxed Fit Long Sleeves Striped Shirt",
+
+            "Better Made Graphic Shirt", "Fits 'Em All Oversized Polo Shirt", "Slim Fit Polo with Contrast Tipping", "Sleeveless Top White", "Striped Knit Top",
+            "Small Leather Jacket", "Woven Polo White", "Striped Long Sleeves Button Down Top with Heart Embroidery", "Summer New Style Polo Color Short Sleeved Dress", "A-Line Skirt with Pockets",
+            "Striped Denim Shorts (Beige)", "Wide Leg Pants Fashion High Waist Solid Button", "Denim Carpenter Pants", "Wide Leg Jeans", "Pleated Trousers for Women"
     };
+
 
     private String[] prices = {
-            "₱40", "₱39", "₱135", "₱", "₱", "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱",
+            "₱144", "₱349", "₱899", "₱890", "₱700", "₱990", "₱699", "₱331", "₱799", "₱323",
+            "₱145", "₱448", "₱939", "₱989", "₱799",
             
-            "₱50", "₱165", "₱900", "₱", "₱", "₱", "₱", "₱", "₱", "₱",
-            "₱", "₱", "₱", "₱", "₱"
+            "₱321", "₱877", "₱349", "₱890", "₱749", "₱398", "₱990", "₱849", "₱900", "₱749",
+            "₱799", "₱458", "₱899", "₱880", "₱963"
     };
 
+
     private String[] tags = {
-        "Trendy", "Versatile", "High quality", "", "", "", "", "", "", "",
-        "", "", "", "", "",
+        "Versatile", "High quality", "Recycled", "Trendy", "Heavyweight", "Comfortable", "Relaxing", "High density", "Best Seller", "Trendy",
+        "High quality", "Outdoor", "Versatile", "Versatile", "Relaxing",
             
-        "High quality", "High quality", "New Arrival", "", "", "", "", "", "",  "",
-        "", "", "", "", ""
+        "Recycled", "High quality", "Premium", "New Arrival", "Classic", "High quality", "High quality", "Relaxing", "New Arrival",  "Vintage",
+        "Versatile", "High quality", "Relaxing", "High quality", "Comfortable"
     };
 
     private String[] icons = {
-        "images/bnymen22outerwear.png", "images/bnymen8tops.png", "images/bnymen1outerwear.png", "images/benchmen10tops.png", "images/benchmen26tops.png",
-        "images/benchmen29outerwear.png", "images/leemen3tops.png", "images/leemen19tops.png", "images/leemen20tops.png", "images/memomen22tops.png",
-        "images/memomen24outerwear.png", "images/memomen26tops.png", "images/penshoppemen17tops.png", "images/penshoppemen21tops.png", "images/penshoppemen25tops.png",
-            
-        "images/bnywomen30bottoms.png", "images/bnywomen5outerwear.png", "images/bnywomen14dresses.png", "images/benchwomen2tops.png", "images/benchwomen5tops.png",
-        "images/benchwomen19bottoms.png", "images/leewomen1bottoms.png", "images/leewomen11tops.png", "images/leewomen27tops.png", "images/memowomen1bottoms.png",
-        "images/memowomen11bottoms.png", "images/memowomen20tops.png", "images/penshoppewomen22tops.png", "images/penshoppewomen24bottoms.png", "images/penshoppewomen26tops.png"
+        "images/bnymen8tops.png", "images/benchmen10tops.png", "images/benchmen26tops.png", "images/leemen3tops.png", "images/leemen19tops.png",
+        "images/leemen20tops.png", "images/memomen22tops.png", "images/penshoppemen17tops.png", "images/penshoppemen25tops.png", "images/bnymen22outerwear.png",
+        "images/bnymen1outerwear.png", "images/benchmen29outerwear.png", "images/memomen24outerwear.png", "images/memomen26tops.png", "images/penshoppemen21tops.png",
+
+        "images/benchwomen2tops.png", "images/leewomen11tops.png", "images/penshoppewomen22tops.png", "images/benchwomen5tops.png", "images/memowomen20tops.png",
+        "images/bnywomen5outerwear.png", "images/leewomen27tops.png", "images/penshoppewomen26tops.png", "images/bnywomen14dresses.png", "images/memowomen1bottoms.png",
+        "images/penshoppewomen24bottoms.png", "images/bnywomen30bottoms.png", "images/benchwomen19bottoms.png", "images/leewomen1bottoms.png", "images/memowomen11bottoms.png"
     };
 
+
     int[][] brandSizes = {
-        {100, 100}, {100, 100}, {110, 100}, {100, 100}, {100, 100},
-        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-        {100, 100}, {100, 100}, {110, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {60, 100}, {60, 100},
+        {60, 100}, {70, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {90, 100}, {80, 100}, {80, 100}, {80, 100},
             
         {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-        {100, 100}, {100, 100}, {110, 100}, {100, 100}, {100, 100}
+        {100, 100}, {60, 100}, {100, 100}, {100, 100}, {60, 100},
+        {100, 100}, {60, 100}, {100, 100}, {60, 100}, {60, 100}
     };
 
     public ViewAll(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white, Color darkBlue, Color peach,
