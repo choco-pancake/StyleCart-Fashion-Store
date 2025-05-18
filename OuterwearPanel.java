@@ -188,42 +188,48 @@ public class OuterwearPanel extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         String[] items = {
-            "Fashion Taslan Short", "Taslan Loose Casual Pants", "Street Style Short", "New DUKE Dri-Fit Men's Sport Short Casual Basketball Shorts", "New Taslan Short",
-            "Men's Jogging PantS", "Men's Jogging Shorts", "Fits 'Em All Logo Sweat Short (White)", "Easy Shorts (Sea Green)", "Easy Shorts (Waffle Fabric)",
-            "23 Relaxed Fit Football Jersey", "Modern Fit Nylon Sports Shorts (Light Khaki)", "Nylon Pull-On Cargo Shorts (Light Gray)", "Relaxed Fit Brushed Terry Shorts (Navy Blue)", "Racing Relaxed Fit Graphic Polo",
-            "Staple Twill Shorts for Men"
+            "Plain Hoodie Jacket with Zipper", "Korean New York Jacket with Zipper", "LSB# Super Hot CEC Men's Tide Brand Trend Lightweight Jacket", "Bomber with Zipper Jacket", "TATA Fashion New Long Sleeve Plain Varsity Jacket",
+            "TATA Fashion New Casual Baseball Jacket", "Everyday Men’s Pullover Top", "Men's Long Sleeved Shirt", "Sleeveless Pullover Top", "Pokemon Men's Pullover",
+            "Loose Fits 'Em All Sweatshirt Hoodie", "Color Block Collared Pullover (Black)", "Soft Touch Flat Knit Pullover with Contrast Tipping", "Striped Flat Knit Pullover with Collar and Zip Detail (Heather Gray)", "Ultimate Basics Classic Bomber Jacket (Black)",
+            "Wide Stripe Collared Pullover (Taupe)", "Relaxed Fit Pullover Sweatshirt",
+
+            "Small Leather Jacket", "Fried Street Yellow Floral Jacket", "Western Style Jacket New French Light Luxury", "Western Style Jacket European Station Spring Autumn", "Black Jacket",
+            "Women's Hoodie Jacket", "Relaxed Fit Stripes Pullover Sweater"
         };
 
         String[] prices = {
-            "₱355", "₱169", "₱148", "₱294", "₱128",
-            "₱699", "₱499", "₱723", "₱890", "₱790",
-            "₱699", "₱505", "₱468", "₱231", "₱899",
-            "₱599"
+            "₱145", "₱277", "₱189", "₱145", "₱323", "₱422", "₱599", "₱499", "₱599", "₱448",
+            "₱799", "₱939", "₱989", "₱759", "₱899", "₱659", "₱799",
+
+            "₱398", "₱443", "₱700", "₱668", "₱890", "₱539", "₱589"
         };
 
         String[] tags = {
-            "", "", "", "", "",
-            "", "", "", "", "",
-            "", "", "", "", "",
-            ""
+            "BNY", "BNY", "BNY", "BNY", "BNY", "BNY", "Bench", "Bench", "Bench", "Bench",
+            "Lee", "Memo", "Memo", "Memo", "Memo", "Memo", "Penshoppe",
+
+            "BNY", "BNY", "BNY", "BNY", "BNY", "Bench", "Penshoppe"
         };
 
         String[] icons = {
-            "images/bnymen6activewear.png", "images/bnymen16activewear.png", "images/bnymen17activewear.png", "images/bnymen18activewear.png", "images/bnywomen10activewear.png",
-            "images/benchmen13activewear.png", "images/benchmen14activewear.png", "images/leemen10activewear.png", "images/leewomen5activewear.png", "images/leewomen6activewear.png",
-            "images/penshoppemen1activewear.png", "images/penshoppemen11activewear.png", "images/penshoppemen13activewear.png", "images/penshoppemen15activewear.png", "images/penshoppemen20activewear.png",
-            "images/penshoppemen30activewear.png"
+            "images/bnymen1outerwear.png", "images/bnymen11outerwear.png", "images/bnymen13outerwear.png", "images/bnymen15outerwear.png", "images/bnymen22outerwear.png",
+            "images/bnymen30outerwear.png", "images/benchmen8outerwear.png", "images/benchmen16outerwear.png", "images/benchmen24outerwear.png", "images/benchmen29outerwear.png",
+            "images/leemen17outerwear.png", "images/memomen5outerwear.png", "images/memomen16outerwear.png", "images/memomen17outerwear.png", "images/memomen24outerwear.png",
+            "images/memomen29outerwear.png", "images/penshoppemen22outerwear.png",
+
+            "images/bnywomen5outerwear.png", "images/bnywomen9outerwear.png", "images/bnywomen16outerwear.png", "images/bnywomen17outerwear.png", "images/bnywomen28outerwear.png",
+            "images/benchwomen22outerwear.png", "images/penshoppewomen12outerwear.png"
         };
 
         int[][] brandSize = {
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {80, 100}, {100, 100},
+
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
         };
 
         for (int i = 0; i < items.length; i++) {
-            if (i < 16) {
+            if (i < 17) {
                 menPanel.add(createOuterwearItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));
             } else {
                 womenPanel.add(createOuterwearItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));

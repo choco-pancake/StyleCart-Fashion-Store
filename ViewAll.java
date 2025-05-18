@@ -20,33 +20,49 @@ public class ViewAll extends JPanel {
     private JSpinner[] quantitySpinners;
 
     private String[] items = {
-            "TATA Fashion New Long Sleeve Plain Varsity Jacket", "Flower Style Valentine's Day Casual Polo Dating Shirt", "Plain Hoodie Jacket with Zipper",
+            "TATA Fashion New Long Sleeve Plain Varsity Jacket", "Flower Style Valentine's Day Casual Polo Dating Shirt", "Plain Hoodie Jacket with Zipper", "Men's Graphic Tee", "Stripped Short Sleeve Polo",
+            "Pokemon Men's Pullover", "Cut and Sew T-Shirt", "Oversized T-Shirt (Embroidered Logo)", "Oversized T-Shirt (Shitake)", "Textured Relaxed Fit Short Sleeve Shirt",
+            "Ultimate Basics Classic Bomber Jacket (Black)", "Ultimate Basics Easy Fit Long Sleeve Shirt", "Relaxed Fit T-Shirt with Branding Print (Off White)", "Relaxed Fit Long Sleeves Striped Shirt", "Relaxed Fit Striped Polo",
             
-            "Wide Leg Pants Fashion High Waist Solid Button", "Small Leather Jacket", "Summer New Style Polo Color Short Sleeved Dress"
+            "Wide Leg Pants Fashion High Waist Solid Button", "Small Leather Jacket", "Summer New Style Polo Color Short Sleeved Dress", "Better Made Graphic Shirt", "Sleeveless Top White",
+            "Denim Carpenter Pants", "Wide Leg Jeans", "Fits 'Em All Oversized Polo Shirt", "Woven Polo White", "A-Line Skirt with Pockets",
+            "Pleated Trousers for Women", "Striped Knit Top", "Slim Fit Polo with Contrast Tipping", "Striped Denim Shorts (Beige)", "Striped Long Sleeves Button Down Top with Heart Embroidery"
     };
 
     private String[] prices = {
-            "₱40", "₱39", "₱135",
+            "₱40", "₱39", "₱135", "₱", "₱", "₱", "₱", "₱", "₱", "₱",
+            "₱", "₱", "₱", "₱", "₱",
             
-            "₱50", "₱165", "₱900"
+            "₱50", "₱165", "₱900", "₱", "₱", "₱", "₱", "₱", "₱", "₱",
+            "₱", "₱", "₱", "₱", "₱"
     };
 
     private String[] tags = {
-        "Trendy", "Versatile", "High quality",
+        "Trendy", "Versatile", "High quality", "", "", "", "", "", "", "",
+        "", "", "", "", "",
             
-        "High quality", "High quality", "New Arrival"
+        "High quality", "High quality", "New Arrival", "", "", "", "", "", "",  "",
+        "", "", "", "", ""
     };
 
     private String[] icons = {
-        "images/bnymen22outerwear.png", "images/bnymen8tops.png", "images/bnymen1outerwear.png",
+        "images/bnymen22outerwear.png", "images/bnymen8tops.png", "images/bnymen1outerwear.png", "images/benchmen10tops.png", "images/benchmen26tops.png",
+        "images/benchmen29outerwear.png", "images/leemen3tops.png", "images/leemen19tops.png", "images/leemen20tops.png", "images/memomen22tops.png",
+        "images/memomen24outerwear.png", "images/memomen26tops.png", "images/penshoppemen17tops.png", "images/penshoppemen21tops.png", "images/penshoppemen25tops.png",
             
-        "images/bnywomen30bottoms.png", "images/bnywomen5outerwear.png", "images/bnywomen14dresses.png"
+        "images/bnywomen30bottoms.png", "images/bnywomen5outerwear.png", "images/bnywomen14dresses.png", "images/benchwomen2tops.png", "images/benchwomen5tops.png",
+        "images/benchwomen19bottoms.png", "images/leewomen1bottoms.png", "images/leewomen11tops.png", "images/leewomen27tops.png", "images/memowomen1bottoms.png",
+        "images/memowomen11bottoms.png", "images/memowomen20tops.png", "images/penshoppewomen22tops.png", "images/penshoppewomen24bottoms.png", "images/penshoppewomen26tops.png"
     };
 
     int[][] brandSizes = {
-        {100, 100}, {100, 100}, {110, 100},
+        {100, 100}, {100, 100}, {110, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {110, 100}, {100, 100}, {100, 100},
             
-        {100, 100}, {100, 100}, {100, 100}
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
+        {100, 100}, {100, 100}, {110, 100}, {100, 100}, {100, 100}
     };
 
     public ViewAll(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white, Color darkBlue, Color peach,
@@ -239,7 +255,7 @@ public class ViewAll extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         for (int i = 0; i < items.length; i++) {
-            if (i < 3) {
+            if (i < 15) {
                 menPanel.add(createViewAllItem(items[i], prices[i], tags[i], icons[i], i, brandSizes[i]));
             } else {
                 womenPanel.add(createViewAllItem(items[i], prices[i], tags[i], icons[i], i, brandSizes[i]));

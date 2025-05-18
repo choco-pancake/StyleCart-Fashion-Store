@@ -12,9 +12,9 @@ public class DressesPanel extends JPanel {
     private JPanel contentPanel;
     private Color lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none;
     private Font itemFont, customFont, titleFont, dropdownFont;
-    private JPanel topPanel, backPanel, mainPanel, menPanel, womenPanel, titleContentPanel, sectionContainer, menContainer, womenContainer;
+    private JPanel topPanel, backPanel, mainPanel, womenPanel, titleContentPanel, sectionContainer, womenContainer;
     private JButton backButton;
-    private JLabel titleLabel, menLabel, womenLabel;
+    private JLabel titleLabel, womenLabel;
     private JScrollPane scrollPane;
     private Runnable onViewCartClick;
 
@@ -163,18 +163,6 @@ public class DressesPanel extends JPanel {
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setOpaque(true);
 
-        menContainer = new JPanel(new BorderLayout());
-        menContainer.setOpaque(false);
-        menLabel = new JLabel("MEN");
-        menLabel.setFont(customFont.deriveFont(25f));
-        menLabel.setForeground(white);
-        menLabel.setBorder(BorderFactory.createEmptyBorder(20, 25, 10, 0));
-        menLabel.setOpaque(false);
-
-        menPanel = new JPanel(new GridLayout(0, 5, 10, 10));
-        menPanel.setOpaque(false);
-        menPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
-
         womenContainer = new JPanel(new BorderLayout());
         womenContainer.setOpaque(false);
         womenLabel = new JLabel("WOMEN");
@@ -188,44 +176,29 @@ public class DressesPanel extends JPanel {
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         String[] items = {
-            "Fashion Taslan Short", "Taslan Loose Casual Pants", "Street Style Short", "New DUKE Dri-Fit Men's Sport Short Casual Basketball Shorts", "New Taslan Short",
-            "Men's Jogging PantS", "Men's Jogging Shorts", "Fits 'Em All Logo Sweat Short (White)", "Easy Shorts (Sea Green)", "Easy Shorts (Waffle Fabric)",
-            "23 Relaxed Fit Football Jersey", "Modern Fit Nylon Sports Shorts (Light Khaki)", "Nylon Pull-On Cargo Shorts (Light Gray)", "Relaxed Fit Brushed Terry Shorts (Navy Blue)", "Racing Relaxed Fit Graphic Polo",
-            "Staple Twill Shorts for Men"
+            "Hepburn Style Dress Summer Fashion Loose Slimmer", "Green Floral Strappy Dress", "Spring Autumn Sweater Dress", "Summer New Style Polo Color Short Sleeved Dress", "Heavy Industry Three-Dimensional Bow Knot Letter Diamond Dress",
+            "Women's Shift Dress", "Jumpsuit for Women", "Maxi Dress for Women", "Puff Sleeve Jumpsuit", "Textured Collared Dress"
         };
 
         String[] prices = {
-            "₱355", "₱169", "₱148", "₱294", "₱128",
-            "₱699", "₱499", "₱723", "₱890", "₱790",
-            "₱699", "₱505", "₱468", "₱231", "₱899",
-            "₱599"
+            "₱930", "₱262", "₱700", "₱900", "₱824", "₱699", "₱699", "₱849", "₱749", "₱659"
         };
 
         String[] tags = {
-            "", "", "", "", "",
-            "", "", "", "", "",
-            "", "", "", "", "",
-            ""
+            "BNY", "BNY", "BNY", "BNY", "BNY", "Bench", "Memo", "Memo", "Memo", "Memo"
         };
 
         String[] icons = {
-            "images/bnymen6activewear.png", "images/bnymen16activewear.png", "images/bnymen17activewear.png", "images/bnymen18activewear.png", "images/bnywomen10activewear.png",
-            "images/benchmen13activewear.png", "images/benchmen14activewear.png", "images/leemen10activewear.png", "images/leewomen5activewear.png", "images/leewomen6activewear.png",
-            "images/penshoppemen1activewear.png", "images/penshoppemen11activewear.png", "images/penshoppemen13activewear.png", "images/penshoppemen15activewear.png", "images/penshoppemen20activewear.png",
-            "images/penshoppemen30activewear.png"
+            "images/bnywomen4dresses.png", "images/bnywomen6dresses.png", "images/bnywomen14dresses.png", "images/bnywomen24dresses.png", "images/bnywomen25dresses.png",
+            "images/benchwomen26dresses.png", "images/memowomen6dresses.png", "images/memowomen8dresses.png", "images/memowomen12dresses.png", "images/memowomen22dresses.png"
         };
 
         int[][] brandSize = {
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {50, 100}, {60, 100}, {60, 100}, {60, 100}
         };
 
         for (int i = 0; i < items.length; i++) {
-            if (i < 16) {
-                menPanel.add(createDressesItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));
-            } else {
+            if (i < 10) {
                 womenPanel.add(createDressesItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));
             }
         }
@@ -234,11 +207,9 @@ public class DressesPanel extends JPanel {
         sectionContainer.setLayout(new BoxLayout(sectionContainer, BoxLayout.Y_AXIS));
         sectionContainer.setOpaque(false);
 
-        menContainer.add(menLabel, BorderLayout.NORTH);
-        menContainer.add(menPanel, BorderLayout.CENTER);
         womenContainer.add(womenLabel, BorderLayout.NORTH);
         womenContainer.add(womenPanel, BorderLayout.CENTER);
-        sectionContainer.add(menContainer);
+        
         sectionContainer.add(womenContainer);
         mainPanel.add(sectionContainer, BorderLayout.CENTER);
     }
