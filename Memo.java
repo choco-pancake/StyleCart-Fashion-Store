@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.io.*;
+import java.util.HashMap;
 
 public class Memo extends JPanel {
     private CardLayout cardLayout;
@@ -14,9 +15,11 @@ public class Memo extends JPanel {
     private JButton backButton;
     private JLabel titleLabel, menLabel, womenLabel;
     private JScrollPane scrollPane;
+    private HashMap<String, Integer> currentStock;
+    private HashMap<String, JLabel> stockLabels;
 
     public Memo(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white, Color darkerBlue, Color black, Color lightGray, Color darkGray, 
-               Color none, Font itemFont, Font dropdownFont) {
+                 Color none, Font itemFont, Font dropdownFont) {
         this.cardLayout = cardLayout;
         this.contentPanel = contentPanel;
         this.lightBlue = lightBlue;
@@ -40,6 +43,11 @@ public class Memo extends JPanel {
             titleFont = customFont.deriveFont(35f);
         }
 
+        // Initialize stock and stock labels
+        currentStock = new HashMap<>();
+        stockLabels = new HashMap<>();
+        initializeStock();
+
         titlePanel();
         mainPanel();
 
@@ -54,6 +62,56 @@ public class Memo extends JPanel {
         setOpaque(false);
         add(topPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private void initializeStock() {
+        String[] items = {
+            "Basic Crew Neck T-Shirt", "Basic Crew Neck Tee", "Boxy Fit Striped Flat Knit Top (Choco Brown)", "Boxy Knit Oversized with Zip Closure", "Essential Polo for Men",
+            "O.O.O Textured Polo Shirt", "O.O.O. Textured T-Shirt", "Pleated Short Sleeve Shirt (Light Blue)", "Pleated Short Sleeve Shirt (Black)", "Regular Fit Polo with Contrast Tipping",
+            "Regular Fit Rib Knit Striped Polo", "Regular Fit Textured T-Shirt", "Slim Fit Polo with Textured Collar (White)", "Slim Fit Polo with Textured Collar (Green)", "T-Shirt With Contrast Piping",
+            "Textured Knit T-Shirt", "Textured Open Collar Knit Polo Sleeve Shirt", "Textured Open Collar Polo (Midnight Navy)", "Textured Relaxed Fit Short Sleeve Shirt", "Textured Ringer Striped T-Shirt",
+            "Ultimate Basics Comfort T-Shirt", "Ultimate Basics Premium Flat Knit Polo", "Wide Stripe Collared Pullover (Taupe)", "Zip-Up Polo Shirt with Tipping", "Color Block Collared Pullover (Black)",
+            "Soft Touch Flat Knit Pullover with Contrast Tipping", "Striped Flat Knit Pullover with Collar and Zip Detail (Heather Gray)", "Ultimate Basics Classic Bomber Jacket (Black)", "Ultimate Basics Easy Fit Long Sleeve Shirt", "Wide Stripe Collared Pullover (Taupe)",
+
+            "Collared Shirt for Women", "Extended Sleeve Textured T-Shirt", "New Ultimate Basic T-Shirt", "Ruched Front T-Shirt", "Textured Tee for Women",
+            "Textured Horizontal Striped Polo", "Ultimate Basics Knit Tee", "Denim Zip Up Vest", "Linen Top for Women", "Slash Neck Top",
+            "Sleeveless Top with Tipping", "Striped Knit Top", "Textured Striped Sleeveless Top", "Sleeveless Top (Cream)", "Zip Up Pullover",
+            "Jumpsuit for Women", "Maxi Dress for Women", "Puff Sleeve Jumpsuit", "Textured Collared Dress", "A-Line Skirt with Pockets",
+            "Denim Midi Skirt", "Overlap Skort for Women", "Skirt With Front Slit", "Suede Skort for Women", "Pleated Trousers for Women",
+            "Pull Up Trousers", "Slim 4-Way Stretch Trousers", "Straight Leg Trousers with Contrast", "Trousers With Button Detail", "Trousers With Elastic Waistband"
+        };
+        int[] stocks = {
+            100, 2400, 3600, 1800, 750,
+            9200, 11000, 650, 120, 110,
+            720, 27000, 19300, 22100, 8700,
+            3100, 980, 5600, 450, 3900,
+            8100, 1400, 13000, 2600, 5200,
+            5800, 7700, 1800, 3400, 4200,
+            9600, 2300, 800, 1000, 2700,
+            950, 2900, 4300, 6100, 1700,
+            2100, 1300, 4800, 2800, 3700,
+            5, 3, 7400, 8500, 8800,
+            1100, 1900, 1600, 2900, 4100,
+            5100, 6200, 7100, 7900, 46000
+        };
+
+        for (int i = 0; i < items.length; i++) {
+            currentStock.put(items[i], stocks[i]);
+        }
+    }
+
+    public int getStock(String itemName) {
+        return currentStock.getOrDefault(itemName, 0);
+    }
+
+    public void decreaseStock(String itemName, int quantity) {
+        int current = currentStock.getOrDefault(itemName, 0);
+        int newStock = Math.max(0, current - quantity);
+        currentStock.put(itemName, newStock);
+        JLabel stockLabel = stockLabels.get(itemName);
+        if (stockLabel != null) {
+            stockLabel.setText("Stocks: " + newStock);
+        }
     }
 
     @Override
@@ -194,8 +252,7 @@ public class Memo extends JPanel {
             "Denim Midi Skirt", "Overlap Skort for Women", "Skirt With Front Slit", "Suede Skort for Women", "Pleated Trousers for Women",
             "Pull Up Trousers", "Slim 4-Way Stretch Trousers", "Straight Leg Trousers with Contrast", "Trousers With Button Detail", "Trousers With Elastic Waistband"
         };
-
-    
+       
         String[] prices = {
             "₱399", "₱399", "₱719", "₱989", "₱899",
             "₱799", "₱599", "₱899", "₱899", "₱989",
@@ -211,9 +268,9 @@ public class Memo extends JPanel {
             "₱679", "₱849", "₱739", "₱659", "₱963",
             "₱899", "₱699", "₱699", "₱759", "₱599"
         };
-
+       
         String[] icons = {
-            "images/memomen1tops.png", "images/memomen2tops.png", "images/memomen3tops.png", "images/memomen4tops.png", "images/memomen6tops.png",
+           "images/memomen1tops.png", "images/memomen2tops.png", "images/memomen3tops.png", "images/memomen4tops.png", "images/memomen6tops.png",
             "images/memomen7tops.png", "images/memomen8tops.png", "images/memomen9tops.png", "images/memomen10tops.png", "images/memomen11tops.png",
             "images/memomen12tops.png", "images/memomen13tops.png", "images/memomen14tops.png", "images/memomen15tops.png", "images/memomen18tops.png",
             "images/memomen19tops.png", "images/memomen20tops.png", "images/memomen21tops.png", "images/memomen22tops.png", "images/memomen23tops.png",
@@ -224,7 +281,8 @@ public class Memo extends JPanel {
             "images/memowomen25tops.png", "images/memowomen28tops.png", "images/memowomen4tops.png", "images/memowomen7tops.png", "images/memowomen16tops.png",
             "images/memowomen17tops.png", "images/memowomen20tops.png", "images/memowomen23tops.png", "images/memowomen30tops.png", "images/memowomen29outerwear.png",
             "images/memowomen6dresses.png", "images/memowomen8dresses.png", "images/memowomen12dresses.png", "images/memowomen22dresses.png", "images/memowomen1bottoms.png",
-            "images/memowomen3bottoms.png", "images/memowomen10bottoms.png", "images/memowomen15bottoms.png", "images/memowomen21bottoms.png", "images/memowomen11bottoms.png",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "images/memowomen13bottoms.png", "images/memowomen18bottoms.png", "images/memowomen19bottoms.png", "images/memowomen26bottoms.png", "images/memowomen27bottoms.png"
+            "images/memowomen3bottoms.png", "images/memowomen10bottoms.png", "images/memowomen15bottoms.png", "images/memowomen21bottoms.png", "images/memowomen11bottoms.png",
+            "images/memowomen13bottoms.png", "images/memowomen18bottoms.png", "images/memowomen19bottoms.png", "images/memowomen26bottoms.png", "images/memowomen27bottoms.png"
         };
 
         int[][] brandSize = {
@@ -244,10 +302,11 @@ public class Memo extends JPanel {
         };
  
         for (int i = 0; i < items.length; i++) {
+            JPanel itemPanel = createMemoItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1], currentStock.get(items[i]));
             if (i < 30) {
-                menPanel.add(createMemoItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                menPanel.add(itemPanel);
             } else {
-                womenPanel.add(createMemoItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                womenPanel.add(itemPanel);
             }
         }
 
@@ -264,22 +323,21 @@ public class Memo extends JPanel {
         mainPanel.add(sectionContainer, BorderLayout.CENTER);
     }
 
-    private JPanel createMemoItem(String item, String price, String icon, int width, int height) {
+    private JPanel createMemoItem(String item, String price, String icon, int width, int height, int stock) {
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BorderLayout());
-        itemPanel.setPreferredSize(new Dimension(230, 270));
+        itemPanel.setPreferredSize(new Dimension(230, 300));
         itemPanel.setBackground(lightBlue);
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));  
 
-        JPanel itemDetailsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        JPanel itemDetailsPanel = new JPanel();
         itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
         itemDetailsPanel.setOpaque(false);
 
         ImageIcon itemIcon = new ImageIcon(icon);
         Image scaledImage = itemIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
         JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -317,6 +375,21 @@ public class Memo extends JPanel {
         priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         priceLabel.setPreferredSize(new Dimension(100, 20));
 
+        JLabel stockLabel = new JLabel("Stocks: " + stock);
+        stockLabel.setFont(itemFont.deriveFont(13f));
+        stockLabel.setForeground(black);
+        stockLabel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
+        stockLabels.put(item, stockLabel);
+
+        JPanel stockContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        stockContainer.setOpaque(false);
+        stockContainer.add(stockLabel);
+
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setOpaque(false);
+        headerPanel.add(stockContainer, BorderLayout.EAST);
+        itemPanel.add(headerPanel, BorderLayout.NORTH);
+
         JButton addButton = new JButton("🛒");
         addButton.setForeground(black);
         addButton.setBackground(lightGray);
@@ -328,10 +401,15 @@ public class Memo extends JPanel {
         addButton.setFocusable(false);
         addButton.setPreferredSize(new Dimension(40, 30));
         addButton.setMaximumSize(new Dimension(40, 30));
+        addButton.setToolTipText("Add " + item + " to cart");
 
         addButton.addActionListener(e -> {
-            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
+            if (currentStock.get(item) <= 0) {
+                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
+            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
             JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
             detailsPanel.setPreferredSize(new Dimension(400, 150));
             detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -349,7 +427,13 @@ public class Memo extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(
+                (int)1, 
+                (int)1, 
+                (int)currentStock.get(item), 
+                (int)1
+            );
+
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
@@ -364,6 +448,10 @@ public class Memo extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
+                if (selectedQuantity > currentStock.get(item)) {
+                    JOptionPane.showMessageDialog(null, "Requested quantity exceeds available stock for " + item, "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
@@ -413,7 +501,7 @@ public class Memo extends JPanel {
         itemDetailsPanel.add(namePane);
         itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         itemDetailsPanel.add(pricePanel);
-        itemPanel.add(itemDetailsPanel, BorderLayout.NORTH);
+        itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
 
         return itemPanel;
     }

@@ -119,16 +119,27 @@ public class MainContents extends JPanel {
             if (viewAllPanel != null) {
                 viewAllPanel.updateStock(itemName, itemsStock[index]);
             }
+            // Delegate to BNY if it manages this item
             if (bnyPanel != null && bnyPanel.getStock(itemName) > 0) {
                 bnyPanel.decreaseStock(itemName, quantity);
             }
         } else {
+            // Delegate to the appropriate brand panel
             if (bnyPanel != null && bnyPanel.getStock(itemName) > 0) {
                 bnyPanel.decreaseStock(itemName, quantity);
-            }
-
-            if (benchPanel != null && benchPanel.getStock(itemName) > 0) {
+                //bnyPanel.refreshStockDisplay(); // Assuming BNY has this method
+            } else if (benchPanel != null && benchPanel.getStock(itemName) > 0) {
                 benchPanel.decreaseStock(itemName, quantity);
+                //benchPanel.refreshStockDisplay(); // Assuming Bench has this method
+            } else if (leePanel != null && leePanel.getStock(itemName) > 0) {
+                leePanel.decreaseStock(itemName, quantity);
+                //leePanel.refreshStockDisplay(); // Assuming Lee has this method
+            } else if (memoPanel != null && memoPanel.getStock(itemName) > 0) {
+                memoPanel.decreaseStock(itemName, quantity);
+                //memoPanel.refreshStockDisplay(); // Assuming Memo has this method
+            } else if (penshoppePanel != null && penshoppePanel.getStock(itemName) > 0) {
+                penshoppePanel.decreaseStock(itemName, quantity);
+                //penshoppePanel.refreshStockDisplay(); // Assuming Penshoppe has this method
             }
         }
     }
@@ -142,14 +153,22 @@ public class MainContents extends JPanel {
         }
 
         if (bnyPanel != null && bnyPanel.getStock(itemName) > 0) {
+            return bnyPanel.getStock(itemName);
+        } else if (benchPanel != null && benchPanel.getStock(itemName) > 0) {
             return benchPanel.getStock(itemName);
-        }
-
-        if (benchPanel != null && benchPanel.getStock(itemName) > 0) {
-            return benchPanel.getStock(itemName);
+        } else if (leePanel != null && leePanel.getStock(itemName) > 0) {
+            return leePanel.getStock(itemName);
+        } else if (memoPanel != null && memoPanel.getStock(itemName) > 0) {
+            return memoPanel.getStock(itemName);
+        } else if (penshoppePanel != null && penshoppePanel.getStock(itemName) > 0) {
+            return penshoppePanel.getStock(itemName);
         }
 
         return 0;
+    }
+
+    public JPanel getContentPanel() {
+        return contentPanel;
     }
 
     public BNY getBNYInstance() {

@@ -19,7 +19,7 @@ public class Lee extends JPanel {
     private HashMap<String, JLabel> stockLabels;
 
     public Lee(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white, Color darkerBlue, Color black, Color lightGray, Color darkGray, 
-               Color none, Font itemFont, Font dropdownFont) {
+                 Color none, Font itemFont, Font dropdownFont) {
         this.cardLayout = cardLayout;
         this.contentPanel = contentPanel;
         this.lightBlue = lightBlue;
@@ -43,7 +43,6 @@ public class Lee extends JPanel {
             titleFont = customFont.deriveFont(35f);
         }
 
-        // Initialize stock and stock labels
         currentStock = new HashMap<>();
         stockLabels = new HashMap<>();
         initializeStock();
@@ -250,7 +249,7 @@ public class Lee extends JPanel {
             "Easy Shorts (Waffle Fabric)", "Fits 'Em All Logo Sweat Short", "High Waist Shorts", "Wide Leg Jeans", "Trouser for Women (Arona)",
             "Trousers for Women", "Wide Leg Pants", "Wide Leg Straight Pants", "Wide Leg Straight Pants for Women", "Xline Wide Leg Ultimate High Waist Gray Pants"
         };
-    
+       
         String[] prices = {
             "₱951", "₱890", "₱890", "₱890", "₱890",
             "₱890", "₱532", "₱890", "₱790", "₱890",
@@ -265,9 +264,9 @@ public class Lee extends JPanel {
             "₱790", "₱723", "₱990", "₱973", "₱810",
             "₱810", "₱810", "₱810", "₱923", "₱800"
         };
-
+       
         String[] icons = {
-            "images/leemen1tops.png", "images/leemen3tops.png", "images/leemen4tops.png", "images/leemen5tops.png", "images/leemen6tops.png",
+           "images/leemen1tops.png", "images/leemen3tops.png", "images/leemen4tops.png", "images/leemen5tops.png", "images/leemen6tops.png",
             "images/leemen7tops.png", "images/leemen11tops.png", "images/leemen12tops.png", "images/leemen13tops.png", "images/leemen14tops.png",
             "images/leemen15tops.png", "images/leemen16tops.png", "images/leemen18tops.png", "images/leemen19tops.png", "images/leemen20tops.png",
             "images/leemen21tops.png", "images/leemen22tops.png", "images/leemen23tops.png", "images/leemen24tops.png", "images/leemen25tops.png",
@@ -399,11 +398,6 @@ public class Lee extends JPanel {
         addButton.setToolTipText("Add " + item + " to cart");
 
         addButton.addActionListener(e -> {
-            if (stock <= 0) {
-                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
             String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
             JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
             detailsPanel.setPreferredSize(new Dimension(400, 150));
@@ -422,7 +416,13 @@ public class Lee extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, stock, 1);
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(
+                (int)1, 
+                (int)1, 
+                (int)Integer.MAX_VALUE, 
+                (int)1
+            );
+
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
@@ -437,10 +437,6 @@ public class Lee extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                if (selectedQuantity > stock) {
-                    JOptionPane.showMessageDialog(null, "Requested quantity exceeds available stock for " + item, "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);

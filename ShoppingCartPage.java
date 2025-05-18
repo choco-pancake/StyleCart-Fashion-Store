@@ -185,12 +185,12 @@ public class ShoppingCartPage extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                placeButton.setBackground(darkBlue);
+                placeButton.setBackground(mediumBlue);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                placeButton.setBackground(mediumBlue);
+                addButton.setBackground(mediumBlue);
             }
         });
 
@@ -407,26 +407,6 @@ public class ShoppingCartPage extends JPanel {
         List<MainContents.CartItem> toRemove = new ArrayList<>();
         Object[][] selectedData = new Object[selectedRows.length][5];
         String[] columnNames = {"Product", "Details", "Price", "Quantity", "Subtotal"};
-        StringBuilder insufficientStock = new StringBuilder();
-
-        for (int i = 0; i < selectedRows.length; i++) {
-            int row = selectedRows[i];
-            if (row >= 0 && row < cartItems.size()) {
-                MainContents.CartItem item = cartItems.get(row);
-                int availableStock = mainContents.getStock(item.getName());
-                if (item.getQuantity() > availableStock) {
-                    insufficientStock.append(String.format("%s (Requested: %d, Available: %d)\n", item.getName(), item.getQuantity(), availableStock));
-                }
-            }
-        }
-
-        if (!insufficientStock.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "<html><div style='width: 500px; font-size: 9px; font-family: SansSerif'>Insufficient stock for the following items:<br>" + insufficientStock.toString().replace("\n", "<br>") + "</div></html>",
-                    "Insufficient Stock",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
 
         for (int i = 0; i < selectedRows.length; i++) {
             int row = selectedRows[i];
@@ -472,7 +452,14 @@ public class ShoppingCartPage extends JPanel {
             }
 
             for (MainContents.CartItem item : toRemove) {
-                mainContents.decreaseStock(item.getName(), item.getQuantity());
+                Component currentPanel = mainContents.getContentPanel().getComponent(0);
+                if (currentPanel instanceof Lee) {
+                    Lee leePanel = (Lee) currentPanel;
+                    leePanel.decreaseStock(item.getName(), item.getQuantity());
+                    //leePanel.refreshStockDisplay();
+                } else {
+                    mainContents.decreaseStock(item.getName(), item.getQuantity());
+                }
             }
 
             orderSummaryPage.setOrderedItems(toRemove);

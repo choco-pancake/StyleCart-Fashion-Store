@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.io.*;
+import java.util.HashMap;
 
 public class Penshoppe extends JPanel {
     private CardLayout cardLayout;
@@ -14,6 +15,8 @@ public class Penshoppe extends JPanel {
     private JButton backButton;
     private JLabel titleLabel, menLabel, womenLabel;
     private JScrollPane scrollPane;
+    private HashMap<String, Integer> currentStock;
+    private HashMap<String, JLabel> stockLabels;
 
     public Penshoppe(CardLayout cardLayout, JPanel contentPanel, Color lightBlue, Color white, Color darkerBlue, Color black, Color lightGray, Color darkGray, 
                  Color none, Font itemFont, Font dropdownFont) {
@@ -40,6 +43,11 @@ public class Penshoppe extends JPanel {
             titleFont = customFont.deriveFont(35f);
         }
 
+        // Initialize stock and stock labels
+        currentStock = new HashMap<>();
+        stockLabels = new HashMap<>();
+        initializeStock();
+
         titlePanel();
         mainPanel();
 
@@ -54,6 +62,56 @@ public class Penshoppe extends JPanel {
         setOpaque(false);
         add(topPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private void initializeStock() {
+        String[] items = {
+            "23 Relaxed Fit Football Jersey", "Basic Easy Iron Short Sleeve Shirt", "Boxy Fit Plaid Short Sleeve Shirt", "Game Over Regular Fit Graphic T-Shirt", "Good Times Regular Fit Graphic T-Shirt",
+            "Icon Relaxed Fit Graphic T-Shirt", "Chill Spot Central Relaxed Fit Graphic T-Shirt (Off White)", "Driven by Adrenaline Regular Fit Graphic T-Shirt", "Easy Days Regular Fit T-Shirt (Light Blue)", "Need Cash Not Advice Regular Fit T-Shirt",
+            "Regular Fit Crew Neck T-Shirt", "Relaxed Fit Raglan T-Shirt with Embroidery", "Relaxed Fit T-Shirt with Branding Print", "Relaxed Fit T-Shirt with PS Embroidery", "Racing Relaxed Fit Graphic Polo",
+            "Relaxed Fit Short Sleeves Resort Shirt with All-Over Embroidery", "Relaxed Fit Short Sleeves Resort Shirt with Embroidery", "Relaxed Fit Striped Polo", "Tie Dye Resort Shirt", "Easy Iron Short Sleeve Shirt",
+            "Underground Relaxed Fit Graphic T-Shirt", "Relaxed Fit Long Sleeves Striped Shirt", "Relaxed Fit Pullover Sweatshirt", "Dress Code Striped Long Sleeves Shirt", "Modern Fit Nylon Sports Shorts",
+            "Nylon Pull-On Cargo Shorts", "Relaxed Fit Brushed Terry Shorts", "Staple Twill Shorts for Men", "Dapper Fit Ankle Length Pull-On Trousers", "Slim Fit Staple Nylon Pants",
+
+            "Cherry All-Over Printed Henley Regular Fit Top", "Jacquard Knit Regular Fit Polo", "If You Break It Slim Fit Graphic T-Shirt", "Regular Fit Waffle Knit Polo", "Vintage Summer Striped Relaxed Fit T-Shirt",
+            "Relaxed Fit Stripes T-Shirt with Branding", "Ribbed Top", "Slim Fit Polo with Contrast Tipping", "Slim Fit Textured Top", "Unleash Your Speed Loose Fit Graphic T-Shirt",
+            "Ribbed Knit Slim Fit Tank Top", "Short Sleeve Regular Fit Baby Doll Top", "Short Sleeves Top with Drawstring", "Sleeveless Stripes Peplum Top", "Relaxed Fit Stripes Pullover Sweater",
+            "Striped Long Sleeves Button Down Top with Heart Embroidery", "Bermuda Denim Shorts", "Striped Denim Shorts (Striped)", "Denim Cargo Skirt", "Denim Midi Skirt",
+            "Patch Pocket Denim Skirt", "Plaid Skort for Women", "Tiered Midi Skirt", "Denim Skort (Beige)", "Waffle Knit Skort",
+            "Cropped Wide Leg Trousers", "Dress Code Wide Leg Pleated Trousers", "Wide Leg Cargo Pants (Black)", "Wide Leg Cargo Denim Jeans", "Wide Leg Cargo Pants (Pink)"
+        };
+        int[] stocks = {
+            100, 2400, 3600, 1800, 750,
+            9200, 11000, 650, 120, 110,
+            720, 27000, 19300, 22100, 8700,
+            3100, 980, 5600, 450, 3900,
+            8100, 1400, 13000, 2600, 5200,
+            5800, 7700, 1800, 3400, 4200,
+            9600, 2300, 800, 1000, 2700,
+            950, 2900, 4300, 6100, 1700,
+            2100, 1300, 4800, 2800, 3700,
+            5, 3, 7400, 8500, 8800,
+            1100, 1900, 1600, 2900, 4100,
+            5100, 6200, 7100, 7900, 46000
+        };
+
+        for (int i = 0; i < items.length; i++) {
+            currentStock.put(items[i], stocks[i]);
+        }
+    }
+
+    public int getStock(String itemName) {
+        return currentStock.getOrDefault(itemName, 0);
+    }
+
+    public void decreaseStock(String itemName, int quantity) {
+        int current = currentStock.getOrDefault(itemName, 0);
+        int newStock = Math.max(0, current - quantity);
+        currentStock.put(itemName, newStock);
+        JLabel stockLabel = stockLabels.get(itemName);
+        if (stockLabel != null) {
+            stockLabel.setText("Stocks: " + newStock);
+        }
     }
 
     @Override
@@ -192,7 +250,7 @@ public class Penshoppe extends JPanel {
             "Ribbed Knit Slim Fit Tank Top", "Short Sleeve Regular Fit Baby Doll Top", "Short Sleeves Top with Drawstring", "Sleeveless Stripes Peplum Top", "Relaxed Fit Stripes Pullover Sweater",
             "Striped Long Sleeves Button Down Top with Heart Embroidery", "Bermuda Denim Shorts", "Striped Denim Shorts (Striped)", "Denim Cargo Skirt", "Denim Midi Skirt",
             "Patch Pocket Denim Skirt", "Plaid Skort for Women", "Tiered Midi Skirt", "Denim Skort (Beige)", "Waffle Knit Skort",
-            "Cropped Wide Leg Trousers", "Dress Code Wide Leg Pleated Trousers", "Wide Leg Cargo Pants (Black) ", "Wide Leg Cargo Denim Jeans", "Wide Leg Cargo Pants (Pink)"
+            "Cropped Wide Leg Trousers", "Dress Code Wide Leg Pleated Trousers", "Wide Leg Cargo Pants (Black)", "Wide Leg Cargo Denim Jeans", "Wide Leg Cargo Pants (Pink)"
         };
        
         String[] prices = {
@@ -209,8 +267,8 @@ public class Penshoppe extends JPanel {
             "₱849", "₱899", "₱799", "₱654", "₱524",
             "₱371", "₱358", "₱822", "₱799", "₱699",
             "₱654", "₱645", "₱431", "₱899", "₱799"
-        }; 
-
+        };
+       
         String[] icons = {
            "images/penshoppemen1activewear.png", "images/penshoppemen2tops.png", "images/penshoppemen3tops.png", "images/penshoppemen4tops.png", "images/penshoppemen5tops.png",
            "images/penshoppemen6tops.png", "images/penshoppemen7tops.png", "images/penshoppemen9tops.png", "images/penshoppemen10tops.png", "images/penshoppemen12tops.png",
@@ -244,10 +302,11 @@ public class Penshoppe extends JPanel {
         };
  
         for (int i = 0; i < items.length; i++) {
+            JPanel itemPanel = createPenshoppeItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1], currentStock.get(items[i]));
             if (i < 30) {
-                menPanel.add(createPenshoppeItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                menPanel.add(itemPanel);
             } else {
-                womenPanel.add(createPenshoppeItem(items[i], prices[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                womenPanel.add(itemPanel);
             }
         }
 
@@ -264,22 +323,21 @@ public class Penshoppe extends JPanel {
         mainPanel.add(sectionContainer, BorderLayout.CENTER);
     }
 
-    private JPanel createPenshoppeItem(String item, String price, String icon, int width, int height) {
+    private JPanel createPenshoppeItem(String item, String price, String icon, int width, int height, int stock) {
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BorderLayout());
-        itemPanel.setPreferredSize(new Dimension(230, 270));
+        itemPanel.setPreferredSize(new Dimension(230, 300));
         itemPanel.setBackground(lightBlue);
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));  
 
-        JPanel itemDetailsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        JPanel itemDetailsPanel = new JPanel();
         itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
         itemDetailsPanel.setOpaque(false);
 
         ImageIcon itemIcon = new ImageIcon(icon);
         Image scaledImage = itemIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
         JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -317,6 +375,21 @@ public class Penshoppe extends JPanel {
         priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         priceLabel.setPreferredSize(new Dimension(100, 20));
 
+        JLabel stockLabel = new JLabel("Stocks: " + stock);
+        stockLabel.setFont(itemFont.deriveFont(13f));
+        stockLabel.setForeground(black);
+        stockLabel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
+        stockLabels.put(item, stockLabel);
+
+        JPanel stockContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        stockContainer.setOpaque(false);
+        stockContainer.add(stockLabel);
+
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setOpaque(false);
+        headerPanel.add(stockContainer, BorderLayout.EAST);
+        itemPanel.add(headerPanel, BorderLayout.NORTH);
+
         JButton addButton = new JButton("🛒");
         addButton.setForeground(black);
         addButton.setBackground(lightGray);
@@ -328,10 +401,15 @@ public class Penshoppe extends JPanel {
         addButton.setFocusable(false);
         addButton.setPreferredSize(new Dimension(40, 30));
         addButton.setMaximumSize(new Dimension(40, 30));
+        addButton.setToolTipText("Add " + item + " to cart");
 
         addButton.addActionListener(e -> {
-            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
+            if (currentStock.get(item) <= 0) {
+                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
+            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
             JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
             detailsPanel.setPreferredSize(new Dimension(400, 150));
             detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -349,7 +427,13 @@ public class Penshoppe extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(
+                (int)1, 
+                (int)1, 
+                (int)currentStock.get(item), 
+                (int)1
+            );
+
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
@@ -364,6 +448,10 @@ public class Penshoppe extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
+                if (selectedQuantity > currentStock.get(item)) {
+                    JOptionPane.showMessageDialog(null, "Requested quantity exceeds available stock for " + item, "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
@@ -413,7 +501,7 @@ public class Penshoppe extends JPanel {
         itemDetailsPanel.add(namePane);
         itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         itemDetailsPanel.add(pricePanel);
-        itemPanel.add(itemDetailsPanel, BorderLayout.NORTH);
+        itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
 
         return itemPanel;
     }
