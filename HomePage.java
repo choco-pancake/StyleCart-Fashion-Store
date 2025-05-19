@@ -186,7 +186,6 @@ public class HomePage extends JFrame {
         menuItemWhite("Home");
         cardLayout.show(contentPanel, "MainView");
 
-        // Moved setVisible to the end after all components are initialized
         SwingUtilities.invokeLater(() -> setVisible(true));
     }
 

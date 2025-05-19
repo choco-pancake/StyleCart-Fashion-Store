@@ -8,9 +8,9 @@ import javax.swing.text.*;
 
 public class MainContents extends JPanel {
     private Font titleFont, itemFont, dropdownFont;
-    private JPanel mainPanel, topPanel, categoryPanel, featuredPanel, brandPanel, activeWearPanel, topsPanel, bottomsPanel, dressesPanel, outerwearPanel;
+    private JPanel mainPanel, topPanel, categoryPanel, featuredPanel, brandPanel;
     private JPanel categoryTitle, featuredTitle, brandTitle, featuredItemsPanel;
-    private JLabel greetLabel, pfpLabel, categoryLabel, featuredLabel, featuredView, brandLabel;
+    private JLabel greetLabel, pfpLabel, categoryLabel, featuredLabel, brandLabel;
     private ImageIcon icon;
     private Image scaledImage;
     private JScrollPane scrollPane;
@@ -20,7 +20,6 @@ public class MainContents extends JPanel {
     private Color lightBlue = new Color(173, 216, 230);
     private Color white = Color.WHITE;
     private Color gray = Color.GRAY;
-    private Color darkerBlue = new Color(0, 0, 139);
     private Color hoverBlue = new Color(135, 206, 250);
     private Color selectBlue = new Color(100, 149, 237);
     private Color peach = new Color(255, 218, 185);
@@ -33,7 +32,6 @@ public class MainContents extends JPanel {
     private static List<CartItem> cartItems = new ArrayList<>();
     private Runnable onBrandViewClick;
     private Runnable onViewCartClick;
-    private ViewAll viewAllPanel;
     private BNY bnyPanel;
     private Bench benchPanel;
     private Lee leePanel;
@@ -116,30 +114,20 @@ public class MainContents extends JPanel {
                 SpinnerNumberModel model = (SpinnerNumberModel) quantitySpinners[index].getModel();
                 model.setMaximum(itemsStock[index]);
             }
-            if (viewAllPanel != null) {
-                viewAllPanel.updateStock(itemName, itemsStock[index]);
-            }
-            // Delegate to BNY if it manages this item
             if (bnyPanel != null && bnyPanel.getStock(itemName) > 0) {
                 bnyPanel.decreaseStock(itemName, quantity);
             }
         } else {
-            // Delegate to the appropriate brand panel
             if (bnyPanel != null && bnyPanel.getStock(itemName) > 0) {
                 bnyPanel.decreaseStock(itemName, quantity);
-                //bnyPanel.refreshStockDisplay(); // Assuming BNY has this method
             } else if (benchPanel != null && benchPanel.getStock(itemName) > 0) {
                 benchPanel.decreaseStock(itemName, quantity);
-                //benchPanel.refreshStockDisplay(); // Assuming Bench has this method
             } else if (leePanel != null && leePanel.getStock(itemName) > 0) {
                 leePanel.decreaseStock(itemName, quantity);
-                //leePanel.refreshStockDisplay(); // Assuming Lee has this method
             } else if (memoPanel != null && memoPanel.getStock(itemName) > 0) {
                 memoPanel.decreaseStock(itemName, quantity);
-                //memoPanel.refreshStockDisplay(); // Assuming Memo has this method
             } else if (penshoppePanel != null && penshoppePanel.getStock(itemName) > 0) {
                 penshoppePanel.decreaseStock(itemName, quantity);
-                //penshoppePanel.refreshStockDisplay(); // Assuming Penshoppe has this method
             }
         }
     }
@@ -215,21 +203,6 @@ public class MainContents extends JPanel {
         contentPanel = new JPanel(cardLayout);
         contentPanel.add(scrollPane, "MainView");
 
-        activeWearPanel = new ActiveWearPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
-        contentPanel.add(activeWearPanel, "ActiveWearView");
-
-        topsPanel = new TopsPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
-        contentPanel.add(topsPanel, "TopsView");
-
-        bottomsPanel = new BottomsPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
-        contentPanel.add(bottomsPanel, "BottomsView");
-
-        dressesPanel = new DressesPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
-        contentPanel.add(dressesPanel, "DressesView");
-
-        outerwearPanel = new OuterwearPanel(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont);
-        contentPanel.add(outerwearPanel, "OuterwearView");
-
         bnyPanel = new BNY(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(bnyPanel, "BNYView");
 
@@ -244,9 +217,6 @@ public class MainContents extends JPanel {
 
         penshoppePanel = new Penshoppe(cardLayout, contentPanel, lightBlue, white, darkBlue, black, lightGray, darkGray, none, itemFont, dropdownFont);
         contentPanel.add(penshoppePanel, "PenshoppeView");
-
-        viewAllPanel = new ViewAll(cardLayout, contentPanel, lightBlue, white, darkBlue, peach, black, lightGray, darkGray, none, itemFont, dropdownFont, this);
-        contentPanel.add(viewAllPanel, "ViewAllView");
 
         createGreeting();
         createCategory();
@@ -397,22 +367,22 @@ public class MainContents extends JPanel {
     private void createCategory() {
         categoryPanel = new JPanel(new BorderLayout());
         categoryPanel.setOpaque(false);
-        categoryPanel.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 20));
+        categoryPanel.setBorder(BorderFactory.createEmptyBorder(5, 35, 10, 10));
         categoryPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 250));
 
         categoryTitle = new JPanel(new BorderLayout());
         categoryTitle.setOpaque(false);
 
-        categoryLabel = new JLabel("  CLOTHING CATEGORY");
+        categoryLabel = new JLabel("  CLOTHING CATEGORIES");
         categoryLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         categoryLabel.setForeground(white);
         categoryLabel.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 10));
 
-        String[] category = {"        Tops", "     Bottoms", "Active Wear", "  Dresses", "  Outerwear"};
-        String[] categoryIcon = {"images/bnywomen19tops.png", "images/penshoppewomen30bottoms.png", "images/bnymen18activewear.png", "images/bnywomen24dresses.png", "images/bnymen13outerwear.png"};
+        String[] category = {"  Tops", "  Bottoms  ", "   Active", "  Dresses    ", "  Outer", "Jumpsuits"};
+        String[] categoryIcon = {"images/bnywomen19tops.png", "images/penshoppewomen30bottoms.png", "images/bnymen18activewear.png", "images/bnywomen24dresses.png", "images/bnymen13outerwear.png", "images/puffsleeve.png"};
 
         JPanel categoryItemsPanel = new JPanel();
-        categoryItemsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        categoryItemsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 7, 10));
         categoryItemsPanel.setOpaque(false);
 
         for (int i = 0; i < category.length; i++) {
@@ -428,11 +398,8 @@ public class MainContents extends JPanel {
     private JPanel createCategoryItem(String itemName, String itemIcon) {
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BorderLayout());
-        itemPanel.setBackground(lightBlue);
-        itemPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(darkGray, 1),
-                BorderFactory.createEmptyBorder(10, 10, 0, 10)));
-        itemPanel.setPreferredSize(new Dimension(230, 130));
+        itemPanel.setOpaque(false);
+        itemPanel.setPreferredSize(new Dimension(190, 100));
         itemPanel.setToolTipText(itemName.trim());
 
         ImageIcon icon;
@@ -447,53 +414,11 @@ public class MainContents extends JPanel {
 
         JLabel nameLabel = new JLabel(itemName);
         nameLabel.setFont(itemFont);
+        nameLabel.setForeground(white);
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         itemPanel.add(iconLabel, BorderLayout.WEST);
         itemPanel.add(nameLabel, BorderLayout.CENTER);
-        itemPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        itemPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                itemPanel.setBackground(hoverBlue);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                itemPanel.setBackground(selectBlue);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                itemPanel.setBackground(lightBlue);
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String trimmedName = itemName.trim();
-
-                switch(trimmedName) {
-                    case "Active Wear":
-                        cardLayout.show(contentPanel, "ActiveWearView");
-                        break;
-                    case "Tops":
-                        cardLayout.show(contentPanel, "TopsView");
-                        break;
-                    case "Bottoms":
-                        cardLayout.show(contentPanel, "BottomsView");
-                        break;
-                    case "Dresses":
-                        cardLayout.show(contentPanel, "DressesView");
-                        break;
-                    case "Outerwear":
-                        cardLayout.show(contentPanel, "OuterwearView");
-                        break;
-                }
-                    contentPanel.revalidate();
-                    contentPanel.repaint();
-            }
-        });
 
         return itemPanel;
     }
@@ -501,7 +426,7 @@ public class MainContents extends JPanel {
     private void createFeaturedItems() {
         featuredPanel = new JPanel(new BorderLayout());
         featuredPanel.setOpaque(false);
-        featuredPanel.setBorder(BorderFactory.createEmptyBorder(30, 20, 0, 20));
+        featuredPanel.setBorder(BorderFactory.createEmptyBorder(5, 32, 10, 20));
         featuredPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 400));
 
         featuredTitle = new JPanel(new BorderLayout());
@@ -511,37 +436,6 @@ public class MainContents extends JPanel {
         featuredLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         featuredLabel.setForeground(white);
         featuredLabel.setBorder(BorderFactory.createEmptyBorder(15, 0, 20, 10));
-
-        featuredView = new JLabel("View All >");
-        featuredView.setFont(new Font("SansSerif", Font.PLAIN, 17));
-        featuredView.setForeground(white);
-        featuredView.setToolTipText("View all featured items");
-
-        featuredView.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                featuredView.setForeground(darkerBlue);
-                featuredView.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                featuredView.setForeground(white);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                featuredView.setForeground(darkerBlue.darker());
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                featuredView.setForeground(darkerBlue);
-                cardLayout.show(contentPanel, "ViewAllView");
-                contentPanel.revalidate();
-                contentPanel.repaint();
-            }
-        });
 
         featuredItemsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         featuredItemsPanel.setOpaque(false);
@@ -554,7 +448,6 @@ public class MainContents extends JPanel {
         }
 
         featuredTitle.add(featuredLabel, BorderLayout.WEST);
-        featuredTitle.add(featuredView, BorderLayout.EAST);
         featuredPanel.add(featuredTitle, BorderLayout.NORTH);
         featuredPanel.add(featuredItemsPanel, BorderLayout.CENTER);
         mainPanel.add(featuredPanel);
@@ -774,7 +667,7 @@ public class MainContents extends JPanel {
     private void createAvailableBrands() {
         brandPanel = new JPanel(new BorderLayout());
         brandPanel.setOpaque(false);
-        brandPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 10, 10));
+        brandPanel.setBorder(BorderFactory.createEmptyBorder(5, 32, 10, 10));
         brandPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 250));
 
         brandTitle = new JPanel(new BorderLayout());
@@ -810,7 +703,7 @@ public class MainContents extends JPanel {
         itemPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(darkGray, 1),
                 BorderFactory.createEmptyBorder(10, 10, 5, 10)));
-        itemPanel.setPreferredSize(new Dimension(227, 150));
+        itemPanel.setPreferredSize(new Dimension(230, 150));
         itemPanel.setToolTipText(brandName);
 
         JPanel logoPanel = new JPanel();

@@ -446,58 +446,25 @@ public class ShoppingCartPage extends JPanel {
         int choice = JOptionPane.showConfirmDialog(this, infoMessage, "Order Details", JOptionPane.OK_CANCEL_OPTION);
 
         if (choice == JOptionPane.OK_OPTION) {
-        currentBalance = remainingBalance;
-        if (homePage != null) {
-            homePage.updateBalance(remainingBalance);
-        }
-
-        // Get reference to the TopsPanel
-        TopsPanel topsPanel = findTopsPanel();
-        
-        // Decrease stock for each item
-        for (MainContents.CartItem item : toRemove) {
-            if (topsPanel != null) {
-                topsPanel.decreaseStock(item.getName(), item.getQuantity());
+            currentBalance = remainingBalance;
+            if (homePage != null) {
+                homePage.updateBalance(remainingBalance);
             }
-            // Also decrease in MainContents if needed
-            mainContents.decreaseStock(item.getName(), item.getQuantity());
-        }
 
-        // Refresh the stock display if we found the TopsPanel
-        if (topsPanel != null) {
-            topsPanel.refreshStockDisplay();
-        }
+            orderSummaryPage.setOrderedItems(toRemove);
+            orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
+            ratingsPage.displayOrderSummary(selectedData, columnNames, customFont);
+            cartItems.removeAll(toRemove);
+            refreshCartItems();
+            JOptionPane.showMessageDialog(this,
+                    "<html><div style='font-size: 9px; font-family: SansSerif'>Order placed successfully!</div></html>",
+                    "Order Placed",
+                    JOptionPane.INFORMATION_MESSAGE);
 
-        orderSummaryPage.setOrderedItems(toRemove);
-        orderSummaryPage.displayOrderSummary(selectedData, columnNames, customFont);
-        ratingsPage.displayOrderSummary(selectedData, columnNames, customFont);
-        cartItems.removeAll(toRemove);
-        refreshCartItems();
-        
-        JOptionPane.showMessageDialog(this,
-                "<html><div style='font-size: 9px; font-family: SansSerif'>Order placed successfully!</div></html>",
-                "Order Placed",
-                JOptionPane.INFORMATION_MESSAGE);
-
-        if (homePage != null) {
-            homePage.showPanel("OrderSummaryView");
-            homePage.menuItemWhite("Order Summary");
+            if (homePage != null) {
+                homePage.showPanel("OrderSummaryView");
+                homePage.menuItemWhite("Order Summary");
+            }
         }
     }
-}
-
-// Helper method to find the TopsPanel instance
-private TopsPanel findTopsPanel() {
-    if (mainContents == null) return null;
-    
-    // Get all components from the content panel
-    Component[] components = mainContents.getContentPanel().getComponents();
-    
-    for (Component comp : components) {
-        if (comp instanceof TopsPanel) {
-            return (TopsPanel) comp;
-        }
-    }
-    return null;
-}
 }

@@ -398,6 +398,11 @@ public class Lee extends JPanel {
         addButton.setToolTipText("Add " + item + " to cart");
 
         addButton.addActionListener(e -> {
+            if (stock <= 0) {
+                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
             JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
             detailsPanel.setPreferredSize(new Dimension(400, 150));
@@ -416,16 +421,31 @@ public class Lee extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(
-                (int)1, 
-                (int)1, 
-                (int)Integer.MAX_VALUE, 
-                (int)1
-            );
-
+            // Set the spinner model with the stock as the maximum
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, stock, 1);
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
+
+            // Add input validation to the spinner
+            JSpinner.NumberEditor editor = new JSpinner.NumberEditor(quantitySpinner, "#");
+            quantitySpinner.setEditor(editor);
+            JFormattedTextField textField = editor.getTextField();
+            textField.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusLost(FocusEvent e) {
+                    try {
+                        int value = Integer.parseInt(textField.getText());
+                        if (value < 1) {
+                            quantitySpinner.setValue(1);
+                        } else if (value > stock) {
+                            quantitySpinner.setValue(1);
+                        }
+                    } catch (NumberFormatException ex) {
+                        quantitySpinner.setValue(1);
+                    }
+                }
+            });
 
             detailsPanel.add(sizeLabel);
             detailsPanel.add(sizeBox);
@@ -435,8 +455,18 @@ public class Lee extends JPanel {
             int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             if (result == JOptionPane.OK_OPTION) {
-                String selectedSize = (String) sizeBox.getSelectedItem();
+                // Validate and reset quantity if it exceeds stock
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
+                if (selectedQuantity > stock) {
+                    quantitySpinner.setValue(1); // Reset to 1 immediately
+                    selectedQuantity = 1; // Use the reset value
+                }
+                if (selectedQuantity < 1) {
+                    quantitySpinner.setValue(1); // Reset to 1 if invalid
+                    selectedQuantity = 1; // Use the reset value
+                }
+
+                String selectedSize = (String) sizeBox.getSelectedItem();
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
