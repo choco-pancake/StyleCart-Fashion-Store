@@ -17,6 +17,16 @@ public class TopsPanel extends JPanel {
     private JLabel titleLabel, menLabel, womenLabel;
     private JScrollPane scrollPane;
     private Runnable onViewCartClick;
+    private HashMap<String, Integer> itemStocks; // To store item stocks
+    private int lastScrollPosition = 0; // To store the last scroll position
+
+    // Class-level arrays to be accessible in refreshStockDisplay
+    private String[] items;
+    private String[] prices;
+    private String[] tags;
+    private String[] icons;
+    private int[][] brandSize;
+    private int[] stocks;
 
     public void setOnViewCartClick(Runnable onClick) {
         this.onViewCartClick = onClick;
@@ -36,6 +46,7 @@ public class TopsPanel extends JPanel {
         this.none = none;
         this.itemFont = itemFont;
         this.dropdownFont = dropdownFont;
+        this.itemStocks = new HashMap<>(); // Initialize the HashMap
 
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/MontserratMedium.ttf")).deriveFont(27f);
@@ -67,7 +78,23 @@ public class TopsPanel extends JPanel {
     @Override
     public void addNotify() {
         super.addNotify();
-        SwingUtilities.invokeLater(() -> scrollPane.getVerticalScrollBar().setValue(0));
+        SwingUtilities.invokeLater(() -> {
+            // Restore the last scroll position when the panel is shown
+            JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+            if (verticalScrollBar != null) {
+                verticalScrollBar.setValue(lastScrollPosition);
+            }
+        });
+    }
+
+    @Override
+    public void removeNotify() {
+        super.removeNotify();
+        // Save the current scroll position when the panel is hidden
+        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+        if (verticalScrollBar != null) {
+            lastScrollPosition = verticalScrollBar.getValue();
+        }
     }
 
     private void titlePanel() {
@@ -187,7 +214,8 @@ public class TopsPanel extends JPanel {
         womenPanel.setOpaque(false);
         womenPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
-        String[] items = {
+        // Initialize class-level arrays
+        items = new String[] {
             "Kaiki White Color Street Trendy Versace Shirt", "Fiaunt Fashions Oversized Retro Classic T-Shirt", "Flower Style Valentine's Day Casual Polo Dating Shirt", "High Quality Shortsleeve Casual Polo Shirt", "Korean Vintage Loose Short-Sleeved T-Shirt",
             "New WESTERN Summer Casual Pure Color Short Sleeved Shirt", "Korean Style Loose Fit Oversize Shirt Mens Silk Polo Shirt", "Plain Polo Shirt with 2 Lines", "Bench Everyday’s Pullover Top", "Bench x Baekhyun Logo Tee",
             "Men's Statement Tee", "Men's Boxy Tee", "Men's Classic Tee", "Men's Embroidered Tee", "Flat Knit Polo Shirt",
@@ -226,10 +254,9 @@ public class TopsPanel extends JPanel {
             "Scoop Neck Tank Top", "Women's Sleeveless Top", "Fits 'Em All French Terry Vest", "High Neck Sleeveless Tops", "Denim Zip Up Vest",
             "Linen Top for Women", "Sleeveless Top with Tipping", "Textured Striped Sleeveless Top", "Ribbed Knit Slim Fit Tank Top", "Short Sleeves Top with Drawstring",
             "Sleeveless Stripes Peplum Top", "Woven Polo White", "Striped Long Sleeves Button Down Top with Heart Embroidery"
-
         };
 
-        String[] prices = {
+        prices = new String[] {
             "₱259", "₱144", "₱176", "₱188", "₱199", "₱174", "₱170", "₱142", "₱599", "₱377",
             "₱349", "₱349", "₱349", "₱377", "₱699", "₱349", "₱384", "₱447", "₱349", "₱499",
             "₱447", "₱419", "₱899", "₱899", "₱599", "₱499", "₱899", "₱951", "₱890", "₱890",
@@ -252,7 +279,7 @@ public class TopsPanel extends JPanel {
             "₱809", "₱890", "₱699", "₱349", "₱899", "₱899", "₱990", "₱849"
         };
 
-        String[] tags = {
+        tags = new String[] {
             "BNY", "BNY", "BNY", "BNY", "BNY","BNY", "BNY", "BNY", "Bench", "Bench",
             "Bench", "Bench", "Bench", "Bench", "Bench","Bench", "Bench", "Bench", "Bench", "Bench",
             "Bench", "Bench", "Bench", "Bench", "Bench","Bench", "Bench", "Lee", "Lee", "Lee",
@@ -275,7 +302,7 @@ public class TopsPanel extends JPanel {
             "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe", "Penshoppe"
         };
 
-        String[] icons = {
+        icons = new String[] {
             "images/bnymen2tops.png", "images/bnymen7tops.png", "images/bnymen8tops.png", "images/bnymen9tops.png", "images/bnymen12tops.png",
             "images/bnymen19tops.png", "images/bnymen23tops.png", "images/bnymen28tops.png", "images/benchmen2tops.png", "images/benchmen3tops.png",
             "images/benchmen4tops.png", "images/benchmen5tops.png", "images/benchmen6tops.png", "images/benchmen7tops.png", "images/benchmen9tops.png",
@@ -303,23 +330,20 @@ public class TopsPanel extends JPanel {
             "images/benchwomen8tops.png", "images/benchwomen9tops.png", "images/benchwomen12tops.png", "images/benchwomen13tops.png", "images/benchwomen14tops.png",
             "images/benchwomen15tops.png", "images/benchwomen16tops.png", "images/benchwomen17tops.png", "images/benchwomen18tops.png", "images/benchwomen20tops.png",
             "images/benchwomen21tops.png", "images/benchwomen23tops.png", "images/benchwomen24tops.png", "images/benchwomen25tops.png", "images/benchwomen28tops.png",
-
             "images/benchwomen29tops.png", "images/benchwomen30tops.png", "images/leewomen2tops.png", "images/leewomen4tops.png", "images/leewomen7tops.png",
             "images/leewomen8tops.png", "images/leewomen11tops.png", "images/leewomen14tops.png", "images/leewomen15tops.png", "images/leewomen16tops.png",
             "images/leewomen17tops.png", "images/leewomen18tops.png", "images/leewomen19tops.png", "images/leewomen20tops.png", "images/leewomen21tops.png",
             "images/leewomen28tops.png", "images/leewomen29tops.png", "images/memowomen2tops.png", "images/memowomen5tops.png", "images/memowomen9tops.png",
             "images/memowomen14tops.png", "images/memowomen24tops.png", "images/memowomen25tops.png", "images/memowomen28tops.png", "images/penshoppewomen2tops.png",
-
             "images/penshoppewomen3tops.png", "images/penshoppewomen8tops.png", "images/penshoppewomen11tops.png", "images/penshoppewomen14tops.png", "images/penshoppewomen16tops.png",
             "images/penshoppewomen18tops.png", "images/penshoppewomen19tops.png", "images/penshoppewomen22tops.png", "images/penshoppewomen23tops.png", "images/penshoppewomen27tops.png",
             "images/bnywomen1tops.png", "images/bnywomen13tops.png", "images/bnywomen19tops.png", "images/bnywomen26tops.png", "images/benchwomen5tops.png",
             "images/benchwomen10tops.png", "images/benchwomen27tops.png", "images/leewomen9tops.png", "images/leewomen12tops.png", "images/memowomen4tops.png",
             "images/memowomen7tops.png", "images/memowomen17tops.png", "images/memowomen23tops.png", "images/penshoppewomen17tops.png", "images/penshoppewomen20tops.png",
-
             "images/penshoppewomen21tops.png", "images/leewomen27tops.png", "images/penshoppewomen26tops.png"
         };
 
-        int[][] brandSize = {
+        brandSize = new int[][] {
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100}, {110, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {90, 100}, {80, 100}, {80, 100},
@@ -342,11 +366,37 @@ public class TopsPanel extends JPanel {
             {80, 100}, {100, 100}, {100, 100}, {90, 100}, {90, 100}, {100, 100}, {80, 100}, {100, 100}
         };
 
+        stocks = new int[] {
+            0, 1500, 5760, 3200, 500, 7800, 12000, 300, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 10000, 2000, 500,
+            700, 2500, 800, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 3000, 4500, 6000, 1500, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
+
+        // Initialize the stock map
+        for (int i = 0; i < items.length; i++) {
+            itemStocks.put(items[i], stocks[i]);
+        }
+
         for (int i = 0; i < items.length; i++) {
             if (i < 102) {
-                menPanel.add(createTopsItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                menPanel.add(createTopsItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1], itemStocks.get(items[i])));
             } else {
-                womenPanel.add(createTopsItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1]));
+                womenPanel.add(createTopsItem(items[i], prices[i], tags[i], icons[i], brandSize[i][0], brandSize[i][1], itemStocks.get(items[i])));
             }
         }
 
@@ -363,7 +413,83 @@ public class TopsPanel extends JPanel {
         mainPanel.add(sectionContainer, BorderLayout.CENTER);
     }
 
-    private JPanel createTopsItem(String item, String price, String tag, String icon, int width, int height) {
+    // Method to decrease stock
+    public synchronized void decreaseStock(String itemName, int quantity) {
+    if (itemStocks.containsKey(itemName)) {
+        int currentStock = itemStocks.get(itemName);
+        int newStock = Math.max(0, currentStock - quantity); // Ensure stock doesn't go negative
+        itemStocks.put(itemName, newStock);
+        
+        // Update the stocks array for consistency
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].equals(itemName)) {
+                stocks[i] = newStock;
+                break;
+            }
+        }
+    }
+}
+
+    // Method to place the order and decrease stock
+    public void placeOrder() {
+        if (MainContents.getCartItems().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Your cart is empty!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
+            String itemName = cartItem.getName();
+            int quantity = cartItem.getQuantity();
+            int currentStock = itemStocks.getOrDefault(itemName, 0);
+
+            // Check if there's enough stock before decreasing
+            if (quantity > currentStock) {
+                JOptionPane.showMessageDialog(null, "Not enough stock for " + itemName + "! Available stock: " + currentStock, "Stock Error", JOptionPane.ERROR_MESSAGE);
+                return; // Stop the order process if stock is insufficient
+            }
+        }
+
+        // If all items have sufficient stock, decrease stock for each item
+        for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
+            decreaseStock(cartItem.getName(), cartItem.getQuantity());
+        }
+
+        // Clear the cart after successfully placing the order
+        MainContents.getCartItems().clear();
+        refreshStockDisplay(); // Refresh the display to show updated stock
+        JOptionPane.showMessageDialog(null, "Order placed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // Method to refresh the display
+    public synchronized void refreshStockDisplay() {
+    SwingUtilities.invokeLater(() -> {
+        menPanel.removeAll();
+        womenPanel.removeAll();
+
+        for (int i = 0; i < items.length; i++) {
+            String item = items[i];
+            String price = prices[i];
+            String tag = tags[i];
+            String icon = icons[i];
+            int width = brandSize[i][0];
+            int height = brandSize[i][1];
+            int stock = itemStocks.getOrDefault(item, stocks[i]); // Fallback to stocks array if needed
+
+            if (i < 102) {  // Use constant instead of magic number
+                menPanel.add(createTopsItem(item, price, tag, icon, width, height, stock));
+            } else {
+                womenPanel.add(createTopsItem(item, price, tag, icon, width, height, stock));
+            }
+        }
+
+        menPanel.revalidate();
+        menPanel.repaint();
+        womenPanel.revalidate();
+        womenPanel.repaint();
+    });
+}
+
+    private JPanel createTopsItem(String item, String price, String tag, String icon, int width, int height, int stock) {
         JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new BorderLayout());
         itemPanel.setPreferredSize(new Dimension(230, 300));
@@ -464,7 +590,7 @@ public class TopsPanel extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 99, 1);
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, stock > 0 ? stock : 1, 1); // Limit quantity to available stock
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
@@ -479,11 +605,21 @@ public class TopsPanel extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
+                
+                // Check if there's enough stock
+                if (selectedQuantity > stock) {
+                    JOptionPane.showMessageDialog(null, "Not enough stock available! Available stock: " + stock, "Stock Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
 
                 UIManager.put("OptionPane.messageFont", new Font("SansSerif", Font.PLAIN, 12));
                 JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+                if (onViewCartClick != null) {
+                    onViewCartClick.run();
+                }
             }
         });
 
@@ -521,8 +657,14 @@ public class TopsPanel extends JPanel {
         buttonWrapper.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         buttonWrapper.setOpaque(false);
 
+        // Create a container for tag and stock at the top
+        JPanel topContainer = new JPanel(new BorderLayout());
+        topContainer.setOpaque(false);
+        topContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        // Add tag label on the top left
         if (!tag.isEmpty()) {
-            JPanel tagPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            JPanel tagPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
             tagPanel.setBackground(peach);
             tagPanel.setOpaque(true);
             tagPanel.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -535,24 +677,28 @@ public class TopsPanel extends JPanel {
             Dimension labelSize = tagLabel.getPreferredSize();
             tagPanel.setPreferredSize(new Dimension(labelSize.width + 10, labelSize.height + 6));
 
-            JPanel tagContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            tagContainer.setOpaque(false);
-            tagContainer.add(tagPanel);
-
-            itemPanel.add(tagContainer, BorderLayout.NORTH);
-        } else {
-            itemPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.NORTH);
+            topContainer.add(tagPanel, BorderLayout.WEST);
         }
+
+        // Add stock label on the top right
+        JPanel stockPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+        stockPanel.setOpaque(false);
+        JLabel stockLabel = new JLabel(stock == 0 ? "Out of Stock" : "Stocks: " + stock);
+        stockLabel.setFont(itemFont.deriveFont(15f));
+        stockLabel.setForeground(black);
+        stockPanel.add(stockLabel);
+        topContainer.add(stockPanel, BorderLayout.EAST);
 
         pricePanel.add(priceLabel, BorderLayout.WEST);
         buttonWrapper.add(addButton);
         pricePanel.add(buttonWrapper, BorderLayout.EAST);
-        itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         itemDetailsPanel.add(iconLabel);
         itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         itemDetailsPanel.add(namePane);
         itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         itemDetailsPanel.add(pricePanel);
+        itemPanel.add(topContainer, BorderLayout.NORTH);
         itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
 
         return itemPanel;
