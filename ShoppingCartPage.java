@@ -446,6 +446,11 @@ public class ShoppingCartPage extends JPanel {
         int choice = JOptionPane.showConfirmDialog(this, infoMessage, "Order Details", JOptionPane.OK_CANCEL_OPTION);
 
         if (choice == JOptionPane.OK_OPTION) {
+            // Decrease stock for each selected item
+            for (MainContents.CartItem item : toRemove) {
+                mainContents.decreaseStock(item.getName(), item.getQuantity());
+            }
+
             currentBalance = remainingBalance;
             if (homePage != null) {
                 homePage.updateBalance(remainingBalance);

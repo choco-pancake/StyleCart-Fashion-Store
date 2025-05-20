@@ -421,13 +421,11 @@ public class Lee extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            // Set the spinner model with the stock as the maximum
             SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, stock, 1);
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
 
-            // Add input validation to the spinner
             JSpinner.NumberEditor editor = new JSpinner.NumberEditor(quantitySpinner, "#");
             quantitySpinner.setEditor(editor);
             JFormattedTextField textField = editor.getTextField();
@@ -439,7 +437,7 @@ public class Lee extends JPanel {
                         if (value < 1) {
                             quantitySpinner.setValue(1);
                         } else if (value > stock) {
-                            quantitySpinner.setValue(1);
+                            quantitySpinner.setValue(stock);
                         }
                     } catch (NumberFormatException ex) {
                         quantitySpinner.setValue(1);
@@ -455,15 +453,14 @@ public class Lee extends JPanel {
             int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             if (result == JOptionPane.OK_OPTION) {
-                // Validate and reset quantity if it exceeds stock
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
                 if (selectedQuantity > stock) {
-                    quantitySpinner.setValue(1); // Reset to 1 immediately
-                    selectedQuantity = 1; // Use the reset value
+                    quantitySpinner.setValue(stock);
+                    selectedQuantity = stock;
                 }
                 if (selectedQuantity < 1) {
-                    quantitySpinner.setValue(1); // Reset to 1 if invalid
-                    selectedQuantity = 1; // Use the reset value
+                    quantitySpinner.setValue(1);
+                    selectedQuantity = 1;
                 }
 
                 String selectedSize = (String) sizeBox.getSelectedItem();

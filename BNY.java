@@ -105,11 +105,11 @@ public class BNY extends JPanel {
 
     public void decreaseStock(String itemName, int quantity) {
         int current = currentStock.getOrDefault(itemName, 0);
-        int newStock = current - quantity;
+        int newStock = Math.max(0, current - quantity);
         currentStock.put(itemName, newStock);
         JLabel stockLabel = stockLabels.get(itemName);
         if (stockLabel != null) {
-            stockLabel.setText("Stocks: " + newStock);
+            stockLabel.setText(newStock > 0 ? "Stocks: " + newStock : "Out of Stock");
         }
     }
 

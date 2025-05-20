@@ -39,19 +39,19 @@ public class MainContents extends JPanel {
     private Penshoppe penshoppePanel;
 
     private String[] items = {
-        "TATA Fashion New Long Sleeve Plain Varsity Jacket", "Wide Leg Pants Fashion High Waist Solid Button", "Flower Style Valentine's Day Casual Polo Dating Shirt", "Small Leather Jacket", "Plain Hoodie Jacket with Zipper"
+        "Small Leather Jacket", "Sleeveless Top White", "Pokemon Men's Pullover", "Overlap Skort for Women", "Relaxed Fit Long Sleeves Striped Shirt"
     };
 
-    private int[] itemsStock = {21364, 45600, 5760, 2, 91};
-    private String[] itemsPrice = {"₱323", "₱458", "₱259", "₱398", "₱145"};
-    private String[] itemsTag = {"Trendy", "High quality", "Versatile", "High quality", "High quality"};
+    private int[] itemsStock = {2, 800, 1050, 1900, 1400};
+    private String[] itemsPrice = {"₱398", "₱160", "₱448", "₱849", "₱699"};
+    private String[] itemsTag = {"High quality", "High quality", "Versatile", "High quality", "Versatile"};
 
     private String[] itemsIcon = {
-        "images/bnymen22outerwear.png", "images/bnywomen30bottoms.png", "images/bnymen8tops.png", "images/bnywomen5outerwear.png", "images/bnymen1outerwear.png"
+        "images/bnywomen5outerwear.png", "images/benchwomen5tops.png", "images/benchmen29outerwear.png", "images/memowomen10bottoms.png", "images/penshoppemen21tops.png"
     };
 
     private int[][] brandSizes = {
-        {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100}
+        {100, 100}, {90, 100}, {100, 100}, {100, 100}, {90, 100}
     };
 
     public static List<CartItem> getCartItems() {
@@ -106,28 +106,73 @@ public class MainContents extends JPanel {
         }
 
         if (isFeaturedItem) {
-            itemsStock[index] = Math.max(0, itemsStock[index] - quantity);
+            if (itemName.equals("Sleeveless Top White")) {
+                if (bnyPanel != null) {
+                    bnyPanel.decreaseStock(itemName, quantity);
+                }
+                if (benchPanel != null) {
+                    benchPanel.decreaseStock(itemName, quantity);
+                    itemsStock[index] = benchPanel.getStock(itemName);
+                } else if (bnyPanel != null) {
+                    itemsStock[index] = bnyPanel.getStock(itemName);
+                } else {
+                    itemsStock[index] = Math.max(0, itemsStock[index] - quantity);
+                }
+            } else if (itemName.equals("Pokemon Men's Pullover")) {
+                if (benchPanel != null) {
+                    benchPanel.decreaseStock(itemName, quantity);
+                    itemsStock[index] = benchPanel.getStock(itemName);
+                } else {
+                    itemsStock[index] = Math.max(0, itemsStock[index] - quantity);
+                }
+            } else if (itemName.equals("Overlap Skort for Women")) {
+                if (memoPanel != null) {
+                    memoPanel.decreaseStock(itemName, quantity);
+                    itemsStock[index] = memoPanel.getStock(itemName);
+                } else {
+                    itemsStock[index] = Math.max(0, itemsStock[index] - quantity);
+                }
+            } else if (itemName.equals("Relaxed Fit Long Sleeves Striped Shirt")) {
+                if (penshoppePanel != null) {
+                    penshoppePanel.decreaseStock(itemName, quantity);
+                    itemsStock[index] = penshoppePanel.getStock(itemName);
+                } else {
+                    itemsStock[index] = Math.max(0, itemsStock[index] - quantity);
+                }
+            } else if (bnyPanel != null && bnyPanel.getStock(itemName) >= 0) {
+                bnyPanel.decreaseStock(itemName, quantity);
+                itemsStock[index] = bnyPanel.getStock(itemName);
+            } else {
+                itemsStock[index] = Math.max(0, itemsStock[index] - quantity);
+            }
+
             if (stockLabels[index] != null) {
-                stockLabels[index].setText("Stocks: " + itemsStock[index]);
+                stockLabels[index].setText(itemsStock[index] > 0 ? "Stocks: " + itemsStock[index] : "Out of Stock");
             }
             if (quantitySpinners[index] != null) {
                 SpinnerNumberModel model = (SpinnerNumberModel) quantitySpinners[index].getModel();
-                model.setMaximum(itemsStock[index]);
-            }
-            if (bnyPanel != null && bnyPanel.getStock(itemName) > 0) {
-                bnyPanel.decreaseStock(itemName, quantity);
+                model.setMaximum(itemsStock[index] > 0 ? itemsStock[index] : 1);
             }
         } else {
-            if (bnyPanel != null && bnyPanel.getStock(itemName) > 0) {
-                bnyPanel.decreaseStock(itemName, quantity);
-            } else if (benchPanel != null && benchPanel.getStock(itemName) > 0) {
-                benchPanel.decreaseStock(itemName, quantity);
-            } else if (leePanel != null && leePanel.getStock(itemName) > 0) {
+            // For non-featured items, update the relevant panel
+            if (itemName.equals("Oversized T-Shirt (Shitake)") && leePanel != null) {
                 leePanel.decreaseStock(itemName, quantity);
-            } else if (memoPanel != null && memoPanel.getStock(itemName) > 0) {
-                memoPanel.decreaseStock(itemName, quantity);
-            } else if (penshoppePanel != null && penshoppePanel.getStock(itemName) > 0) {
-                penshoppePanel.decreaseStock(itemName, quantity);
+            } else {
+                if (bnyPanel != null && bnyPanel.getStock(itemName) >= 0) {
+                    bnyPanel.decreaseStock(itemName, quantity);
+                }
+                if (benchPanel != null && benchPanel.getStock(itemName) >= 0) {
+                    benchPanel.decreaseStock(itemName, quantity);
+                }
+                if (leePanel != null && leePanel.getStock(itemName) >= 0) {
+                    leePanel.decreaseStock(itemName, quantity);
+                }
+                if (memoPanel != null && memoPanel.getStock(itemName) >= 0) {
+                    memoPanel.decreaseStock(itemName, quantity);
+                }
+                if (penshoppePanel != null && penshoppePanel.getStock(itemName) >= 0) {
+                    penshoppePanel.decreaseStock(itemName, quantity);
+                }
             }
         }
     }
@@ -135,8 +180,18 @@ public class MainContents extends JPanel {
     public int getStock(String itemName) {
         for (int i = 0; i < items.length; i++) {
             if (items[i].equals(itemName)) {
-                int bnyStock = (bnyPanel != null) ? bnyPanel.getStock(itemName) : itemsStock[i];
-                return Math.min(itemsStock[i], bnyStock);
+                if (itemName.equals("Sleeveless Top White")) {
+                    // Use Bench as the authoritative stock for Sleeveless Top White
+                    if (benchPanel != null) {
+                        return benchPanel.getStock(itemName);
+                    } else if (bnyPanel != null) {
+                        return bnyPanel.getStock(itemName);
+                    }
+                    return itemsStock[i];
+                } else if (bnyPanel != null && bnyPanel.getStock(itemName) >= 0) {
+                    return bnyPanel.getStock(itemName);
+                }
+                return itemsStock[i];
             }
         }
 
@@ -474,8 +529,16 @@ public class MainContents extends JPanel {
             System.err.println("Error loading item icon " + icon + ": " + e.getMessage());
             itemIcon = new ImageIcon();
         }
-        Image scaledImage = itemIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
+
+        int width = brandSize[0];
+        int height = brandSize[1];
+
+        Image image = itemIcon.getImage();
+        if (image != null) {
+            image = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        }
+
+        JLabel iconLabel = new JLabel(new ImageIcon(image));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JTextPane namePane = new JTextPane();
@@ -538,7 +601,7 @@ public class MainContents extends JPanel {
             headerPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.WEST);
         }
 
-        stockLabels[index] = new JLabel("Stocks: " + stock);
+        stockLabels[index] = new JLabel(stock > 0 ? "Stocks: " + stock : "Out of Stock");
         stockLabels[index].setFont(itemFont.deriveFont(13f));
         stockLabels[index].setForeground(black);
         stockLabels[index].setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
@@ -575,44 +638,77 @@ public class MainContents extends JPanel {
             }
 
             String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
-            JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-            detailsPanel.setPreferredSize(new Dimension(400, 150));
-            detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-            detailsPanel.setFocusable(false);
+            boolean validInput = false;
 
-            JLabel sizeLabel = new JLabel("Select Size:");
-            sizeLabel.setFont(itemFont);
-            sizeLabel.setFocusable(false);
+            while (!validInput) {
+                JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+                detailsPanel.setPreferredSize(new Dimension(400, 150));
+                detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+                detailsPanel.setFocusable(false);
 
-            JComboBox<String> sizeBox = new JComboBox<>(sizes);
-            sizeBox.setFont(dropdownFont);
-            sizeBox.setFocusable(false);
+                JLabel sizeLabel = new JLabel("Select Size:");
+                sizeLabel.setFont(itemFont);
+                sizeLabel.setFocusable(false);
 
-            JLabel quantityLabel = new JLabel("Quantity:");
-            quantityLabel.setFont(itemFont);
-            quantityLabel.setFocusable(false);
+                JComboBox<String> sizeBox = new JComboBox<>(sizes);
+                sizeBox.setFont(dropdownFont);
+                sizeBox.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, itemsStock[index], 1);
-            quantitySpinners[index].setModel(spinnerModel);
-            quantitySpinners[index].setFont(dropdownFont);
-            quantitySpinners[index].setFocusable(false);
+                JLabel quantityLabel = new JLabel("Quantity:");
+                quantityLabel.setFont(itemFont);
+                quantityLabel.setFocusable(false);
 
-            detailsPanel.add(sizeLabel);
-            detailsPanel.add(sizeBox);
-            detailsPanel.add(quantityLabel);
-            detailsPanel.add(quantitySpinners[index]);
+                // Use a large maximum to allow manual entry of any number
+                SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
+                quantitySpinners[index].setModel(spinnerModel);
+                quantitySpinners[index].setFont(dropdownFont);
+                quantitySpinners[index].setFocusable(true);
 
-            int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                // Allow manual text input by setting a custom editor
+                JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) quantitySpinners[index].getEditor();
+                editor.getTextField().setEditable(true);
 
-            if (result == JOptionPane.OK_OPTION) {
-                String selectedSize = (String) sizeBox.getSelectedItem();
-                int selectedQuantity = (Integer) quantitySpinners[index].getValue();
-                if (selectedQuantity > itemsStock[index]) {
-                    JOptionPane.showMessageDialog(null, "Requested quantity exceeds available stock for " + item, "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
-                    return;
+                detailsPanel.add(sizeLabel);
+                detailsPanel.add(sizeBox);
+                detailsPanel.add(quantityLabel);
+                detailsPanel.add(quantitySpinners[index]);
+
+                int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    String selectedSize = (String) sizeBox.getSelectedItem();
+                    // Get the text from the spinner's editor to handle manual input
+                    String quantityText = ((JSpinner.DefaultEditor) quantitySpinners[index].getEditor()).getTextField().getText().trim();
+                    int selectedQuantity;
+
+                    try {
+                        selectedQuantity = Integer.parseInt(quantityText);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null,
+                            "Requested quantity exceeds available stock. Please enter a valid stock number.",
+                            "Invalid Input",
+                            JOptionPane.ERROR_MESSAGE);
+                        continue;
+                    }
+
+                    if (selectedQuantity > itemsStock[index]) {
+                        JOptionPane.showMessageDialog(null,
+                            "Requested quantity exceeds available stock. Please enter a valid stock number.",
+                            "Invalid Quantity",
+                            JOptionPane.ERROR_MESSAGE);
+                    } else if (selectedQuantity <= 0) {
+                        JOptionPane.showMessageDialog(null,
+                            "Quantity must be at least 1.",
+                            "Invalid Quantity",
+                            JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        cartItems.add(new CartItem(item, price, selectedSize, icon, selectedQuantity, brandSize[0], brandSize[1]));
+                        JOptionPane.showMessageDialog(null, item + " added to cart!\nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+                        validInput = true;
+                    }
+                } else {
+                    validInput = true; // Exit loop if user cancels
                 }
-                cartItems.add(new CartItem(item, price, selectedSize, icon, selectedQuantity, brandSize[0], brandSize[1]));
-                JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });
 
