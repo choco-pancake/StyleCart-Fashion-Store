@@ -42,7 +42,7 @@ public class MainContents extends JPanel {
         "Small Leather Jacket", "Sleeveless Top White", "Pokemon Men's Pullover", "Overlap Skort for Women", "Relaxed Fit Long Sleeves Striped Shirt"
     };
 
-    private int[] itemsStock = {2, 800, 1050, 1900, 1400};
+    private int[] itemsStock = {2, 800, 999, 900, 400};
     private String[] itemsPrice = {"₱398", "₱160", "₱448", "₱849", "₱699"};
     private String[] itemsTag = {"High quality", "High quality", "Versatile", "High quality", "Versatile"};
 
@@ -181,7 +181,6 @@ public class MainContents extends JPanel {
         for (int i = 0; i < items.length; i++) {
             if (items[i].equals(itemName)) {
                 if (itemName.equals("Sleeveless Top White")) {
-                    // Use Bench as the authoritative stock for Sleeveless Top White
                     if (benchPanel != null) {
                         return benchPanel.getStock(itemName);
                     } else if (bnyPanel != null) {
@@ -631,86 +630,119 @@ public class MainContents extends JPanel {
         addButton.putClientProperty("iconPath", icon);
 
         quantitySpinners[index] = new JSpinner();
+        
         addButton.addActionListener(e -> {
-            if (itemsStock[index] <= 0) {
-                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+    if (itemsStock[index] <= 0) {
+        JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
-            boolean validInput = false;
+    // Calculate total quantity of this item already in the cart
+    int cartQuantity = 0;
+    for (CartItem cartItem : cartItems) {
+        if (cartItem.getName().equals(item)) {
+            cartQuantity += cartItem.getQuantity();
+        }
+    }
 
-            while (!validInput) {
-                JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-                detailsPanel.setPreferredSize(new Dimension(400, 150));
-                detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-                detailsPanel.setFocusable(false);
+    // Check if cart already has maximum stock for specific items
+    if ((item.equals("Small Leather Jacket") || item.equals("Sleeveless Top White") || 
+         item.equals("Pokemon Men's Pullover") || item.equals("Overlap Skort for Women") || 
+         item.equals("Relaxed Fit Long Sleeves Striped Polo")) && 
+        cartQuantity >= itemsStock[index]) {
+        JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-                JLabel sizeLabel = new JLabel("Select Size:");
-                sizeLabel.setFont(itemFont);
-                sizeLabel.setFocusable(false);
+    String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
+    boolean validInput = false;
 
-                JComboBox<String> sizeBox = new JComboBox<>(sizes);
-                sizeBox.setFont(dropdownFont);
-                sizeBox.setFocusable(false);
+    while (!validInput) {
+        JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+        detailsPanel.setPreferredSize(new Dimension(400, 150));
+        detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        detailsPanel.setFocusable(false);
 
-                JLabel quantityLabel = new JLabel("Quantity:");
-                quantityLabel.setFont(itemFont);
-                quantityLabel.setFocusable(false);
+        JLabel sizeLabel = new JLabel("Select Size:");
+        sizeLabel.setFont(itemFont);
+        sizeLabel.setFocusable(false);
 
-                // Use a large maximum to allow manual entry of any number
-                SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
-                quantitySpinners[index].setModel(spinnerModel);
-                quantitySpinners[index].setFont(dropdownFont);
-                quantitySpinners[index].setFocusable(true);
+        JComboBox<String> sizeBox = new JComboBox<>(sizes);
+        sizeBox.setFont(dropdownFont);
+        sizeBox.setFocusable(false);
 
-                // Allow manual text input by setting a custom editor
-                JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) quantitySpinners[index].getEditor();
-                editor.getTextField().setEditable(true);
+        JLabel quantityLabel = new JLabel("Quantity:");
+        quantityLabel.setFont(itemFont);
+        quantityLabel.setFocusable(false);
 
-                detailsPanel.add(sizeLabel);
-                detailsPanel.add(sizeBox);
-                detailsPanel.add(quantityLabel);
-                detailsPanel.add(quantitySpinners[index]);
+        // Set maximum based on item type
+        int maxQuantity = itemsStock[index];
+        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, maxQuantity, 1);
+        quantitySpinners[index].setModel(spinnerModel);
+        quantitySpinners[index].setFont(dropdownFont);
+        quantitySpinners[index].setFocusable(true);
 
-                int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        // Allow manual text input by setting a custom editor
+        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) quantitySpinners[index].getEditor();
+        editor.getTextField().setEditable(true);
 
-                if (result == JOptionPane.OK_OPTION) {
-                    String selectedSize = (String) sizeBox.getSelectedItem();
-                    // Get the text from the spinner's editor to handle manual input
-                    String quantityText = ((JSpinner.DefaultEditor) quantitySpinners[index].getEditor()).getTextField().getText().trim();
-                    int selectedQuantity;
+        detailsPanel.add(sizeLabel);
+        detailsPanel.add(sizeBox);
+        detailsPanel.add(quantityLabel);
+        detailsPanel.add(quantitySpinners[index]);
 
-                    try {
-                        selectedQuantity = Integer.parseInt(quantityText);
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(null,
-                            "Requested quantity exceeds available stock. Please enter a valid stock number.",
-                            "Invalid Input",
-                            JOptionPane.ERROR_MESSAGE);
-                        continue;
-                    }
+        int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-                    if (selectedQuantity > itemsStock[index]) {
-                        JOptionPane.showMessageDialog(null,
-                            "Requested quantity exceeds available stock. Please enter a valid stock number.",
-                            "Invalid Quantity",
-                            JOptionPane.ERROR_MESSAGE);
-                    } else if (selectedQuantity <= 0) {
-                        JOptionPane.showMessageDialog(null,
-                            "Quantity must be at least 1.",
-                            "Invalid Quantity",
-                            JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        cartItems.add(new CartItem(item, price, selectedSize, icon, selectedQuantity, brandSize[0], brandSize[1]));
-                        JOptionPane.showMessageDialog(null, item + " added to cart!\nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
-                        validInput = true;
-                    }
-                } else {
-                    validInput = true; // Exit loop if user cancels
-                }
-            }
-        });
+        if (result == JOptionPane.OK_OPTION) {
+    String selectedSize = (String) sizeBox.getSelectedItem();
+    // Get the text from the spinner's editor to handle manual input
+    String quantityText = ((JSpinner.DefaultEditor) quantitySpinners[index].getEditor()).getTextField().getText().trim();
+    int selectedQuantity;
+
+    try {
+        selectedQuantity = Integer.parseInt(quantityText);
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(null,
+            "Please enter a valid number for quantity.",
+            "Invalid Input",
+            JOptionPane.ERROR_MESSAGE);
+        continue;
+    }
+
+    // Special handling for Relaxed Fit Long Sleeves Striped Polo
+    /*if (item.equals("Relaxed Fit Long Sleeves Striped Polo") && cartQuantity > 400) {
+    JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
+    return;
+} 
+else */if ((item.equals("Small Leather Jacket") || item.equals("Sleeveless Top White") || 
+         item.equals("Pokemon Men's Pullover") || item.equals("Overlap Skort for Women") ||
+         item.equals("Relaxed Fit Long Sleeves Striped Shirt")) && 
+        cartQuantity >= itemsStock[index]) {
+    JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+    else if (selectedQuantity > itemsStock[index]) {
+        JOptionPane.showMessageDialog(null,
+            "Requested quantity exceeds available stock. Please enter a valid stock number.",
+            "Invalid Quantity",
+            JOptionPane.ERROR_MESSAGE);
+    } 
+    else if (selectedQuantity <= 0) {
+        JOptionPane.showMessageDialog(null,
+            "Quantity must be at least 1.",
+            "Invalid Quantity",
+            JOptionPane.ERROR_MESSAGE);
+    } 
+    else {
+        cartItems.add(new CartItem(item, price, selectedSize, icon, selectedQuantity, brandSize[0], brandSize[1]));
+        JOptionPane.showMessageDialog(null, item + " added to cart!\nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+        validInput = true;
+    }
+} else {
+    validInput = true; // Exit loop if user cancels
+}
+    }
+});
 
         addButton.addMouseListener(new MouseAdapter() {
             @Override
