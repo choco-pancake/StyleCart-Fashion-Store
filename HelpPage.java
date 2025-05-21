@@ -219,9 +219,9 @@ public class HelpPage extends JPanel {
         step6_2.setFont(customFont.deriveFont(Font.ITALIC, 12f));
         step7 = new JLabel("7. Click 'Generate Receipt' to view your proof of purchase, which will be presented upon delivery.");
         step7.setFont(customFont.deriveFont(15f));
-        step8 = new JLabel("8. Track your order to check when it will arrive and qwhen it has arrived.");
+        step8 = new JLabel("<html>8. Track your order to check when it will arrive and when it has arrived. <i>(Optional)</i></html>");
         step8.setFont(customFont.deriveFont(15f));
-        step9 = new JLabel("<html>8the ordered product and add a review. <i>(Optional)</i></html>");
+        step9 = new JLabel("<html>9. The ordered product and add a review. <i>(Optional)</i></html>");
         step9.setFont(customFont.deriveFont(15f));
         
         guidePanel.add(step1);
@@ -280,7 +280,7 @@ public class HelpPage extends JPanel {
         teamPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
         squadLabel = new JLabel("Syntax Squad");
-        squadLabel.setFont(customFont.deriveFont(20f));
+        squadLabel.setFont(customFont.deriveFont(Font.BOLD, 25f));
         squadLabel.setForeground(darkBlue);
         squadLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         squadLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
@@ -393,6 +393,7 @@ public class HelpPage extends JPanel {
                     noerlyPanel.add(ghPanel1);
         
                     JOptionPane.showMessageDialog(null, noerlyPanel, "Profile", JOptionPane.PLAIN_MESSAGE);
+
                 } else if (teamName.equals("Rhyna")) {
                     JPanel rhynaPanel = new JPanel();
                     rhynaPanel.setLayout(new BoxLayout(rhynaPanel, BoxLayout.Y_AXIS));
@@ -441,6 +442,7 @@ public class HelpPage extends JPanel {
                     rhynaPanel.add(ghPanel1);
         
                     JOptionPane.showMessageDialog(null, rhynaPanel, "Profile", JOptionPane.PLAIN_MESSAGE);
+
                } else if (teamName.equals("Eunice")) {
                     JPanel eunicePanel = new JPanel();
                     eunicePanel.setLayout(new BoxLayout(eunicePanel, BoxLayout.Y_AXIS));
@@ -489,6 +491,7 @@ public class HelpPage extends JPanel {
                     eunicePanel.add(ghPanel1);
     
                     JOptionPane.showMessageDialog(null, eunicePanel, "Profile", JOptionPane.PLAIN_MESSAGE);
+
                 } else if (teamName.equals("Marisol")) {
                     JPanel marisolPanel = new JPanel();
                     marisolPanel.setLayout(new BoxLayout(marisolPanel, BoxLayout.Y_AXIS));
@@ -537,6 +540,7 @@ public class HelpPage extends JPanel {
                     marisolPanel.add(ghPanel1);
     
                     JOptionPane.showMessageDialog(null, marisolPanel, "Profile", JOptionPane.PLAIN_MESSAGE);
+
                 } else if (teamName.equals("Janila")) {
                     JPanel janilaPanel = new JPanel();
                     janilaPanel.setLayout(new BoxLayout(janilaPanel, BoxLayout.Y_AXIS));

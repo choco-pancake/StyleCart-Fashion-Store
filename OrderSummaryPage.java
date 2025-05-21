@@ -12,25 +12,24 @@ import java.util.List;
 public class OrderSummaryPage extends JPanel {
     private Font customFont;
     private JPanel orderPanel, titlePanel, buttonPanel, trackPanel, backPanel;
-    private JLabel titleLabel, emptyLabel, trackLabel;
+    private JLabel titleLabel, emptyLabel, trackLabel, placeLabel, placeSublabel, sortLabel, sortSublabel, courierLabel, courierSublabel, collectLabel, collectSublabel, shipLabel,
+                   shipSublabel, deliverLabel, deliverSublabel, receiveLabel, receiveSublabel;
     private DefaultTableCellRenderer headerRenderer, leftRenderer;
     private JScrollPane scrollPane;
     private JButton receiptButton, trackButton, backButton;
     private LocalDateTime orderPlacedTime;
-    private boolean receiptGenerated = false;
-    private List<MainContents.CartItem> orderedItems = new ArrayList<>();
-
-    private final int circleSize = 20;
     private TrackingAreaPanel trackingAreaPanel;
     private TrackingPanel placePanel, sortPanel, courierPanel, collectPanel, shipPanel, deliverPanel, receivePanel;
-    private JLabel placeLabel, placeSublabel, sortLabel, sortSublabel, courierLabel, courierSublabel, collectLabel, collectSublabel, shipLabel,
-                   shipSublabel, deliverLabel, deliverSublabel, receiveLabel, receiveSublabel;
     private Timer timer;
+
     private boolean isAnimationPaused = false;
     private boolean isTrackingInitialized = false;
     private boolean isTrackingComplete = false;
     private long animationStartTime, pausedTime;
     private long[] panelTriggerTimes = new long[7];
+    private final int circleSize = 20;
+    private boolean receiptGenerated = false;
+    private List<MainContents.CartItem> orderedItems = new ArrayList<>();
 
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
@@ -43,61 +42,6 @@ public class OrderSummaryPage extends JPanel {
     private Color green = Color.GREEN;
     private Color red = Color.RED;
     private Color darkerGray = Color.GRAY;
-
-    private class TrackingPanel extends JPanel {
-        private boolean showCircle = false;
-        private boolean timerStarted = false;
-        private Color circleColor = green;
-
-        public TrackingPanel() {
-            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            setOpaque(false);
-            setBorder(BorderFactory.createEmptyBorder(20, 40, 0, 0));
-            setAlignmentX(Component.CENTER_ALIGNMENT);
-        }
-
-        public void setShowCircle(boolean show) {
-            this.showCircle = show;
-            repaint();
-        }
-
-        public void setCircleColor(Color color) {
-            this.circleColor = color;
-            repaint();
-        }
-
-        public boolean isTimerStarted() {
-            return timerStarted;
-        }
-
-        public void setTimerStarted(boolean started) {
-            this.timerStarted = started;
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if (showCircle) {
-                g.setColor(circleColor);
-                int circleYPos = (getHeight() - circleSize) / 2;
-                g.fillOval(10, circleYPos, circleSize, circleSize);
-            }
-        }
-    }
-
-    private class TrackingAreaPanel extends JPanel {
-        public TrackingAreaPanel() {
-            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            setBackground(lightGray);
-            setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-            setAlignmentX(Component.CENTER_ALIGNMENT);
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-        }
-    }
 
     public OrderSummaryPage(CardLayout cardLayout, JPanel contentPanel) {
         setLayout(new BorderLayout());
@@ -237,6 +181,61 @@ public class OrderSummaryPage extends JPanel {
         displayOrderSummary(null, columnNames, customFont);
     }
 
+    private class TrackingPanel extends JPanel {
+        private boolean showCircle = false;
+        private boolean timerStarted = false;
+        private Color circleColor = green;
+
+        public TrackingPanel() {
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setOpaque(false);
+            setBorder(BorderFactory.createEmptyBorder(20, 40, 0, 0));
+            setAlignmentX(Component.CENTER_ALIGNMENT);
+        }
+
+        public void setShowCircle(boolean show) {
+            this.showCircle = show;
+            repaint();
+        }
+
+        public void setCircleColor(Color color) {
+            this.circleColor = color;
+            repaint();
+        }
+
+        public boolean isTimerStarted() {
+            return timerStarted;
+        }
+
+        public void setTimerStarted(boolean started) {
+            this.timerStarted = started;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (showCircle) {
+                g.setColor(circleColor);
+                int circleYPos = (getHeight() - circleSize) / 2;
+                g.fillOval(10, circleYPos, circleSize, circleSize);
+            }
+        }
+    }
+
+    private class TrackingAreaPanel extends JPanel {
+        public TrackingAreaPanel() {
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setBackground(lightGray);
+            setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            setAlignmentX(Component.CENTER_ALIGNMENT);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+        }
+    }
+
     public boolean isReceiptGenerated() {
         return receiptGenerated;
     }
@@ -247,8 +246,8 @@ public class OrderSummaryPage extends JPanel {
 
     public void setOrderedItems(List<MainContents.CartItem> items) {
         this.orderedItems = new ArrayList<>(items);
-        this.receiptGenerated = false; // Reset receipt status for new order
-        this.isTrackingComplete = false; // Reset tracking status for new order
+        this.receiptGenerated = false;
+        this.isTrackingComplete = false;
     }
 
     public void displayOrderSummary(Object[][] tableData, String[] columnNames, Font tableFont) {
@@ -558,6 +557,7 @@ public class OrderSummaryPage extends JPanel {
                 }
             }
         });
+        
         timer.start();
 
         isTrackingInitialized = true;

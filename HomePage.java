@@ -13,6 +13,7 @@ public class HomePage extends JFrame {
     private BufferedImage logo;
     private Font customFont, customFont2;
     private JPanel sidePanel, logoPanel, menuItemPanel, contentPanel, moneyPanel;
+    private ImageIcon logoIcon;
     private JLabel logoLabel, logoLabel2, logoImageLabel, numberLabel, moneyLabel;
     private CardLayout cardLayout;
     private Map<String, JPanel> menuItemMap = new HashMap<>();
@@ -59,7 +60,7 @@ public class HomePage extends JFrame {
         sidePanel.setBackground(brown);
         sidePanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        ImageIcon logoIcon = getScaledIcon("images/logo.jpg", 55, 55);
+        logoIcon = getScaledIcon("images/logo.jpg", 55, 55);
 
         logoPanel = new JPanel();
         logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
