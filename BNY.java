@@ -383,7 +383,7 @@ public class BNY extends JPanel {
 
     JButton addButton = new JButton("🛒");
     addButton.setForeground(black);
-    addButton.setBackground(stock <= 0 ? darkGray : lightGray); // Disable visually if out of stock
+    addButton.setBackground(stock <= 0 ? darkGray : lightGray);
     addButton.setOpaque(true);
     addButton.setBorderPainted(false);
     addButton.setFont(new Font("SansSerif", Font.PLAIN, 15));
@@ -396,7 +396,7 @@ public class BNY extends JPanel {
 
     addButton.addActionListener(e -> {
         if (stock <= 0) {
-            JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -428,7 +428,7 @@ public class BNY extends JPanel {
         detailsPanel.add(quantityLabel);
         detailsPanel.add(quantitySpinner);
 
-        int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(this, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
             String selectedSize = (String) sizeBox.getSelectedItem();
@@ -445,7 +445,7 @@ public class BNY extends JPanel {
             }
             MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
             MainContents.getCartItems().add(newItem);
-            JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+            JOptionPane.showMessageDialog(this, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
         }
     });
 

@@ -190,7 +190,7 @@ public class ShoppingCartPage extends JPanel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                addButton.setBackground(mediumBlue);
+                placeButton.setBackground(mediumBlue);
             }
         });
 
@@ -446,7 +446,6 @@ public class ShoppingCartPage extends JPanel {
         int choice = JOptionPane.showConfirmDialog(this, infoMessage, "Order Details", JOptionPane.OK_CANCEL_OPTION);
 
         if (choice == JOptionPane.OK_OPTION) {
-            // Decrease stock for each selected item only when order is placed
             for (MainContents.CartItem item : toRemove) {
                 mainContents.decreaseStock(item.getName(), item.getQuantity());
             }

@@ -80,19 +80,20 @@ public class Penshoppe extends JPanel {
             "Patch Pocket Denim Skirt", "Plaid Skort for Women", "Tiered Midi Skirt", "Denim Skort (Beige)", "Waffle Knit Skort",
             "Cropped Wide Leg Trousers", "Dress Code Wide Leg Pleated Trousers", "Wide Leg Cargo Pants (Black)", "Wide Leg Cargo Denim Jeans", "Wide Leg Cargo Pants (Pink)"
         };
+
         int[] stocks = {
-            100, 2400, 3600, 1800, 750,
-            9200, 11000, 650, 120, 110,
-            720, 27000, 19300, 22100, 8700,
-            3100, 980, 5600, 450, 3900,
-            8100, 400, 13000, 2600, 5200,
-            5800, 7700, 1800, 3400, 4200,
-            9600, 2300, 800, 1000, 2700,
-            950, 2900, 4300, 6100, 1700,
-            2100, 1300, 4800, 2800, 3700,
-            5, 3, 7400, 8500, 8800,
-            1100, 1900, 1600, 2900, 4100,
-            5100, 6200, 7100, 7900, 46000
+            135, 9870, 4231, 1122, 598,
+            7044, 8123, 299, 843, 511,
+            665, 3844, 1455, 9988, 1234,
+            3321, 876, 4321, 675, 2450,
+            8101, 400, 7410, 1190, 5050,
+            3821, 2099, 1101, 3644, 1789,
+            6600, 2944, 399, 5888, 2055,
+            3199, 8421, 1999, 6170, 1400,
+            1288, 1733, 5300, 2677, 3901,
+            19, 88, 1120, 9250, 8733,
+            1310, 2100, 1645, 3820, 4211,
+            5511, 6888, 7907, 8432, 32888
         };
 
         for (int i = 0; i < items.length; i++) {
@@ -392,7 +393,7 @@ public class Penshoppe extends JPanel {
 
         JButton addButton = new JButton("🛒");
         addButton.setForeground(black);
-        addButton.setBackground(lightGray);
+        addButton.setBackground(stock <= 0 ? darkGray : lightGray); // Disable visually if out of stock
         addButton.setOpaque(true);
         addButton.setBorderPainted(false);
         addButton.setFont(new Font("SansSerif", Font.PLAIN, 15));
@@ -405,7 +406,7 @@ public class Penshoppe extends JPanel {
 
         addButton.addActionListener(e -> {
             if (currentStock.get(item) <= 0) {
-                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -443,46 +444,58 @@ public class Penshoppe extends JPanel {
             detailsPanel.add(quantityLabel);
             detailsPanel.add(quantitySpinner);
 
-            int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(this, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                if (selectedQuantity > currentStock.get(item)) {
-                    JOptionPane.showMessageDialog(null, "Requested quantity exceeds available stock for " + item, "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
+                int currentCartQuantity = 0;
+                for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
+                    if (cartItem.name.equals(item)) {
+                        currentCartQuantity += cartItem.getQuantity();
+                    }
+                }
+                if (currentCartQuantity + selectedQuantity > currentStock.get(item)) {
+                    JOptionPane.showMessageDialog(null, "Insufficient stock for cart addition.", "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
-                JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+                JOptionPane.showMessageDialog(this, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });
 
         addButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                addButton.setBackground(darkGray);
-                addButton.setOpaque(true);
-                addButton.setBorderPainted(false);
+                if (stock > 0) {
+                    addButton.setBackground(darkGray);
+                    addButton.setOpaque(true);
+                    addButton.setBorderPainted(false);
+                }
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                addButton.setBackground(darkGray.darker());
-                addButton.setOpaque(true);
-                addButton.setBorderPainted(false);
+                if (stock > 0) {
+                    addButton.setBackground(darkGray.darker());
+                    addButton.setOpaque(true);
+                    addButton.setBorderPainted(false);
+                }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                addButton.setBackground(darkGray);
-                addButton.setOpaque(true);
-                addButton.setBorderPainted(false);
+                if (stock > 0) {
+                    addButton.setBackground(darkGray);
+                    addButton.setOpaque(true);
+                    addButton.setBorderPainted(false);
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                addButton.setBackground(lightGray);
+                addButton.setBackground(stock <= 0 ? darkGray : lightGray);
                 addButton.setOpaque(true);
                 addButton.setBorderPainted(false);
             }

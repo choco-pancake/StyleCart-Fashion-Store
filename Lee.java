@@ -386,7 +386,7 @@ public class Lee extends JPanel {
 
         JButton addButton = new JButton("🛒");
         addButton.setForeground(black);
-        addButton.setBackground(lightGray);
+        addButton.setBackground(stock <= 0 ? darkGray : lightGray); // Disable visually if out of stock
         addButton.setOpaque(true);
         addButton.setBorderPainted(false);
         addButton.setFont(new Font("SansSerif", Font.PLAIN, 15));
@@ -399,7 +399,7 @@ public class Lee extends JPanel {
 
         addButton.addActionListener(e -> {
             if (stock <= 0) {
-                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -450,51 +450,58 @@ public class Lee extends JPanel {
             detailsPanel.add(quantityLabel);
             detailsPanel.add(quantitySpinner);
 
-            int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(this, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             if (result == JOptionPane.OK_OPTION) {
-                int selectedQuantity = (Integer) quantitySpinner.getValue();
-                if (selectedQuantity > stock) {
-                    quantitySpinner.setValue(stock);
-                    selectedQuantity = stock;
-                }
-                if (selectedQuantity < 1) {
-                    quantitySpinner.setValue(1);
-                    selectedQuantity = 1;
-                }
-
                 String selectedSize = (String) sizeBox.getSelectedItem();
+                int selectedQuantity = (Integer) quantitySpinner.getValue();
+                int currentCartQuantity = 0;
+                for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
+                    if (cartItem.name.equals(item)) {
+                        currentCartQuantity += cartItem.getQuantity();
+                    }
+                }
+                if (currentCartQuantity + selectedQuantity > stock) {
+                    JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
-                JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+                JOptionPane.showMessageDialog(this, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });
 
         addButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                addButton.setBackground(darkGray);
-                addButton.setOpaque(true);
-                addButton.setBorderPainted(false);
+                if (stock > 0) {
+                    addButton.setBackground(darkGray);
+                    addButton.setOpaque(true);
+                    addButton.setBorderPainted(false);
+                }
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                addButton.setBackground(darkGray.darker());
-                addButton.setOpaque(true);
-                addButton.setBorderPainted(false);
+                if (stock > 0) {
+                    addButton.setBackground(darkGray.darker());
+                    addButton.setOpaque(true);
+                    addButton.setBorderPainted(false);
+                }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                addButton.setBackground(darkGray);
-                addButton.setOpaque(true);
-                addButton.setBorderPainted(false);
+                if (stock > 0) {
+                    addButton.setBackground(darkGray);
+                    addButton.setOpaque(true);
+                    addButton.setBorderPainted(false);
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                addButton.setBackground(lightGray);
+                addButton.setBackground(stock <= 0 ? darkGray : lightGray);
                 addButton.setOpaque(true);
                 addButton.setBorderPainted(false);
             }

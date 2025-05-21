@@ -416,7 +416,7 @@ public class OrderSummaryPage extends JPanel {
             return;
         }
 
-        orderPanel.removeAll(); // Clear all components to remove table headers
+        orderPanel.removeAll();
 
         trackPanel = new JPanel();
         BorderLayout borderLayout = new BorderLayout(0, 0);
