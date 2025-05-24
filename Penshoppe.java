@@ -43,7 +43,6 @@ public class Penshoppe extends JPanel {
             titleFont = customFont.deriveFont(35f);
         }
 
-        // Initialize stock and stock labels
         currentStock = new HashMap<>();
         stockLabels = new HashMap<>();
         initializeStock();
@@ -72,7 +71,6 @@ public class Penshoppe extends JPanel {
             "Relaxed Fit Short Sleeves Resort Shirt with All-Over Embroidery", "Relaxed Fit Short Sleeves Resort Shirt with Embroidery", "Relaxed Fit Striped Polo", "Tie Dye Resort Shirt", "Easy Iron Short Sleeve Shirt",
             "Underground Relaxed Fit Graphic T-Shirt", "Relaxed Fit Long Sleeves Striped Shirt", "Relaxed Fit Pullover Sweatshirt", "Dress Code Striped Long Sleeves Shirt", "Modern Fit Nylon Sports Shorts",
             "Nylon Pull-On Cargo Shorts", "Relaxed Fit Brushed Terry Shorts", "Staple Twill Shorts for Men", "Dapper Fit Ankle Length Pull-On Trousers", "Slim Fit Staple Nylon Pants",
-
             "Cherry All-Over Printed Henley Regular Fit Top", "Jacquard Knit Regular Fit Polo", "If You Break It Slim Fit Graphic T-Shirt", "Regular Fit Waffle Knit Polo", "Vintage Summer Striped Relaxed Fit T-Shirt",
             "Relaxed Fit Stripes T-Shirt with Branding", "Ribbed Top", "Slim Fit Polo with Contrast Tipping", "Slim Fit Textured Top", "Unleash Your Speed Loose Fit Graphic T-Shirt",
             "Ribbed Knit Slim Fit Tank Top", "Short Sleeve Regular Fit Baby Doll Top", "Short Sleeves Top with Drawstring", "Sleeveless Stripes Peplum Top", "Relaxed Fit Stripes Pullover Sweater",
@@ -80,7 +78,6 @@ public class Penshoppe extends JPanel {
             "Patch Pocket Denim Skirt", "Plaid Skort for Women", "Tiered Midi Skirt", "Denim Skort (Beige)", "Waffle Knit Skort",
             "Cropped Wide Leg Trousers", "Dress Code Wide Leg Pleated Trousers", "Wide Leg Cargo Pants (Black)", "Wide Leg Cargo Denim Jeans", "Wide Leg Cargo Pants (Pink)"
         };
-
         int[] stocks = {
             135, 9870, 4231, 1122, 598,
             7044, 8123, 299, 843, 511,
@@ -245,7 +242,6 @@ public class Penshoppe extends JPanel {
             "Relaxed Fit Short Sleeves Resort Shirt with All-Over Embroidery", "Relaxed Fit Short Sleeves Resort Shirt with Embroidery", "Relaxed Fit Striped Polo", "Tie Dye Resort Shirt", "Easy Iron Short Sleeve Shirt",
             "Underground Relaxed Fit Graphic T-Shirt", "Relaxed Fit Long Sleeves Striped Shirt", "Relaxed Fit Pullover Sweatshirt", "Dress Code Striped Long Sleeves Shirt", "Modern Fit Nylon Sports Shorts",
             "Nylon Pull-On Cargo Shorts", "Relaxed Fit Brushed Terry Shorts", "Staple Twill Shorts for Men", "Dapper Fit Ankle Length Pull-On Trousers", "Slim Fit Staple Nylon Pants",
-
             "Cherry All-Over Printed Henley Regular Fit Top", "Jacquard Knit Regular Fit Polo", "If You Break It Slim Fit Graphic T-Shirt", "Regular Fit Waffle Knit Polo", "Vintage Summer Striped Relaxed Fit T-Shirt",
             "Relaxed Fit Stripes T-Shirt with Branding", "Ribbed Top", "Slim Fit Polo with Contrast Tipping", "Slim Fit Textured Top", "Unleash Your Speed Loose Fit Graphic T-Shirt",
             "Ribbed Knit Slim Fit Tank Top", "Short Sleeve Regular Fit Baby Doll Top", "Short Sleeves Top with Drawstring", "Sleeveless Stripes Peplum Top", "Relaxed Fit Stripes Pullover Sweater",
@@ -261,7 +257,6 @@ public class Penshoppe extends JPanel {
             "₱999", "₱899", "₱799", "₱299", "₱278",
             "₱464", "₱699", "₱799", "₱729", "₱505",
             "₱468", "₱231", "₱599", "₱398", "₱915",
-
             "₱599", "₱699", "₱185", "₱366", "₱398",
             "₱499", "₱399", "₱599", "₱349", "₱599",
             "₱349", "₱849", "₱899", "₱899", "₱589",
@@ -277,7 +272,6 @@ public class Penshoppe extends JPanel {
            "images/penshoppemen23tops.png", "images/penshoppemen24tops.png", "images/penshoppemen25tops.png", "images/penshoppemen26tops.png", "images/penshoppemen28tops.png",
            "images/penshoppemen29tops.png", "images/penshoppemen21tops.png", "images/penshoppemen22outerwear.png", "images/penshoppemen27tops.png", "images/penshoppemen11activewear.png",
            "images/penshoppemen13activewear.png", "images/penshoppemen15activewear.png", "images/penshoppemen30activewear.png", "images/penshoppemen8bottoms.png", "images/penshoppemen19bottoms.png",
-
            "images/penshoppewomen2tops.png", "images/penshoppewomen3tops.png", "images/penshoppewomen8tops.png", "images/penshoppewomen11tops.png", "images/penshoppewomen14tops.png",
            "images/penshoppewomen16tops.png", "images/penshoppewomen18tops.png", "images/penshoppewomen22tops.png", "images/penshoppewomen23tops.png", "images/penshoppewomen27tops.png",
            "images/penshoppewomen17tops.png", "images/penshoppewomen19tops.png", "images/penshoppewomen20tops.png", "images/penshoppewomen21tops.png", "images/penshoppewomen12outerwear.png",
@@ -293,7 +287,6 @@ public class Penshoppe extends JPanel {
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {80, 100}, {60, 100},
-
             {100, 100}, {100, 100}, {110, 100}, {120, 100}, {100, 100},
             {100, 100}, {110, 100}, {100, 100}, {110, 100}, {100, 100},
             {80, 100}, {80, 100}, {80, 100}, {80, 100}, {100, 100},
@@ -393,7 +386,7 @@ public class Penshoppe extends JPanel {
 
         JButton addButton = new JButton("🛒");
         addButton.setForeground(black);
-        addButton.setBackground(stock <= 0 ? darkGray : lightGray); // Disable visually if out of stock
+        addButton.setBackground(stock <= 0 ? darkGray : lightGray);
         addButton.setOpaque(true);
         addButton.setBorderPainted(false);
         addButton.setFont(new Font("SansSerif", Font.PLAIN, 15));
@@ -406,7 +399,7 @@ public class Penshoppe extends JPanel {
 
         addButton.addActionListener(e -> {
             if (currentStock.get(item) <= 0) {
-                JOptionPane.showMessageDialog(this, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -428,13 +421,7 @@ public class Penshoppe extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(
-                (int)1, 
-                (int)1, 
-                (int)currentStock.get(item), 
-                (int)1
-            );
-
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, stock, 1);
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
@@ -444,24 +431,24 @@ public class Penshoppe extends JPanel {
             detailsPanel.add(quantityLabel);
             detailsPanel.add(quantitySpinner);
 
-            int result = JOptionPane.showConfirmDialog(this, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
                 int currentCartQuantity = 0;
                 for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
-                    if (cartItem.name.equals(item)) {
+                    if (cartItem.getName().equals(item)) {
                         currentCartQuantity += cartItem.getQuantity();
                     }
                 }
                 if (currentCartQuantity + selectedQuantity > currentStock.get(item)) {
-                    JOptionPane.showMessageDialog(null, "Insufficient stock for cart addition.", "Invalid Quantity", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
-                JOptionPane.showMessageDialog(this, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+                JOptionPane.showMessageDialog(null, item + " added to cart!\nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });
 

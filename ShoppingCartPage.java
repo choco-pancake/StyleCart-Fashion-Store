@@ -14,15 +14,12 @@ public class ShoppingCartPage extends JPanel {
     private JPanel orderPanel, titlePanel, buttonPanel;
     private JButton addButton, removeButton, placeButton;
     private JTable cartTable;
-    DefaultTableCellRenderer headerRenderer, leftRenderer;
     private double currentBalance = 10000.00;
-
     private HomePage homePage;
     private MainContents mainContents;
     private Runnable onAddToCartRedirect;
     private OrderSummaryPage orderSummaryPage;
     private RatingsPage ratingsPage;
-
     private Color darkBlue = new Color(75, 75, 150);
     private Color lightBlue = new Color(173, 216, 230);
     private Color white = Color.WHITE;
@@ -188,12 +185,12 @@ public class ShoppingCartPage extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                placeButton.setBackground(darkBlue);
+                placeButton.setBackground(mediumBlue);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                placeButton.setBackground(mediumBlue);
+                addButton.setBackground(mediumBlue);
             }
         });
 
@@ -263,13 +260,13 @@ public class ShoppingCartPage extends JPanel {
             cartTable.setFont(customFont.deriveFont(15f));
             cartTable.getTableHeader().setFont(customFont.deriveFont(20f));
 
-            headerRenderer = (DefaultTableCellRenderer) cartTable.getTableHeader().getDefaultRenderer();
+            DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) cartTable.getTableHeader().getDefaultRenderer();
             headerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
             cartTable.setBackground(lightGray);
             cartTable.setOpaque(true);
 
-            leftRenderer = new DefaultTableCellRenderer();
+            DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
             leftRenderer.setHorizontalAlignment(JLabel.LEFT);
             cartTable.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
             cartTable.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);

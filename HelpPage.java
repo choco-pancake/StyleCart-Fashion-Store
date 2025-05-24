@@ -101,7 +101,7 @@ public class HelpPage extends JPanel {
         q1question = new JLabel("1. Are there only 6 clothing categories available?");
         q1question.setFont(customFont.deriveFont(Font.BOLD, 15f));
         
-        q1answer = new JLabel("<html>Yes, there are only 5 clothing categories available in our application. However, a specific category does not merely mean there is only that specific type of clothing as shown in its respective image. Here is a list of specifications under specific categories:<br><br>" +
+        q1answer = new JLabel("<html>Yes, there are only 6 clothing categories available in our application. However, a specific category does not merely mean there is only that specific type of clothing as shown in its respective image. Here is a list of specifications under specific categories:<br><br>" +
                               "<b>Tops</b> - Shirts, Tops, Tees, Polos, Vests, Crop Tops, Blouses<br>" +
                               "<b>Bottoms</b> - Shorts, Pants, Slacks, Sweatpants, Trousers, Jeans, Skorts, Skirts, <br>" +
                               "<b>Active</b> - Shorts, Pants, Jerseys, Polos<br>" +

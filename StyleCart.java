@@ -25,7 +25,6 @@ public class StyleCart {
 
 class StartPage extends JFrame {
     private JPanel logoPanel, gradientPanel; 
-    private JLabel titleLabel;    
     private JButton nextButton;
     private BufferedImage logo;
     private Font customFont, customFont2;
@@ -196,9 +195,6 @@ class StartPage extends JFrame {
 
         gradientPanel.setLayout(new BoxLayout(gradientPanel, BoxLayout.Y_AXIS));
         
-        titleLabel = new JLabel();
-        titleLabel.setFont(customFont);
-     
         nextButton = new JButton("→") {
             @Override
             protected void paintComponent(Graphics g) {

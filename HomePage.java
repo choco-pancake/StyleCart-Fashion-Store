@@ -13,10 +13,10 @@ public class HomePage extends JFrame {
     private BufferedImage logo;
     private Font customFont, customFont2;
     private JPanel sidePanel, logoPanel, menuItemPanel, contentPanel, moneyPanel;
-    private ImageIcon logoIcon;
     private JLabel logoLabel, logoLabel2, logoImageLabel, numberLabel, moneyLabel;
     private CardLayout cardLayout;
     private Map<String, JPanel> menuItemMap = new HashMap<>();
+    private Map<String, JPanel> menuWrapperMap = new HashMap<>();
     private Map<String, ImageIcon[]> iconMap = new HashMap<>();
     private OrderSummaryPage orderSummaryPage;
     private ShoppingCartPage cartPage;
@@ -60,7 +60,7 @@ public class HomePage extends JFrame {
         sidePanel.setBackground(brown);
         sidePanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        logoIcon = getScaledIcon("images/logo.jpg", 55, 55);
+        ImageIcon logoIcon = getScaledIcon("images/logo.jpg", 55, 55);
 
         logoPanel = new JPanel();
         logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
@@ -100,7 +100,7 @@ public class HomePage extends JFrame {
         logoPanel.add(logoLabel);
         logoPanel.add(Box.createVerticalStrut(2));
         logoPanel.add(logoLabel2);
-        logoPanel.add(Box.createVerticalStrut(60));
+        logoPanel.add(Box.createVerticalStrut(30));
         sidePanel.add(logoPanel);
 
         String[][] menuItems = {
@@ -122,8 +122,19 @@ public class HomePage extends JFrame {
             iconMap.put(name, new ImageIcon[]{brownIcon, whiteIcon});
 
             menuItemPanel = createMenuItemPanel(name);
-            sidePanel.add(menuItemPanel);
-            sidePanel.add(Box.createRigidArea(new Dimension(0, 50)));
+
+            JPanel wrapperPanel = new JPanel();
+            wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS));
+            wrapperPanel.setOpaque(false);
+            wrapperPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            wrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+            wrapperPanel.add(menuItemPanel);
+            wrapperPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+
+            menuWrapperMap.put(name, wrapperPanel);
+
+            sidePanel.add(wrapperPanel);
 
             if (name.equals("Help")) {
                 moneyPanel = new RoundedPanel(lightBrown, 30);
@@ -297,25 +308,27 @@ public class HomePage extends JFrame {
             return new ImageIcon(scaled);
         } catch (IOException e) {
             e.printStackTrace();
-            return new ImageIcon(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)); // Fallback empty icon
+            return new ImageIcon(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
         }
     }
 
     public void menuItemWhite(String selectedItem) {
         for (Map.Entry<String, JPanel> entry : menuItemMap.entrySet()) {
+            String key = entry.getKey();
+            JPanel wrapperPanel = menuWrapperMap.get(key);
             JPanel entryPanel = entry.getValue();
             JLabel entryLabel = (JLabel) entryPanel.getComponent(0);
 
-            if (entry.getKey().equals(selectedItem)) {
-                entryPanel.setBackground(white);
-                entryPanel.setOpaque(true);
+            if (key.equals(selectedItem)) {
+                wrapperPanel.setBackground(white);
+                wrapperPanel.setOpaque(true);
                 entryLabel.setForeground(gray);
-                entryLabel.setIcon(iconMap.get(entry.getKey())[1]);
+                entryLabel.setIcon(iconMap.get(key)[1]);
             } else {
-                entryPanel.setBackground(null);
-                entryPanel.setOpaque(false);
+                wrapperPanel.setBackground(null);
+                wrapperPanel.setOpaque(false);
                 entryLabel.setForeground(white);
-                entryLabel.setIcon(iconMap.get(entry.getKey())[0]);
+                entryLabel.setIcon(iconMap.get(key)[0]);
             }
         }
 

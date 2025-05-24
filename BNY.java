@@ -86,7 +86,6 @@ public class BNY extends JPanel {
             3000, 400, 6700, 200, 3500,
             8000, 1000, 15000, 2800, 5000,
             6000, 7500, 2000, 3000, 4000,
-
             10000, 2000, 500, 700, 2500,
             800, 3000, 4500, 6000, 1500,
             2000, 1000, 5000, 3000, 4000,
@@ -260,7 +259,6 @@ public class BNY extends JPanel {
             "₱169", "₱156", "₱355", "₱199", "₱169",
             "₱294", "₱248", "₱401", "₱246", "₱169",
             "₱345", "₱350", "₱159", "₱149", "₱400",
-
             "₱282", "₱200", "₱129", "₱330", "₱549",
             "₱211", "₱159", "₱179", "₱177", "₱109",
             "₱930", "₱262", "₱700", "₱900", "₱824",
@@ -289,10 +287,9 @@ public class BNY extends JPanel {
             {110, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
             {100, 100}, {100, 100}, {70, 100}, {50, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {110, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100},
-            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
+            {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}, {100, 100}
         };
  
         for (int i = 0; i < items.length; i++) {
@@ -318,193 +315,191 @@ public class BNY extends JPanel {
     }
 
     private JPanel createBNYItem(String item, String price, String icon, int width, int height, int stock) {
-        JPanel itemPanel = new JPanel();
-        itemPanel.setLayout(new BorderLayout());
-        itemPanel.setPreferredSize(new Dimension(230, 300));
-        itemPanel.setBackground(lightBlue);
-        itemPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(darkGray, 1),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)));  
+    JPanel itemPanel = new JPanel();
+    itemPanel.setLayout(new BorderLayout());
+    itemPanel.setPreferredSize(new Dimension(230, 300));
+    itemPanel.setBackground(lightBlue);
+    itemPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(darkGray, 1),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)));  
 
-        JPanel itemDetailsPanel = new JPanel();
-        itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
-        itemDetailsPanel.setOpaque(false);
+    JPanel itemDetailsPanel = new JPanel();
+    itemDetailsPanel.setLayout(new BoxLayout(itemDetailsPanel, BoxLayout.Y_AXIS));
+    itemDetailsPanel.setOpaque(false);
 
-        ImageIcon itemIcon = new ImageIcon(icon);
-        Image scaledImage = itemIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
-        iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    ImageIcon itemIcon = new ImageIcon(icon);
+    Image scaledImage = itemIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
+    iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JTextPane namePane = new JTextPane();
-        namePane.setText(item);
-        namePane.setOpaque(false);
-        namePane.setForeground(black);
-        namePane.setFocusable(false);
-        namePane.setHighlighter(null);
-        namePane.setAlignmentX(Component.CENTER_ALIGNMENT);
-        namePane.setFont(itemFont);
-        namePane.setPreferredSize(new Dimension(200, 90));
-        namePane.setMaximumSize(new Dimension(200, 90));
+    JTextPane namePane = new JTextPane();
+    namePane.setText(item);
+    namePane.setOpaque(false);
+    namePane.setForeground(black);
+    namePane.setFocusable(false);
+    namePane.setHighlighter(null);
+    namePane.setAlignmentX(Component.CENTER_ALIGNMENT);
+    namePane.setFont(itemFont);
+    namePane.setPreferredSize(new Dimension(200, 90));
+    namePane.setMaximumSize(new Dimension(200, 90));
 
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        namePane.setParagraphAttributes(center, true);
+    SimpleAttributeSet center = new SimpleAttributeSet();
+    StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+    namePane.setParagraphAttributes(center, true);
 
-        StyledDocument doc = namePane.getStyledDocument();
-        SimpleAttributeSet attrs = new SimpleAttributeSet();
-        StyleConstants.setFontFamily(attrs, itemFont.getFamily());
-        StyleConstants.setFontSize(attrs, itemFont.getSize());
-        StyleConstants.setBold(attrs, itemFont.isBold());
-        StyleConstants.setAlignment(attrs, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), attrs, false);
+    StyledDocument doc = namePane.getStyledDocument();
+    SimpleAttributeSet attrs = new SimpleAttributeSet();
+    StyleConstants.setFontFamily(attrs, itemFont.getFamily());
+    StyleConstants.setFontSize(attrs, itemFont.getSize());
+    StyleConstants.setBold(attrs, itemFont.isBold());
+    StyleConstants.setAlignment(attrs, StyleConstants.ALIGN_CENTER);
+    doc.setParagraphAttributes(0, doc.getLength(), attrs, false);
 
-        JPanel pricePanel = new JPanel();
-        pricePanel.setLayout(new BorderLayout());
-        pricePanel.setOpaque(false);
+    JPanel pricePanel = new JPanel();
+    pricePanel.setLayout(new BorderLayout());
+    pricePanel.setOpaque(false);
 
-        JLabel priceLabel = new JLabel(price);
-        priceLabel.setFont(itemFont);
-        priceLabel.setForeground(black);
-        priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        priceLabel.setPreferredSize(new Dimension(100, 20));
+    JLabel priceLabel = new JLabel(price);
+    priceLabel.setFont(itemFont);
+    priceLabel.setForeground(black);
+    priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+    priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
+    priceLabel.setPreferredSize(new Dimension(100, 20));
 
-        JLabel stockLabel = new JLabel("Stocks: " + stock);
-        stockLabel.setFont(itemFont.deriveFont(13f));
-        stockLabel.setForeground(black);
-        stockLabel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
-        stockLabels.put(item, stockLabel);
+    JLabel stockLabel = new JLabel("Stocks: " + stock);
+    stockLabel.setFont(itemFont.deriveFont(13f));
+    stockLabel.setForeground(black);
+    stockLabel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
+    stockLabels.put(item, stockLabel);
 
-        JPanel stockContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        stockContainer.setOpaque(false);
-        stockContainer.add(stockLabel);
+    JPanel stockContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    stockContainer.setOpaque(false);
+    stockContainer.add(stockLabel);
 
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setOpaque(false);
-        headerPanel.add(stockContainer, BorderLayout.EAST);
-        itemPanel.add(headerPanel, BorderLayout.NORTH);
+    JPanel headerPanel = new JPanel(new BorderLayout());
+    headerPanel.setOpaque(false);
+    headerPanel.add(stockContainer, BorderLayout.EAST);
+    itemPanel.add(headerPanel, BorderLayout.NORTH);
 
-        JButton addButton = new JButton("🛒");
-        addButton.setForeground(black);
-        addButton.setBackground(stock <= 0 ? darkGray : lightGray);
-        addButton.setOpaque(true);
-        addButton.setBorderPainted(false);
-        addButton.setFont(new Font("SansSerif", Font.PLAIN, 15));
-        addButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        addButton.setFocusable(false);
-        addButton.setPreferredSize(new Dimension(40, 30));
-        addButton.setMaximumSize(new Dimension(40, 30));
-        addButton.setToolTipText("Add " + item + " to cart");
+    JButton addButton = new JButton("🛒");
+    addButton.setForeground(black);
+    addButton.setBackground(stock <= 0 ? darkGray : lightGray);
+    addButton.setOpaque(true);
+    addButton.setBorderPainted(false);
+    addButton.setFont(new Font("SansSerif", Font.PLAIN, 15));
+    addButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+    addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    addButton.setFocusable(false);
+    addButton.setPreferredSize(new Dimension(40, 30));
+    addButton.setMaximumSize(new Dimension(40, 30));
+    addButton.setToolTipText("Add " + item + " to cart");
 
-        addButton.addActionListener(e -> {
-            if (stock <= 0) {
-                JOptionPane.showMessageDialog(this, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+    addButton.addActionListener(e -> {
+        if (stock <= 0) {
+            JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
+        JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+        detailsPanel.setPreferredSize(new Dimension(400, 150));
+        detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        detailsPanel.setFocusable(false);
+
+        JLabel sizeLabel = new JLabel("Select Size:");
+        sizeLabel.setFont(itemFont);
+        sizeLabel.setFocusable(false);
+
+        JComboBox<String> sizeBox = new JComboBox<>(sizes);
+        sizeBox.setFont(dropdownFont);
+        sizeBox.setFocusable(false);
+
+        JLabel quantityLabel = new JLabel("Quantity:");
+        quantityLabel.setFont(itemFont);
+        quantityLabel.setFocusable(false);
+
+        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, stock, 1);
+        JSpinner quantitySpinner = new JSpinner(spinnerModel);
+        quantitySpinner.setFont(dropdownFont);
+        quantitySpinner.setFocusable(false);
+
+        detailsPanel.add(sizeLabel);
+        detailsPanel.add(sizeBox);
+        detailsPanel.add(quantityLabel);
+        detailsPanel.add(quantitySpinner);
+
+        int result = JOptionPane.showConfirmDialog(null, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String selectedSize = (String) sizeBox.getSelectedItem();
+            int selectedQuantity = (Integer) quantitySpinner.getValue();
+            int currentCartQuantity = 0;
+            for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
+                if (cartItem.name.equals(item)) {
+                    currentCartQuantity += cartItem.getQuantity();
+                }
+            }
+            if (currentCartQuantity + selectedQuantity > stock) {
+                JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
+            MainContents.getCartItems().add(newItem);
+            JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+        }
+    });
 
-            String[] sizes = {"XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"};
-            JPanel detailsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-            detailsPanel.setPreferredSize(new Dimension(400, 150));
-            detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-            detailsPanel.setFocusable(false);
-
-            JLabel sizeLabel = new JLabel("Select Size:");
-            sizeLabel.setFont(itemFont);
-            sizeLabel.setFocusable(false);
-
-            JComboBox<String> sizeBox = new JComboBox<>(sizes);
-            sizeBox.setFont(dropdownFont);
-            sizeBox.setFocusable(false);
-
-            JLabel quantityLabel = new JLabel("Quantity:");
-            quantityLabel.setFont(itemFont);
-            quantityLabel.setFocusable(false);
-
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, stock, 1);
-            JSpinner quantitySpinner = new JSpinner(spinnerModel);
-            quantitySpinner.setFont(dropdownFont);
-            quantitySpinner.setFocusable(false);
-
-            detailsPanel.add(sizeLabel);
-            detailsPanel.add(sizeBox);
-            detailsPanel.add(quantityLabel);
-            detailsPanel.add(quantitySpinner);
-
-            int result = JOptionPane.showConfirmDialog(this, detailsPanel, "Product Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-            if (result == JOptionPane.OK_OPTION) {
-                String selectedSize = (String) sizeBox.getSelectedItem();
-                int selectedQuantity = (Integer) quantitySpinner.getValue();
-                int currentCartQuantity = 0;
-                for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
-                    if (cartItem.name.equals(item)) {
-                        currentCartQuantity += cartItem.getQuantity();
-                    }
-                }
-
-                if (currentCartQuantity + selectedQuantity > stock) {
-                    JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
-                MainContents.getCartItems().add(newItem);
-                JOptionPane.showMessageDialog(this, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
-            }
-        });
-
-        addButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (stock > 0) {
-                    addButton.setBackground(darkGray);
-                    addButton.setOpaque(true);
-                    addButton.setBorderPainted(false);
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (stock > 0) {
-                    addButton.setBackground(darkGray.darker());
-                    addButton.setOpaque(true);
-                    addButton.setBorderPainted(false);
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (stock > 0) {
-                    addButton.setBackground(darkGray);
-                    addButton.setOpaque(true);
-                    addButton.setBorderPainted(false);
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                addButton.setBackground(stock <= 0 ? darkGray : lightGray);
+    addButton.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            if (stock > 0) {
+                addButton.setBackground(darkGray);
                 addButton.setOpaque(true);
                 addButton.setBorderPainted(false);
             }
-        });
+        }
 
-        JPanel buttonWrapper = new JPanel();
-        buttonWrapper.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        buttonWrapper.setOpaque(false);
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (stock > 0) {
+                addButton.setBackground(darkGray.darker());
+                addButton.setOpaque(true);
+                addButton.setBorderPainted(false);
+            }
+        }
 
-        pricePanel.add(priceLabel, BorderLayout.WEST);
-        buttonWrapper.add(addButton);
-        pricePanel.add(buttonWrapper, BorderLayout.EAST);
-        itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        itemDetailsPanel.add(iconLabel);
-        itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        itemDetailsPanel.add(namePane);
-        itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        itemDetailsPanel.add(pricePanel);
-        itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (stock > 0) {
+                addButton.setBackground(darkGray);
+                addButton.setOpaque(true);
+                addButton.setBorderPainted(false);
+            }
+        }
 
-        return itemPanel;
-    }
+        @Override
+        public void mouseExited(MouseEvent e) {
+            addButton.setBackground(stock <= 0 ? darkGray : lightGray);
+            addButton.setOpaque(true);
+            addButton.setBorderPainted(false);
+        }
+    });
+
+    JPanel buttonWrapper = new JPanel();
+    buttonWrapper.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+    buttonWrapper.setOpaque(false);
+
+    pricePanel.add(priceLabel, BorderLayout.WEST);
+    buttonWrapper.add(addButton);
+    pricePanel.add(buttonWrapper, BorderLayout.EAST);
+    itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+    itemDetailsPanel.add(iconLabel);
+    itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+    itemDetailsPanel.add(namePane);
+    itemDetailsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+    itemDetailsPanel.add(pricePanel);
+    itemPanel.add(itemDetailsPanel, BorderLayout.CENTER);
+
+    return itemPanel;
+}
 }
