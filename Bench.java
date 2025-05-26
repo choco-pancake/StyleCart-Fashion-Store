@@ -369,7 +369,7 @@ public class Bench extends JPanel {
         priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         priceLabel.setPreferredSize(new Dimension(100, 20));
 
-        JLabel stockLabel = new JLabel("Stocks: " + stock);
+        JLabel stockLabel = new JLabel(stock > 0 ? "Stocks: " + stock : "Out of Stock");
         stockLabel.setFont(itemFont.deriveFont(13f));
         stockLabel.setForeground(black);
         stockLabel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
@@ -398,8 +398,21 @@ public class Bench extends JPanel {
         addButton.setToolTipText("Add " + item + " to cart");
 
         addButton.addActionListener(e -> {
-            if (currentStock.get(item) <= 0) {
+            int currentStock = this.currentStock.getOrDefault(item, 0);
+            if (currentStock <= 0) {
                 JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int cartQuantity = 0;
+            for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
+                if (cartItem.getName().equals(item)) {
+                    cartQuantity += cartItem.getQuantity();
+                }
+            }
+
+            if (cartQuantity == currentStock) {
+                JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -421,7 +434,8 @@ public class Bench extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, stock, 1);
+            int maxQuantity = Math.max(1, currentStock - cartQuantity);
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, maxQuantity, 1);
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
@@ -436,26 +450,16 @@ public class Bench extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                int currentCartQuantity = 0;
-                for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
-                    if (cartItem.getName().equals(item)) {
-                        currentCartQuantity += cartItem.getQuantity();
-                    }
-                }
-                if (currentCartQuantity + selectedQuantity > currentStock.get(item)) {
-                    JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
-                JOptionPane.showMessageDialog(null, item + " added to cart!\nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+                JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });
 
         addButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                if (stock > 0) {
+                if (currentStock.getOrDefault(item, 0) > 0) {
                     addButton.setBackground(darkGray);
                     addButton.setOpaque(true);
                     addButton.setBorderPainted(false);
@@ -464,7 +468,7 @@ public class Bench extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (stock > 0) {
+                if (currentStock.getOrDefault(item, 0) > 0) {
                     addButton.setBackground(darkGray.darker());
                     addButton.setOpaque(true);
                     addButton.setBorderPainted(false);
@@ -473,7 +477,7 @@ public class Bench extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (stock > 0) {
+                if (currentStock.getOrDefault(item, 0) > 0) {
                     addButton.setBackground(darkGray);
                     addButton.setOpaque(true);
                     addButton.setBorderPainted(false);
@@ -482,7 +486,7 @@ public class Bench extends JPanel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                addButton.setBackground(stock <= 0 ? darkGray : lightGray);
+                addButton.setBackground(currentStock.getOrDefault(item, 0) <= 0 ? darkGray : lightGray);
                 addButton.setOpaque(true);
                 addButton.setBorderPainted(false);
             }

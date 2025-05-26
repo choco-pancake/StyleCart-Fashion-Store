@@ -221,7 +221,7 @@ public class HelpPage extends JPanel {
         step7.setFont(customFont.deriveFont(15f));
         step8 = new JLabel("<html>8. Track your order to check when it will arrive and when it has arrived. <i>(Optional)</i></html>");
         step8.setFont(customFont.deriveFont(15f));
-        step9 = new JLabel("<html>9. The ordered product and add a review. <i>(Optional)</i></html>");
+        step9 = new JLabel("<html>9. Rate the ordered product and add a review. <i>(Optional)</i></html>");
         step9.setFont(customFont.deriveFont(15f));
         
         guidePanel.add(step1);

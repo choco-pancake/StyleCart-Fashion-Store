@@ -420,7 +420,7 @@ public class RatingsPage extends JPanel {
         String productName = productDetails.split("<br>")[0].replace("<html>", "").trim();
 
         if (ratedDeliveries.contains(productName)) {
-            JOptionPane.showMessageDialog(this, "You have already rated the delivery for this product.",
+            JOptionPane.showMessageDialog(this, "You have already rated this product.",
                 "Delivery Rated", JOptionPane.INFORMATION_MESSAGE);
 
             if (isFullyRated(productName)) {

@@ -185,12 +185,12 @@ public class ShoppingCartPage extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                placeButton.setBackground(mediumBlue);
+                placeButton.setBackground(darkBlue);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                addButton.setBackground(mediumBlue);
+                placeButton.setBackground(mediumBlue);
             }
         });
 

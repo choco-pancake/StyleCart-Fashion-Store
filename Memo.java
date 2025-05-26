@@ -71,6 +71,7 @@ public class Memo extends JPanel {
             "Textured Knit T-Shirt", "Textured Open Collar Knit Polo Sleeve Shirt", "Textured Open Collar Polo (Midnight Navy)", "Textured Relaxed Fit Short Sleeve Shirt", "Textured Ringer Striped T-Shirt",
             "Ultimate Basics Comfort T-Shirt", "Ultimate Basics Premium Flat Knit Polo", "Wide Stripe Collared Pullover (Taupe)", "Zip-Up Polo Shirt with Tipping", "Color Block Collared Pullover (Black)",
             "Soft Touch Flat Knit Pullover with Contrast Tipping", "Striped Flat Knit Pullover with Collar and Zip Detail (Heather Gray)", "Ultimate Basics Classic Bomber Jacket (Black)", "Ultimate Basics Easy Fit Long Sleeve Shirt", "Wide Stripe Collared Pullover (Taupe)",
+
             "Collared Shirt for Women", "Extended Sleeve Textured T-Shirt", "New Ultimate Basic T-Shirt", "Ruched Front T-Shirt", "Textured Tee for Women",
             "Textured Horizontal Striped Polo", "Ultimate Basics Knit Tee", "Denim Zip Up Vest", "Linen Top for Women", "Slash Neck Top",
             "Sleeveless Top with Tipping", "Striped Knit Top", "Textured Striped Sleeveless Top", "Sleeveless Top (Cream)", "Zip Up Pullover",
@@ -242,6 +243,7 @@ public class Memo extends JPanel {
             "Textured Knit T-Shirt", "Textured Open Collar Knit Polo Sleeve Shirt", "Textured Open Collar Polo (Midnight Navy)", "Textured Relaxed Fit Short Sleeve Shirt", "Textured Ringer Striped T-Shirt",
             "Ultimate Basics Comfort T-Shirt", "Ultimate Basics Premium Flat Knit Polo", "Wide Stripe Collared Pullover (Taupe)", "Zip-Up Polo Shirt with Tipping", "Color Block Collared Pullover (Black)",
             "Soft Touch Flat Knit Pullover with Contrast Tipping", "Striped Flat Knit Pullover with Collar and Zip Detail (Heather Gray)", "Ultimate Basics Classic Bomber Jacket (Black)", "Ultimate Basics Easy Fit Long Sleeve Shirt", "Wide Stripe Collared Pullover (Taupe)",
+
             "Collared Shirt for Women", "Extended Sleeve Textured T-Shirt", "New Ultimate Basic T-Shirt", "Ruched Front T-Shirt", "Textured Tee for Women",
             "Textured Horizontal Striped Polo", "Ultimate Basics Knit Tee", "Denim Zip Up Vest", "Linen Top for Women", "Slash Neck Top",
             "Sleeveless Top with Tipping", "Striped Knit Top", "Textured Striped Sleeveless Top", "Sleeveless Top (Cream)", "Zip Up Pullover",
@@ -257,6 +259,7 @@ public class Memo extends JPanel {
             "₱499", "₱989", "₱989", "₱699", "₱799",
             "₱499", "₱749", "₱659", "₱899", "₱939",
             "₱989", "₱759", "₱899", "₱989", "₱659",
+
             "₱899", "₱429", "₱699", "₱710", "₱699",
             "₱989", "₱439", "₱899", "₱809", "₱287",
             "₱890", "₱749", "₱699", "₱890", "₱899",
@@ -272,6 +275,7 @@ public class Memo extends JPanel {
             "images/memomen19tops.png", "images/memomen20tops.png", "images/memomen21tops.png", "images/memomen22tops.png", "images/memomen23tops.png",
             "images/memomen25tops.png", "images/memomen27tops.png", "images/memomen28tops.png", "images/memomen30tops.png", "images/memomen5outerwear.png", 
             "images/memomen16outerwear.png", "images/memomen17outerwear.png", "images/memomen24outerwear.png", "images/memomen26tops.png", "images/memomen29outerwear.png",
+
             "images/memowomen2tops.png", "images/memowomen5tops.png", "images/memowomen9tops.png", "images/memowomen14tops.png", "images/memowomen24tops.png",
             "images/memowomen25tops.png", "images/memowomen28tops.png", "images/memowomen4tops.png", "images/memowomen7tops.png", "images/memowomen16tops.png",
             "images/memowomen17tops.png", "images/memowomen20tops.png", "images/memowomen23tops.png", "images/memowomen30tops.png", "images/memowomen29outerwear.png",
@@ -287,6 +291,7 @@ public class Memo extends JPanel {
             {80, 100}, {90, 100}, {90, 100}, {80, 100}, {90, 100},
             {90, 100}, {90, 100}, {90, 100}, {80, 100}, {90, 100},
             {100, 100}, {90, 100}, {90, 100}, {80, 100}, {70, 100},
+
             {90, 100}, {90, 100}, {120, 100}, {100, 100}, {100, 100},
             {90, 100}, {100, 100}, {100, 100}, {80, 100}, {100, 100},
             {100, 100}, {100, 100}, {100, 100}, {100, 100}, {80, 100},
@@ -369,7 +374,7 @@ public class Memo extends JPanel {
         priceLabel.setHorizontalAlignment(SwingConstants.LEFT);
         priceLabel.setPreferredSize(new Dimension(100, 20));
 
-        JLabel stockLabel = new JLabel("Stocks: " + stock);
+        JLabel stockLabel = new JLabel(stock > 0 ? "Stocks: " + stock : "Out of Stock");
         stockLabel.setFont(itemFont.deriveFont(13f));
         stockLabel.setForeground(black);
         stockLabel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 1));
@@ -398,8 +403,21 @@ public class Memo extends JPanel {
         addButton.setToolTipText("Add " + item + " to cart");
 
         addButton.addActionListener(e -> {
-            if (currentStock.get(item) <= 0) {
+            int currentStock = this.currentStock.getOrDefault(item, 0);
+            if (currentStock <= 0) {
                 JOptionPane.showMessageDialog(null, "Sorry, " + item + " is out of stock!", "Out of Stock", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int cartQuantity = 0;
+            for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
+                if (cartItem.getName().equals(item)) {
+                    cartQuantity += cartItem.getQuantity();
+                }
+            }
+
+            if (cartQuantity == currentStock) {
+                JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -421,7 +439,8 @@ public class Memo extends JPanel {
             quantityLabel.setFont(itemFont);
             quantityLabel.setFocusable(false);
 
-            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, stock, 1);
+            int maxQuantity = Math.max(1, currentStock - cartQuantity);
+            SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, maxQuantity, 1);
             JSpinner quantitySpinner = new JSpinner(spinnerModel);
             quantitySpinner.setFont(dropdownFont);
             quantitySpinner.setFocusable(false);
@@ -436,26 +455,16 @@ public class Memo extends JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 String selectedSize = (String) sizeBox.getSelectedItem();
                 int selectedQuantity = (Integer) quantitySpinner.getValue();
-                int currentCartQuantity = 0;
-                for (MainContents.CartItem cartItem : MainContents.getCartItems()) {
-                    if (cartItem.getName().equals(item)) {
-                        currentCartQuantity += cartItem.getQuantity();
-                    }
-                }
-                if (currentCartQuantity + selectedQuantity > currentStock.get(item)) {
-                    JOptionPane.showMessageDialog(null, "Insufficient stocks for cart addition.", "Stock Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
                 MainContents.CartItem newItem = new MainContents.CartItem(item, price, selectedSize, icon, selectedQuantity, width, height);
                 MainContents.getCartItems().add(newItem);
-                JOptionPane.showMessageDialog(null, item + " added to cart!\nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
+                JOptionPane.showMessageDialog(null, item + " added to cart! \nSize: " + selectedSize + "\nQuantity: " + selectedQuantity);
             }
         });
 
         addButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                if (stock > 0) {
+                if (currentStock.getOrDefault(item, 0) > 0) {
                     addButton.setBackground(darkGray);
                     addButton.setOpaque(true);
                     addButton.setBorderPainted(false);
@@ -464,7 +473,7 @@ public class Memo extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (stock > 0) {
+                if (currentStock.getOrDefault(item, 0) > 0) {
                     addButton.setBackground(darkGray.darker());
                     addButton.setOpaque(true);
                     addButton.setBorderPainted(false);
@@ -473,7 +482,7 @@ public class Memo extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (stock > 0) {
+                if (currentStock.getOrDefault(item, 0) > 0) {
                     addButton.setBackground(darkGray);
                     addButton.setOpaque(true);
                     addButton.setBorderPainted(false);
@@ -482,7 +491,7 @@ public class Memo extends JPanel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                addButton.setBackground(stock <= 0 ? darkGray : lightGray);
+                addButton.setBackground(currentStock.getOrDefault(item, 0) <= 0 ? darkGray : lightGray);
                 addButton.setOpaque(true);
                 addButton.setBorderPainted(false);
             }

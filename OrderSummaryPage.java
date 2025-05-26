@@ -366,7 +366,7 @@ public class OrderSummaryPage extends JPanel {
                 
                 int option = JOptionPane.showConfirmDialog(
                     this, 
-                    "You will be redirected to your receipt.", 
+                    "Receipt generated successfully!", 
                     "Receipt Generated", 
                     JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
